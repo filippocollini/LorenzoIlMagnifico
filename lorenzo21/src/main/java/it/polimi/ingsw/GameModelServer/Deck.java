@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GameModelServer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 
@@ -11,6 +13,7 @@ public abstract class Deck {
      * Default constructor
      */
     public Deck() {
+        carte= new ArrayList<Card>();
     }
 
     /**
@@ -20,10 +23,10 @@ public abstract class Deck {
 
 
     /**
-     * @return
+     *
      */
     public void mescola() {
-        // TODO implement here
+        Collections.shuffle(carte);
     }
 
 }

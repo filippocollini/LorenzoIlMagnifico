@@ -23,4 +23,14 @@ public class BonusTile {
      */
     private PersonalBoard personalBoard;
 
+
+    public Player getPlayer(){
+        return player;
+    }
+
+
+    public PersonalBoard getPersonalBoard(){
+        return personalBoard;
+    }
+
 }

@@ -13,4 +13,9 @@ public class TerritoryCard extends DevelopementCard {
     public TerritoryCard() {
     }
 
+    @Override
+    public void activateEffect(Effect effect){
+
+    }
+
 }

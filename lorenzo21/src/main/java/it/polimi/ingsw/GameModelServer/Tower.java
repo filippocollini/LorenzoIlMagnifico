@@ -11,12 +11,13 @@ public class Tower {
      * Default constructor
      */
     public Tower() {
+        floors= new ArrayList<Cell>();
     }
 
     /**
      * 
      */
-    public List<Cell> piani;
+    public List<Cell> floors;
 
 
 }

@@ -21,6 +21,16 @@ public class FamilyMember {
     /**
      * 
      */
-    public Integer value;
+    public int value;
 
+
+    public String getColor(){
+        return color;
+    }
+
+    public int getValue(){
+        return value;
+    }
+
+    
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.ClientModel;
 
-import it.polimi.ingsw.*;
-
 import java.util.*;
 import java.util.Observer;
 
@@ -14,6 +12,7 @@ public class Board {
      * Default constructor
      */
     public Board() {
+        observerCollection= new ArrayList<Observer>();
     }
 
     /**
@@ -89,28 +88,30 @@ public class Board {
     /**
      * 
      */
-    public Observer ObserverCollection;
+    public List<Observer> observerCollection;
 
 
     /**
      * 
      */
     public void notifyObserver() {
-        // TODO implement here
+        for(Observer observer : observerCollection){
+            observer.notify();
+        }
     }
 
     /**
      * 
      */
-    public void registerObserver() {
-        // TODO implement here
+    public void registerObserver(Observer observer) {
+        observerCollection.add(observer);
     }
 
     /**
      * 
      */
-    public void unregisterObserver() {
-        // TODO implement here
+    public void unregisterObserver(Observer observer) {
+        observerCollection.remove(observerCollection.equals(observer));
     }
 
 }

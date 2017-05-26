@@ -28,4 +28,17 @@ public class Cell {
      */
     public Risorsa bonus;
 
+
+    public boolean isfMPresent(){
+        return fMIsPresent;
+    }
+
+    public Card getCard(){
+        return carta;
+    }
+
+    public Risorsa getResourceBonus(){
+        return bonus;
+    }
+
 }

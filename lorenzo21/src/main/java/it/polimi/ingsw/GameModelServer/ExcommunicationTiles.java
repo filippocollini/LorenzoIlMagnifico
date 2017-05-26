@@ -21,11 +21,28 @@ public class ExcommunicationTiles extends Card {
     /**
      * 
      */
-    private String descrizione;
+    private String description;
 
     /**
      * 
      */
-    private Effect effetto;
+    private Effect effect;
 
+
+    public int getPeriod(){
+        return periodo;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public Effect getEffect(){
+        return effect;
+    }
+
+    @Override
+    public void activateEffect(Effect effect) {
+
+    }
 }

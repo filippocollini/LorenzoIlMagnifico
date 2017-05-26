@@ -13,4 +13,9 @@ public class BuildingCard extends DevelopementCard {
     public BuildingCard() {
     }
 
+    @Override
+    public void activateEffect(Effect effect){
+
+    }
+
 }

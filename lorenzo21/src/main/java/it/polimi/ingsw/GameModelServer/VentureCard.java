@@ -13,4 +13,9 @@ public class VentureCard extends DevelopementCard {
     public VentureCard() {
     }
 
+    @Override
+    public void activateEffect(Effect effect){
+
+    }
+
 }

@@ -13,4 +13,9 @@ public class CharacterCard extends DevelopementCard {
     public CharacterCard() {
     }
 
+    @Override
+    public void activateEffect(Effect effect){
+
+    }
+
 }

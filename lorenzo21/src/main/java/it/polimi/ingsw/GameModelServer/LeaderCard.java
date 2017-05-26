@@ -13,4 +13,9 @@ public class LeaderCard extends Card {
     public LeaderCard() {
     }
 
+    @Override
+    public void activateEffect(Effect effect){
+
+    }
+
 }

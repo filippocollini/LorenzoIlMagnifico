@@ -101,8 +101,9 @@ public class Board {
      * @return
      */
     private Board instance() {
-        // TODO implement here
-        return null;
+        if(instance==null)
+            instance= new Board();
+        return instance;
     }
 
 }
