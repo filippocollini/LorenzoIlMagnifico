@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ServerController;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -10,7 +11,8 @@ public abstract class AbstractServer implements IServer {
     /**
      * Default constructor
      */
-    public AbstractServer() {
+    public AbstractServer(IServer controller) {
+        this.controller=controller;
     }
 
     /**
@@ -23,8 +25,6 @@ public abstract class AbstractServer implements IServer {
     /**
      * 
      */
-    public void startServer() {
-        // TODO implement here
-    }
+    public abstract void startServer() throws IOException;
 
 }

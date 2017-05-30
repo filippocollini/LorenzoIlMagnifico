@@ -3,7 +3,7 @@ package it.polimi.ingsw.ServerController;
 import java.util.*;
 
 /**
- * 
+ * proxy to SocketServer and RMIServer
  */
 public class Server implements IServer {
 

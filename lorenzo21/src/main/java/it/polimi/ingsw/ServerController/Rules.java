@@ -23,4 +23,11 @@ public class Rules {
         // TODO implement here
     }
 
+    /**
+     *
+     */
+    public void handleRequest(Object o){
+
+    }
+
 }
