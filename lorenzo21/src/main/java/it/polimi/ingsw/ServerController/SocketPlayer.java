@@ -79,13 +79,6 @@ public class SocketPlayer extends AbstractPlayer implements Runnable {
         }
     }
 
-    SocketPlayer bind(SocketClient client, SocketPlayer handler) {
-        return (client, handler) ->
-                handler.handle(client, handler);
-    }
 
-    public void handle(SocketClient client, SocketPlayer handler){
-
-    }
 
 }

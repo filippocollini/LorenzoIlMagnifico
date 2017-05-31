@@ -1,8 +1,11 @@
 package it.polimi.ingsw.ClientController;
+
+import it.polimi.ingsw.Observer;
+
 /**
  * 
  */
-public abstract class AbstractClient implements it.polimi.ingsw.Observer {
+public abstract class AbstractClient implements Observer {
 
     /**
      * Default constructor
@@ -16,15 +19,6 @@ public abstract class AbstractClient implements it.polimi.ingsw.Observer {
      */
     public void update() {
         // TODO implement here
-        return null;
-    }
-
-    /**
-     * @return
-     */
-    public void update() {
-        // TODO implement here
-        return null;
     }
 
 }

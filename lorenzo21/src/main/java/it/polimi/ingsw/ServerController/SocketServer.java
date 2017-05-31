@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ServerController;
 
+import it.polimi.ingsw.GameModelServer.Game;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,34 +33,45 @@ public class SocketServer extends AbstractServer {
     private ServerSocket serverSocket;
 
     @Override
-    public void startServer() throws IOException{
+    public void startServer(){
 
-        serverSocket = new ServerSocket(port);
+        ExecutorService executor = Executors.newCachedThreadPool();
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while(true){
-            new ConnectionHandler(serverSocket.accept());
-        }
-
-    }
-
-    private class ConnectionHandler extends Thread{
-        private final Socket socket;
-
-        public ConnectionHandler(Socket socket){
-            this.socket=socket;
-            start();
-        }
-
-        public void run() {
-            try{
-                SocketPlayer socketPlayer = new SocketPlayer(controller, socket);
-                new Thread(socketPlayer).start();
-            }catch(IOException e){
-                System.out.println("errore");
+            try {
+                Socket socket= serverSocket.accept();
+                executor.submit( () -> {
+                    try {
+                        new Thread(new SocketPlayer(controller, socket)).start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
             }
-
         }
+        //executor.shutdown();
 
     }
 
+    @Override
+    public Game createRoom(AbstractPlayer player) {
+        return null;
+    }
 
+    @Override
+    public void joinRoom(Stanza room, AbstractPlayer player) {
+
+    }
+
+    @Override
+    public void loginPlayer(AbstractPlayer player) {
+
+    }
 }

@@ -7,6 +7,8 @@ import java.util.*;
  */
 public class AbstractPlayer {
 
+    private Stanza room;
+
     /**
      * Default constructor
      */
@@ -25,8 +27,11 @@ public class AbstractPlayer {
     /**
      * 
      */
-    public void varieNotify() {
-        // TODO implement here
+    public void setRoom(Stanza room) {
+        this.room=room;
     }
 
+    public Stanza getRoom() {
+        return room;
+    }
 }
