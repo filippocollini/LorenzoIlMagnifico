@@ -1,3 +1,6 @@
+package it.polimi.ingsw.ClientController;
+
+import it.polimi.ingsw.GameModelServer.Player;
 
 import java.util.*;
 
@@ -37,7 +40,6 @@ public class Client implements IClient {
      */
     public void update() {
         // TODO implement here
-        return null;
     }
 
 }

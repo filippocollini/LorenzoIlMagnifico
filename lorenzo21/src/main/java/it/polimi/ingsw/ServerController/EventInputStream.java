@@ -12,7 +12,7 @@ public class EventInputStream extends ObjectInputStream {
     Rules rules;
 
     /**
-     * Creates a DataInputStream that uses the specified
+     * Creates a ObjectInputStream that uses the specified
      * underlying InputStream.
      *
      * @param in the specified input stream
@@ -21,7 +21,8 @@ public class EventInputStream extends ObjectInputStream {
         super();
     }
 
-    void receiveEvent(Event event){
-        rules.handleRequest(event);
+    public void receiveEvent(Event event){
+
+        event.eventHappened(event);
     }
 }

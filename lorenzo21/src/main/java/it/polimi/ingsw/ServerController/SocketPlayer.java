@@ -49,6 +49,11 @@ public class SocketPlayer extends AbstractPlayer implements Runnable {
     private Rules rules;
 
     /**
+     *
+     */
+    private CallClient callClient;
+
+    /**
      * 
      */
     @Override

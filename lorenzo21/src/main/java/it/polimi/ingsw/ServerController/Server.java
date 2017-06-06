@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ServerController;
 
+import it.polimi.ingsw.GameModelServer.Game;
+
 import java.util.*;
 
 /**
@@ -34,6 +36,18 @@ public class Server implements IServer {
     private ArrayList<Stanza> stanze;
 
 
+    @Override
+    public Game createRoom(AbstractPlayer player) {
+        return null;
+    }
 
+    @Override
+    public void joinRoom(Stanza room, AbstractPlayer player) {
 
+    }
+
+    @Override
+    public void loginPlayer(AbstractPlayer player) {
+
+    }
 }

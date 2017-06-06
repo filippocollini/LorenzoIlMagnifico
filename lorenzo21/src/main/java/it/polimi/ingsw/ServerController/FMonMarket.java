@@ -4,7 +4,8 @@ package it.polimi.ingsw.ServerController;
  * Created by filippocollini on 26/05/17.
  */
 public class FMonMarket extends Event {
-    public void eventHappened(Event event){
 
+    public void eventHappened(Event event){
+        System.out.println("market");
     }
 }

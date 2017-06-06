@@ -41,6 +41,7 @@ public class SocketServer extends AbstractServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         while(true){
             try {
                 Socket socket= serverSocket.accept();
