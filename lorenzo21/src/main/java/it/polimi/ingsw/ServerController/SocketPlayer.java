@@ -1,12 +1,7 @@
 package it.polimi.ingsw.ServerController;
 
-import it.polimi.ingsw.ClientController.SocketClient;
-
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.*;
 
 /**
  * TODO binding between Client and socketPlayer
@@ -23,9 +18,9 @@ public class SocketPlayer extends AbstractPlayer implements Runnable {
     public SocketPlayer(IServer controller, Socket socket) throws IOException{
         this.socket=socket;
         this.controller=controller;
-        out = new ObjectOutputStream(socket.getOutputStream());
-        in = new ObjectInputStream(socket.getInputStream());
-        rules= new Rules();//con che parametri Rules?
+        out = new EventOutputStream(socket.getOutputStream());
+        in = new EventInputStream(socket.getInputStream());
+        rules= new Rules(in, out, callClient);
     }
 
     /**
@@ -41,12 +36,12 @@ public class SocketPlayer extends AbstractPlayer implements Runnable {
     /**
      *
      */
-    private ObjectInputStream in;
+    private EventInputStream in;
 
     /**
      *
      */
-    private ObjectOutputStream out;
+    private EventOutputStream out;
 
     /**
      *
@@ -60,8 +55,8 @@ public class SocketPlayer extends AbstractPlayer implements Runnable {
     public void run() {
         while (true){
             try {
-                Object request=in.readObject();
-                rules.handleRequest(request);
+                Object request = in.readObject();
+                in.receiveEvent((Event)request);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
