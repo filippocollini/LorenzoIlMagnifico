@@ -47,7 +47,8 @@ public class Server implements IServer {
     }
 
     @Override
-    public void loginPlayer(AbstractPlayer player) {
+    public void loginPlayer(String username) {
 
     }
+
 }

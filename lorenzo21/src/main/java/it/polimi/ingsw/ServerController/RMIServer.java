@@ -41,7 +41,8 @@ public class RMIServer extends AbstractServer {
     }
 
     @Override
-    public void loginPlayer(AbstractPlayer player) {
+    public void loginPlayer(String username) {
 
     }
+
 }

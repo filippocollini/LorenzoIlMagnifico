@@ -13,4 +13,9 @@ public class RMIClient extends AbstractClient {
     public RMIClient() {
     }
 
+    @Override
+    public void login(String username) {
+
+    }
+
 }

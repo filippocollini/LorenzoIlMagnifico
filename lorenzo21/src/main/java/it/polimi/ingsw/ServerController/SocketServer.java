@@ -72,7 +72,7 @@ public class SocketServer extends AbstractServer {
     }
 
     @Override
-    public void loginPlayer(AbstractPlayer player) {
+    public void loginPlayer(String username) {
 
     }
 }

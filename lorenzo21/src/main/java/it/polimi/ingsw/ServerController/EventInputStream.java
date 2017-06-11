@@ -17,12 +17,27 @@ public class EventInputStream extends ObjectInputStream {
      *
      * @param in the specified input stream
      */
+
     public EventInputStream(InputStream in) throws IOException {
         super();
     }
 
+    /*
+
+    public void invokeIsLegal(Event event){
+        //Controllo
+        //pattern command
+        if(event.isLegal(event))
+            receiveEvent(event);
+        else {
+            System.out.println("lancia eccezione");
+        }
+    }
+
     public void receiveEvent(Event event){
 
-        event.eventHappened(event);
+        rules
     }
+
+    */
 }

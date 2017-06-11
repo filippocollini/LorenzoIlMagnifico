@@ -13,7 +13,7 @@ public interface IServer {
 
     void joinRoom(Stanza room, AbstractPlayer player);
 
-    void loginPlayer(AbstractPlayer player);
+    void loginPlayer(String username);
 
 
 

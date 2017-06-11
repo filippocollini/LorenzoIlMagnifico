@@ -1,9 +1,8 @@
 package it.polimi.ingsw.ServerController;
 
-import java.io.IOException;
+import it.polimi.ingsw.ClientController.ClientRules;
+
 import java.util.HashMap;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * 
@@ -14,59 +13,36 @@ public class Rules {
 
     private final EventOutputStream out;
 
-    private final CallClient callClient;
+    private final ClientRules clientRules;
 
-    private final HashMap <String, Handler> eventMap;
+    private final HashMap <String, Event> eventMap;
+
+    private TurnHandler turn;
 
     /**
      * Default constructor
      * @param in
      * @param out
-     * @param callClient
+     * @param clientRules
      */
-    public Rules(EventInputStream in, EventOutputStream out, CallClient callClient) {
+    public Rules(EventInputStream in, EventOutputStream out, ClientRules clientRules) {
         this.in = in;
         this.out = out;
-        this.callClient = callClient;
+        this.clientRules = clientRules;
         eventMap= new HashMap();
         createMapping();
     }
 
     private void createMapping() {
-        eventMap.put(Message.LOGIN, this::login);
+        eventMap.put(Message.FMONMARKET, new FMonMarket());
+        eventMap.put(Message.LOGIN, new LoginRequest());
 
     }
 
-
-
-    /**
-     *
-     */
-    public void handleRequest(Object o){
-
-    }
-
-    public void login(){
-        try {
-            String username= (String) in.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void FMOnMarket(){
-        in.receiveEvent(new FMonMarket());
-    }
-    
-
-
-
-    private interface Handler{
-
-        public void handle();
+    public void handleRequest(String request){
+        Event event = eventMap.get(request);
+        if(event.isLegal())
+            event.eventHappened();
     }
 
 }
