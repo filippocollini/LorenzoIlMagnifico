@@ -6,81 +6,101 @@ import java.util.List;
 /**
  * 
  */
-public abstract class DevelopementCard extends Card {
+public class DevelopementCard extends Card implements Cloneable{
 
     /**
      * Default constructor
      */
     public DevelopementCard() {
-        cost= new ArrayList<Risorsa>();
+        cost1= new ArrayList<Risorsa>();
+        cost2= new ArrayList<Risorsa>();
     }
 
-    /**
-     * 
-     */
-    private String nome;
+    @Override
+    public void activateEffect(Effect effect) {
 
-    /**
-     * 
-     */
+    }
+
+    private String name;
     private int number;
-
-    /**
-     * 
-     */
     private int period;
+    private String cardtype;
+    private List<Risorsa> cost1;
+    private List<Risorsa> cost2;
+    private int immediateeffect;
+    private int permanenteffect;
 
-    /**
-     * 
-     */
-    private String type;
-
-    /**
-     * 
-     */
-    private List cost;
-
-    /**
-     * 
-     */
-    private Effect immediateEffect;
-
-    /**
-     * 
-     */
-    private Effect permanentEffect;
-
-    /**
-     * 
-     */
-    private String description;
-
-    public String getNome(){
-        return nome;
+    public String getName(){
+        return this.name;
     }
 
     public int getNumber(){
-        return number;
+        return this.number;
     }
 
     public int getPeriod(){
-        return period;
+        return this.period;
     }
 
-    public String getType(){
-        return type;
+    public String getCardtype(){
+        return this.cardtype;
     }
 
-    public String getDescription(){
-        return description;
+    public List<Risorsa> getCost1(){
+        return this.cost1;
     }
 
-    public Effect getImmediateEffect(){
-        return immediateEffect;
+    public List<Risorsa> getCost2(){
+        return this.cost2;
     }
 
-    public Effect getPermanentEffect(){
-        return permanentEffect;
+    public int getImmediateeffect(){
+        return this.immediateeffect;
+    }
+
+    public int getPermanenteffect(){
+        return this.permanenteffect;
+    }
+
+    public void setname(String name){
+        this.name = name;
+    }
+
+    public void setNumber(int number){
+        this.number = number;
+    }
+
+    public void setPeriod(int period){
+        this.period = period;
+    }
+
+    public void setCardtype(String cardtype){
+        this.cardtype = cardtype;
+    }
+
+    public void setCost1(List<Risorsa> cost1){
+        this.cost1 = cost1;
+    }
+
+    public void setCost2(List<Risorsa> cost2){
+         this.cost2 = cost2;
+    }
+
+    public void setImmediateEffect(int immediateeffect){
+        this.immediateeffect = immediateeffect;
+    }
+
+    public void setPermanentEffect(int permanenteffect){
+        this.permanenteffect = permanenteffect;
+    }
+
+    public Object clone(){
+        try{
+            return super.clone();
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace(); //TODO return to server
+            return null;
+        }
     }
 
 }

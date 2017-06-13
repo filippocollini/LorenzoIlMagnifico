@@ -7,72 +7,52 @@ import java.util.*;
  */
 public class PersonalBoard {
 
-    /**
-     * Default constructor
-     */
-    public PersonalBoard() {
-    }
-
-    /**
-     * 
-     */
-    private List territories;
-
-    /**
-     * 
-     */
-    private List buildings;
-
-    /**
-     * 
-     */
-    private List characters;
-
-    /**
-     * 
-     */
-    private List ventures;
-
-    /**
-     * 
-     */
+    private List<CardFactory> territories;
+    private List<CardFactory> buildings;
+    private List<CardFactory> characters;
+    private List<CardFactory> ventures;
     private BonusTile tesseraBonus;
-
-    /**
-     * 
-     */
     private ListRisorse risorse;
 
-    /**
-     * 
-     */
-    public PersonalBoard instance;
 
+    public PersonalBoard() {
+        territories = new ArrayList<CardFactory>();
+        buildings = new ArrayList<CardFactory>();
+        characters = new ArrayList<CardFactory>();
+        ventures = new ArrayList<CardFactory>();
+        this.tesseraBonus = tesseraBonus;
+        risorse = new ListRisorse();
+    }
 
-
-
-
-
-    /**
-     * 
-     */
-    public void setter() {
+    public void set() {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
-    public void getter() {
-        // TODO implement here
+
+    public List<CardFactory> getterritories() {
+        return territories;
     }
 
-    /**
-     * @return
-     */
-    private PersonalBoard instance() {
-        // TODO implement here
-        return null;
+    public List<CardFactory> getbuildings(){
+        return buildings;
     }
+
+    public List<CardFactory> getventures(){
+        return ventures;
+    }
+
+    public List<CardFactory> getcharacters(){
+        return characters;
+    }
+
+    public BonusTile gettesserabonus(){
+        return tesseraBonus;
+    }
+
+    public ListRisorse getresources(){
+        return risorse;
+    }
+
+
 
 }

@@ -7,34 +7,29 @@ import java.util.*;
  */
 public class Risorsa {
 
-    /**
-     * Default constructor
-     */
+    private String tipo;
+    private int quantity;
+
     public Risorsa() {
+        this.tipo = tipo;
+        this.quantity = quantity;
     }
 
-    /**
-     * 
-     */
-    private Enum tipo;
 
-    /**
-     * 
-     */
-    private int quantità;
 
-    /**
-     * 
-     */
-    public void setter() {
-        // TODO implement here
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
     }
 
-    /**
-     * 
-     */
-    public void getter() {
-        // TODO implement here
+
+    public int getquantity() {
+        return quantity;
     }
 
+    public String gettipo() {
+        return tipo;
+    }
 }
