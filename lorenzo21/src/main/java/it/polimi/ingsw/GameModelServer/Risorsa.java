@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class Risorsa {
+public class Risorsa implements Cloneable{
 
     private String tipo;
     private int quantity;
@@ -31,5 +31,15 @@ public class Risorsa {
 
     public String gettipo() {
         return tipo;
+    }
+
+    @Override
+    public Object clone(){
+        try{
+            return super.clone();
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace(); //TODO return to server
+            return null;
+        }
     }
 }

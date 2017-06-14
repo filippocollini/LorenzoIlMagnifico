@@ -13,7 +13,7 @@ public class DevelopementCard extends Card implements Cloneable{
      */
     public DevelopementCard() {
         cost1= new ArrayList<Risorsa>();
-        cost2= new ArrayList<Risorsa>();
+
     }
 
     @Override
@@ -26,40 +26,40 @@ public class DevelopementCard extends Card implements Cloneable{
     private int period;
     private String cardtype;
     private List<Risorsa> cost1;
-    private List<Risorsa> cost2;
-    private int immediateeffect;
-    private int permanenteffect;
+    private boolean choice;
+    private List<Integer> immediateeffect;
+    private List<Integer> permanenteffect;
 
     public String getName(){
-        return this.name;
+        return name;
     }
 
     public int getNumber(){
-        return this.number;
+        return number;
     }
 
     public int getPeriod(){
-        return this.period;
+        return period;
     }
 
     public String getCardtype(){
-        return this.cardtype;
+        return cardtype;
     }
 
     public List<Risorsa> getCost1(){
-        return this.cost1;
+        return cost1;
     }
 
-    public List<Risorsa> getCost2(){
-        return this.cost2;
+    public boolean getChoice(){
+        return choice;
     }
 
-    public int getImmediateeffect(){
-        return this.immediateeffect;
+    public List<Integer> getImmediateeffect(){
+        return immediateeffect;
     }
 
-    public int getPermanenteffect(){
-        return this.permanenteffect;
+    public List<Integer> getPermanenteffect(){
+        return permanenteffect;
     }
 
     public void setname(String name){
@@ -82,18 +82,19 @@ public class DevelopementCard extends Card implements Cloneable{
         this.cost1 = cost1;
     }
 
-    public void setCost2(List<Risorsa> cost2){
-         this.cost2 = cost2;
+    public void setChoice(boolean choice){
+        this.choice = choice;
     }
 
-    public void setImmediateEffect(int immediateeffect){
+    public void setImmediateEffect(List<Integer> immediateeffect){
         this.immediateeffect = immediateeffect;
     }
 
-    public void setPermanentEffect(int permanenteffect){
+    public void setPermanentEffect(List<Integer> permanenteffect){
         this.permanenteffect = permanenteffect;
     }
 
+    @Override
     public Object clone(){
         try{
             return super.clone();
