@@ -5,29 +5,44 @@ import java.util.*;
 /**
  * 
  */
-public class GetResources extends EffectStrategy {
+public class GetResources extends EffectStrategy implements Cloneable {
 
-    int id;
-    List<Risorsa> extendedresources;
+    private int id;
+    private List<Risorsa> extendedresources;
 
 
     public GetResources() {
         id=0;
         extendedresources = new ArrayList<Risorsa>();
     }
-    public Integer getid(){
+
+    @Override
+    public int getId() {
         return id;
     }
-    public List<Risorsa> getextendedresources(){
+
+    public List<Risorsa> getResources(){
         return extendedresources;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
-
-
+    public void setResources(List<Risorsa> extendedresources) {
+        this.extendedresources = extendedresources;
+    }
 
     public void apply(Player player) {
         // TODO implement here
     }
 
+    @Override
+    public Object clone()  {
+       try{ return super.clone();
+    }catch(CloneNotSupportedException e){
+      e.printStackTrace();//TODO
+       }
+    return null;
+    }
 }

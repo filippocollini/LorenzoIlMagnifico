@@ -7,9 +7,9 @@ import java.util.*;
  */
 public class GetFreeAction extends EffectStrategy implements Cloneable{
 
-    int id;
-    int dicepower;
-    String type;
+    private int id;
+    private int dicepower;
+    private String type;
 
     public GetFreeAction() {
     }

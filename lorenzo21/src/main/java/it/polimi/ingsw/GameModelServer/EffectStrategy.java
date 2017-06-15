@@ -7,10 +7,16 @@ import java.util.*;
  */
 public class EffectStrategy {
 
-    /**
-     * Default constructor
-     */
+    int id;
     public EffectStrategy() {
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**
