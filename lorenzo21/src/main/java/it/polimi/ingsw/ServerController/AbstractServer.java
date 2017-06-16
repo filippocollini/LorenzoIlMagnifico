@@ -6,21 +6,7 @@ import java.util.*;
 /**
  * 
  */
-public abstract class AbstractServer implements IServer {
-
-    /**
-     * Default constructor
-     */
-    public AbstractServer(IServer controller) {
-        this.controller=controller;
-    }
-
-    /**
-     * 
-     */
-    private IServer controller;
-
-
+public interface AbstractServer {
 
     /**
      * 

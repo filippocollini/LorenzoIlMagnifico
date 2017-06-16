@@ -1,20 +1,15 @@
 package it.polimi.ingsw.ServerController;
 
-import it.polimi.ingsw.GameModelServer.Game;
-
-import java.util.*;
+import java.io.Serializable;
 
 /**
  * send request to the server
  */
-public interface IServer {
-
-    Game createRoom(AbstractPlayer player);
-
-    void joinRoom(Stanza room, AbstractPlayer player);
-
-    void loginPlayer(String username);
-
-
-
+public interface IServer<M,T>{
+        public void subscribe(PlayerInterface<M> s, T room);
+        public void unsubscribe(PlayerInterface<M> s, T room);
+        public void publish(M msg, T room);
+        public Stanza joinRoom(SocketPlayer<Serializable> player, String username);
 }
+
+

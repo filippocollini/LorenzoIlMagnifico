@@ -1,86 +1,61 @@
 package it.polimi.ingsw.ServerController;
 
-import it.polimi.ingsw.ClientController.ClientRules;
-
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.NoSuchElementException;
 
 /**
- * TODO binding between AbstractClient and socketPlayer
+ * Created by filippocollini on 14/06/17.
  */
 
-/**
- * serve per la comunicazione del client col server
- */
-public class SocketPlayer extends AbstractPlayer implements Runnable {
+public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
-    /**
-     * Default constructor
-     */
-    public SocketPlayer(IServer controller, Socket socket) throws IOException{
-        this.socket=socket;
-        this.controller=controller;
-        out = new EventOutputStream(socket.getOutputStream());
-        in = new EventInputStream(socket.getInputStream());
-        rules= new Rules(in, out, clientRules);
-    }
+    Socket socket;
+    ObjectInputStream in;
+    ObjectOutputStream out;
 
-    /**
-     * 
-     */
-    private Socket socket;
+    public SocketPlayer(Socket sc) {
+        socket = sc;
 
-    /**
-     *
-     */
-    private IServer controller;
+        try{
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+        }catch (IOException ex) {
 
-    /**
-     *
-     */
-    private EventInputStream in;
-
-    /**
-     *
-     */
-    private EventOutputStream out;
-
-    /**
-     *
-     */
-    private Rules rules;
-
-    /**
-     *
-     */
-    private ClientRules clientRules;
-
-    /**
-     * 
-     */
-    @Override
-    public void run() {
-        while (true){
-            try {
-                String request = (String)in.readObject();
-                rules.handleRequest(request);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    in.close();
-                    out.close();
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
         }
     }
 
+    public M receive() throws SocketException {
+        try{
+            return ((M) in.readObject());
+        }catch(NoSuchElementException | ClassNotFoundException | IOException e){
+            throw new SocketException("Socket failed");
+        }
+    }
 
+    public void send(M message) {
+        try {
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+
+        }
+    }
+
+    public void close(){
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new AssertionError("error closing the socket", e);
+        }
+    }
+
+    public Socket getClient(){
+        return socket;
+    }
 
 }

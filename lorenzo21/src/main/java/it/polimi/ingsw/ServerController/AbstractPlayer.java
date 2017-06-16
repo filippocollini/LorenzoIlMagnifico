@@ -1,11 +1,12 @@
 package it.polimi.ingsw.ServerController;
 
+import java.net.SocketException;
 import java.util.*;
 
 /**
  * 
  */
-public class AbstractPlayer {
+public abstract class AbstractPlayer<M> {
 
     private Stanza room;
 
@@ -15,14 +16,7 @@ public class AbstractPlayer {
     public AbstractPlayer() {
     }
 
-
-
-    /**
-     * 
-     */
-    public void AssociaPlayerEPartita() {
-        // TODO implement here
-    }
+    //public abstract void dispatchMessage(M msg);
 
     /**
      * 
@@ -34,4 +28,7 @@ public class AbstractPlayer {
     public Stanza getRoom() {
         return room;
     }
+
+    public abstract M receive() throws SocketException;
+    public abstract void send(M message);
 }

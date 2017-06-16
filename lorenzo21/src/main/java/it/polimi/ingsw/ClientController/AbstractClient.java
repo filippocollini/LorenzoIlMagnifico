@@ -2,11 +2,12 @@ package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.GameModelServer.Player;
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.ServerController.AbstractPlayer;
 
 /**
  * 
  */
-public abstract class AbstractClient implements Observer {
+public abstract class AbstractClient  {
 
     /**
      * Default constructor
@@ -27,15 +28,7 @@ public abstract class AbstractClient implements Observer {
     /**
      *
      */
-    private Player player;
+    private AbstractPlayer player;
 
 
-    /**
-     * @return
-     */
-    public void update() {
-        // TODO implement here
-    }
-
-    public abstract void login(String username);
 }

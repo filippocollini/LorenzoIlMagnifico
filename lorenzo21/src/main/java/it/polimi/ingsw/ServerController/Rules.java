@@ -2,18 +2,14 @@ package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.ClientController.ClientRules;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 /**
  * 
  */
-public class Rules {
-
-    private final EventInputStream in;
-
-    private final EventOutputStream out;
-
-    private final ClientRules clientRules;
+public class Rules implements RulesInterface{
 
     private final HashMap <String, Event> eventMap;
 
@@ -21,26 +17,25 @@ public class Rules {
 
     /**
      * Default constructor
-     * @param in
-     * @param out
-     * @param clientRules
+     * @param abstractPlayer
      */
-    public Rules(EventInputStream in, EventOutputStream out, ClientRules clientRules) {
-        this.in = in;
-        this.out = out;
-        this.clientRules = clientRules;
+    public Rules(AbstractPlayer abstractPlayer) {
         eventMap= new HashMap();
         createMapping();
     }
 
     private void createMapping() {
         eventMap.put(Message.FMONMARKET, new FMonMarket());
-        eventMap.put(Message.LOGIN, new LoginRequest());
+
 
     }
 
     public void handleRequest(String request){
         Event event = eventMap.get(request);
+        if(event!=null)
+            System.out.println("trovato l'evento");
+        else
+            System.out.println("evento non trovato");
         if(event.isLegal())
             event.eventHappened();
     }

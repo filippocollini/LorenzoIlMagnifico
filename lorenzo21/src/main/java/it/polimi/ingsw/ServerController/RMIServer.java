@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * 
  */
-public class RMIServer extends AbstractServer {
+public class RMIServer implements AbstractServer {
 
     /**
      * 
@@ -21,12 +21,12 @@ public class RMIServer extends AbstractServer {
      * @param controller
      */
     public RMIServer(IServer controller) {
-        super(controller);
+        super();
     }
 
 
-    @Override
-    public void startServer() throws IOException {
+    /*@Override
+    public void startServer(int port) throws IOException {
 
     }
 
@@ -44,5 +44,10 @@ public class RMIServer extends AbstractServer {
     public void loginPlayer(String username) {
 
     }
+    */
 
+    @Override
+    public void startServer() throws IOException {
+
+    }
 }
