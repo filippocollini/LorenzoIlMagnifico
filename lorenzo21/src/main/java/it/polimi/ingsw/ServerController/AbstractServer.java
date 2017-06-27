@@ -1,16 +1,27 @@
 package it.polimi.ingsw.ServerController;
 
-import java.io.IOException;
-import java.util.*;
+import it.polimi.ingsw.ClientController.AbstractClient;
+import it.polimi.ingsw.ClientController.IClient;
+
+import java.util.ArrayList;
 
 /**
  * 
  */
-public interface AbstractServer {
+public abstract class AbstractServer {
+
+    public ConnectionInterface connectionHandler;
+    public ArrayList<AbstractClient> clients;
+
+    public AbstractServer(ConnectionInterface connectionHandler){
+        this.connectionHandler=connectionHandler;
+        clients = new ArrayList<AbstractClient>();
+    }
 
     /**
      * 
      */
-    public abstract void startServer() throws IOException;
-
+    public ConnectionInterface getConnectionHandler() {
+        return connectionHandler;
+    }
 }

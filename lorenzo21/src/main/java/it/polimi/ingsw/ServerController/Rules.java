@@ -28,6 +28,7 @@ public class Rules implements RulesInterface{
         eventMap.put(Message.FMONMARKET, new FMonMarket());
 
 
+
     }
 
     public void handleRequest(String request){

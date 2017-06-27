@@ -12,5 +12,7 @@ public class Message{
 
 
     public static final String ESEMPIO_REPLY="reply";
+    public static final String LOGINOK="ok";
+    public static final String LOGINKO="ko";
 
 }

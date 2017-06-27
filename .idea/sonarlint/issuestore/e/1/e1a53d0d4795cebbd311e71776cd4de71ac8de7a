@@ -1,2 +1,16 @@
 
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÓÄ®å8áÅ•ìÇ+
+Hsquid:S1481"'Remove this unused "sc" local variable.(ğÛ²¸øÿÿÿÿ8†—É’Ë+
+U
+squid:S106";Replace this usage of System.out or System.err by a logger.(‚š‰18˜™™“Ë+
+Asquid:S1166"%Either log or rethrow this exception.(ï­£Ä8ÓïæË+
+Jsquid:S1313".Make this IP "127.0.0.1" address configurable.(¸øõµ8ÓïæË+
+U
+squid:S106";Replace this usage of System.out or System.err by a logger.(‚š‰18ÇıÉ’Ë+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8ëÈÇ’Ë+
+Wsquid:S1854"6Remove this useless assignment to local variable "sc".(ğÛ²¸øÿÿÿÿ8†—É’Ë+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(Á²«Í8ÓïæË+
+usquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(“£8ÓïæË+
+Asquid:S1166"%Either log or rethrow this exception.(»ªÁ¥8ëÈÇ’Ë+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(å¶Ş¼ÿÿÿÿÿ8Œ«ü’Ë+

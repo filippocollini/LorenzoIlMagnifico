@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ClientController;
 
-import it.polimi.ingsw.ServerController.SocketPlayer;
+import it.polimi.ingsw.ServerController.Message;
+import it.polimi.ingsw.ServerController.socket.SocketPlayer;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,13 +21,16 @@ public class SocketClient<M extends Serializable> extends Thread {
     public void run() {
         Scanner sc = new Scanner(System.in);
         try {
-            String msg = (String) comm.receive();
-            System.out.println(msg);
-            String user = sc.nextLine();
-            comm.send((M) user);
-            //ora arriva la risposta del login
-            msg = (String) comm.receive();
-            System.out.println(msg);
+            String msg=Message.LOGINKO;
+            while(msg.equals(Message.LOGINKO)){
+                msg = (String) comm.receive();
+                System.out.println(msg);
+                String user = sc.nextLine();
+                comm.send((M) user);
+                //ora arriva la risposta del login
+                msg = (String) comm.receive();
+            }
+            System.out.println("login t'apposto");
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -51,8 +55,8 @@ public class SocketClient<M extends Serializable> extends Thread {
             Scanner sc = new Scanner(System.in);
 
             Socket socket = new Socket("127.0.0.1", 7771);
-            SocketClient<String> server = new SocketClient<String>(new SocketPlayer<>(socket));
-            server.start();
+            SocketClient<String> client = new SocketClient<String>(new SocketPlayer<>(socket));
+            client.start();
 
             /*System.out.println("(Type 'exit' to stop...)");
             String command = "";

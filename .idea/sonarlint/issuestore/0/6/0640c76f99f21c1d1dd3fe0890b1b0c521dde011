@@ -1,5 +1,8 @@
 
-Csquid:S1068"'Remove this unused "out" private field.( Ú¾8™ŠùëÇ+
-Psquid:S1068"/Remove this unused "clientRules" private field.(Áºò¢ıÿÿÿÿ8ÛÀÅÉ+
+U
+squid:S106";Replace this usage of System.out or System.err by a logger.(«¨ÂW8„óø’Ë+
 Isquid:S1068"(Remove this unused "turn" private field.( âÍ¢úÿÿÿÿ8­Œì»É+
-Bsquid:S1068"&Remove this unused "in" private field.(ÍÖ•æ8Éû»É+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(Šóùì8„óø’Ë+
+\squid:S2259"@NullPointerException might be thrown as 'event' is nullable here(”ÜÿÌ8„óø’Ë+
+Psquid:S1172"5Remove this unused method parameter "abstractPlayer".(ôğ‹8¿ØË+

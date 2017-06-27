@@ -1,8 +1,11 @@
 package it.polimi.ingsw.ServerController;
 
+import java.rmi.RemoteException;
+
 /**
- * Created by filippocollini on 14/06/17.
+ * Send server notifications to the cient
  */
 public interface PlayerInterface<M> {
-    public void dispatchMessage(M msg);
+    public void dispatchMessage(M msg) throws RemoteException;
+    public void notifyCountdownStarted(M msg) throws RemoteException;
 }
