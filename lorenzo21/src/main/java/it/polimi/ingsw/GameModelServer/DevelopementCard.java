@@ -11,10 +11,7 @@ public class DevelopementCard extends Card implements Cloneable{
     /**
      * Default constructor
      */
-    public DevelopementCard() {
-        cost1= new ArrayList<Risorsa>();
-
-    }
+    public DevelopementCard() {}
 
     @Override
     public void activateEffect(Effect effect) {
@@ -25,8 +22,7 @@ public class DevelopementCard extends Card implements Cloneable{
     private int number;
     private int period;
     private String cardtype;
-    private List<Risorsa> cost1;
-    private boolean choice;
+    private boolean permchoice;
     private List<Integer> immediateeffect;
     private List<Integer> permanenteffect;
 
@@ -46,12 +42,8 @@ public class DevelopementCard extends Card implements Cloneable{
         return cardtype;
     }
 
-    public List<Risorsa> getCost1(){
-        return cost1;
-    }
-
-    public boolean getChoice(){
-        return choice;
+    public boolean getPermchoice(){
+        return permchoice;
     }
 
     public List<Integer> getImmediateeffect(){
@@ -78,12 +70,8 @@ public class DevelopementCard extends Card implements Cloneable{
         this.cardtype = cardtype;
     }
 
-    public void setCost1(List<Risorsa> cost1){
-        this.cost1 = cost1;
-    }
-
-    public void setChoice(boolean choice){
-        this.choice = choice;
+    public void setPermchoice(boolean permchoice) {
+        this.permchoice = permchoice;
     }
 
     public void setImmediateEffect(List<Integer> immediateeffect){
@@ -104,4 +92,13 @@ public class DevelopementCard extends Card implements Cloneable{
         }
     }
 
+    /*public void addCard(Player player, DevelopementCard card){
+        String type;
+
+        type = card.getCardtype();
+        if(player.getPB().getCardList(type).size()<=6)
+            player.getPB().getCardList(type).add(card);
+        else
+            System.out.println("error,num carte max raggiunto"); //TODO
+    }*/
 }

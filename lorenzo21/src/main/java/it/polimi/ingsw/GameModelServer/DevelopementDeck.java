@@ -7,10 +7,22 @@ import java.util.*;
  */
 public class DevelopementDeck extends Deck {
 
-    /**
-     * Default constructor
-     */
-    public DevelopementDeck() {
+    private List<DevelopementCard> deck;
+    public DevelopementDeck(List<DevelopementCard> cards) {
+        deck = cards;
     }
 
+    public List<DevelopementCard> getDeck() {
+        return deck;
+    }
+
+    @Override
+    public void mescola() {
+        Collections.shuffle(deck);
+    }
+
+    @Override
+    public Card drawfirstCard() {
+        return super.drawfirstCard();
+    }
 }

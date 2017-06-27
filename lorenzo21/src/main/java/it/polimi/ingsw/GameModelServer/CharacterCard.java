@@ -7,9 +7,26 @@ import java.util.*;
  */
 public class CharacterCard extends DevelopementCard {
 
-    ArrayList<DevelopementCard> cards;
+    private Risorsa cost1;
+    private boolean choice;
 
     public CharacterCard() {}
+
+    public Risorsa getCost1(){
+        return cost1;
+    }
+
+    public boolean getChoice(){
+        return choice;
+    }
+
+    public void setCost1(Risorsa cost1){
+        this.cost1 = cost1;
+    }
+
+    public void setChoice(boolean choice){
+        this.choice = choice;
+    }
 
     public List<DevelopementCard> getCharacterCard(ArrayList<DevelopementCard> listcard) {
         int i;

@@ -7,21 +7,19 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
+import it.polimi.ingsw.ServerController.Stanza;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 
  */
 public class Game {
 
-    private HashMap<String, AbstractPlayer> players;
+    private Player[] players;
     private Board board;
     private List<PersonalBoard> personalboard;
     private int turn;
@@ -29,18 +27,68 @@ public class Game {
     private GameStatus stato;
 
 
-    public Game(HashMap<String, AbstractPlayer> players) {
-        this.players = players;
+    public Game(HashMap<String, AbstractPlayer> abplayers, Stanza room) {
+        this.players = creatingPlayers(abplayers,room.nPlayers());
         turn = 1;
         bonustiles = new ArrayList<>();
         this.stato = stato;
+        this.board = Board.getInstance(room.nPlayers());
     }
 
     //setting initial game
 
-    public void setBoard() {
-        this.board = Board.getInstance();
+
+
+    public Player[] creatingPlayers(HashMap<String,AbstractPlayer> abplayers,int nplayers){
+        Player[] players = new Player[nplayers];
+        List<String> previouscolors = new ArrayList<>();
+        int i = 0;
+        for(Map.Entry<String,AbstractPlayer> entry : abplayers.entrySet()){
+            players[i] = new Player(entry.getKey(),randomcolor(previouscolors),board);
+            i++;
+        }
+        return players;
     }
+
+
+    public String randomcolor(List<String> previouscolor){
+
+        String color;
+        String[] colors = {"blue","green","yellow","red"};
+        int index = new Random().nextInt(colors.length);
+        color = colors[index];
+        if(previouscolor.size() == 0) {
+            previouscolor.add(color);
+            return color;
+        }else {
+            for (String usedcolor : previouscolor) {
+                if (usedcolor.equals(color)) {
+                    return randomcolor(previouscolor);
+                }
+            }
+            previouscolor.add(color);
+        }
+        return color;
+
+    }
+
+
+
+    public void fillGreenTower(List<TerritoryCard> cards){
+
+    }
+    /*public int getnumbersofPlayers(){
+        int n=0;
+        for(AbstractPlayer player : players.values()){
+            n++;
+        }
+        return n;
+    }*/
+
+    public void fillYellowTower(List<BuildingCard> cards){
+    }
+
+    public void  fillBlueTower(List<CharacterCard> cards){}
 
     /* public void setPersonalboard(List<PersonalBoard> personalboard, HashMap<String,AbstractPlayer> players){
         int i;
@@ -69,9 +117,50 @@ public class Game {
 
     }
 
+    //Parsing palacefavor Bonus
+    public static List<Risorsa> palaceFavorparsing(){
+        JsonObject jpalace;
+
+        Risorsa coin = new Risorsa();
+        Risorsa servant = new Risorsa();
+        Risorsa woodst = new Risorsa();
+        Risorsa mp = new Risorsa();
+        Risorsa fp = new Risorsa();
+
+        List<Risorsa> favors = new ArrayList<>();
+
+        try{
+            File file = new File("C:/Users/Simone/Desktop/palacefavorList.json");
+            FileReader reader = new FileReader(file.getAbsolutePath());
+            jpalace = Json.parse(reader).asObject();
+
+                coin.setTipo("Coins");
+                coin.setQuantity(jpalace.getInt("Coins",0));
+                favors.add(0, (Risorsa) coin.clone());
+                woodst.setTipo("WoodStone");
+                woodst.setQuantity(jpalace.getInt("WoodStone",0));
+                favors.add(1, (Risorsa) woodst.clone());
+                servant.setTipo("Servants");
+                servant.setQuantity(jpalace.getInt("Servants",0));
+                favors.add(2, (Risorsa) servant.clone());
+                mp.setTipo("MilitaryPoints");
+                mp.setQuantity(jpalace.getInt("MilitaryPoints",0));
+                favors.add(3, (Risorsa) mp.clone());
+                fp.setTipo("FaithPoints");
+                fp.setQuantity(jpalace.getInt("FaithPoints",0));
+                favors.add(4, (Risorsa) fp.clone());
+
+
+        }catch(IOException e){
+            e.printStackTrace(); //TODO
+        }
+
+        return favors;
+    }
+
 
     //parsing developement cards
-    public List<DevelopementCard> developementParsing() {
+    public static List<TerritoryCard> territoryParsing() {
 
         JsonArray jarraycard;
         JsonObject jcard;
@@ -79,8 +168,237 @@ public class Game {
         JsonArray jarrayper;
 
         int i,j,k;
-        DevelopementCard singlecard = new DevelopementCard();
-        List<DevelopementCard> cardList = new ArrayList<>();
+        TerritoryCard singlecard = new TerritoryCard();
+        List<TerritoryCard> cardList = new ArrayList<>();
+
+
+        try {
+            File fileterritory = new File("C:/Users/Simone/Desktop/territory.json");
+            FileReader readingterritory = new FileReader(fileterritory.getAbsolutePath());
+
+            jarraycard = Json.parse(readingterritory).asArray();
+
+            for (i = 0; i < jarraycard.size(); i++) {
+
+                List<Integer> effectper = new ArrayList<>();
+                List<Integer> effectimm = new ArrayList<>();
+
+                jcard = jarraycard.get(i).asObject();
+                //NAME
+                singlecard.setname(jcard.get("nome").asString());
+
+                //NUMBER
+                singlecard.setNumber(jcard.get("number").asInt());
+
+                //CARDTYPE
+                singlecard.setCardtype(jcard.get("type").asString());
+
+                //PERIOD
+                singlecard.setPeriod(jcard.get("period").asInt());
+
+                //IMMEDIATE EFFECTS
+                jarrayimm = jcard.get("immediateeffect").asArray();
+
+                for(j=0; j<jarrayimm.size();j++){
+                    effectimm.add(j,jarrayimm.get(j).asInt());
+                }
+                singlecard.setImmediateEffect(effectimm);
+
+                //PERMANENT EFFECT CHOICE
+                singlecard.setPermchoice(jcard.getBoolean("permchoice",false));
+
+                //PERMANENT EFFECTS
+                jarrayper = jcard.get("permanenteffect").asArray();
+                for(k=0; k<jarrayper.size();k++){
+                    effectper.add(k,jarrayper.get(k).asInt());
+                }
+                singlecard.setPermanentEffect(effectper);
+
+                //CREATING TERRITORY CARD OBJECT
+                cardList.add(i, (TerritoryCard) singlecard.clone());
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace(); // TODO
+        }
+        return cardList;
+    }
+
+    public static List<BuildingCard> buildingParsing() {
+
+        JsonArray jarraycard;
+        JsonObject jcard;
+        JsonArray jarrayimm;
+        JsonArray jarrayper;
+
+        int i,j,k;
+        BuildingCard singlecard = new BuildingCard();
+        List<BuildingCard> cardList = new ArrayList<>();
+        Risorsa coin = new Risorsa();
+        Risorsa wood = new Risorsa();
+        Risorsa stone = new Risorsa();
+        Risorsa servant = new Risorsa();
+
+
+        try {
+            File filebuilding = new File("C:/Users/Simone/Desktop/building.json");
+            FileReader readingbuilding = new FileReader(filebuilding.getAbsolutePath());
+
+            jarraycard = Json.parse(readingbuilding).asArray();
+
+            for (i = 0; i < jarraycard.size(); i++) {
+                List<Risorsa> resourceslist = new ArrayList<>();
+                List<Integer> effectper = new ArrayList<>();
+                List<Integer> effectimm = new ArrayList<>();
+
+                jcard = jarraycard.get(i).asObject();
+                //NAME
+                singlecard.setname(jcard.get("nome").asString());
+
+                //NUMBER
+                singlecard.setNumber(jcard.get("number").asInt());
+
+                //CARDTYPE
+                singlecard.setCardtype(jcard.get("type").asString());
+
+                //PERIOD
+                singlecard.setPeriod(jcard.get("period").asInt());
+
+                //COST CHOICE
+                singlecard.setChoice(jcard.getBoolean("choice", false));
+
+                //COST
+                coin.setTipo("Coins");
+                coin.setQuantity(jcard.get("Coins").asInt());
+                resourceslist.add(0, (Risorsa) coin.clone());
+                wood.setTipo("Woods");
+                wood.setQuantity(jcard.get("Woods").asInt());
+                resourceslist.add(1, (Risorsa) wood.clone());
+                stone.setTipo("Stones");
+                stone.setQuantity(jcard.get("Stones").asInt());
+                resourceslist.add(2, (Risorsa) stone.clone());
+                servant.setTipo("Servants");
+                servant.setQuantity(jcard.get("Servants").asInt());
+                resourceslist.add(3, (Risorsa) servant.clone());
+                singlecard.setCost1(resourceslist);
+
+                //IMMEDIATE EFFECTS
+                jarrayimm = jcard.get("immediateeffect").asArray();
+
+                for(j=0; j<jarrayimm.size();j++){
+                    effectimm.add(j,jarrayimm.get(j).asInt());
+                }
+                singlecard.setImmediateEffect(effectimm);
+
+                //PERMANENT EFFECT CHOICE
+                singlecard.setPermchoice(jcard.getBoolean("permchoice",false));
+
+                //PERMANENT EFFECTS
+                jarrayper = jcard.get("permanenteffect").asArray();
+                for(k=0; k<jarrayper.size();k++){
+                    effectper.add(k,jarrayper.get(k).asInt());
+                }
+                singlecard.setPermanentEffect(effectper);
+
+                //CREATING BUILDING CARD OBJECT
+                cardList.add(i, (BuildingCard) singlecard.clone());
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace(); // TODO
+        }
+        return cardList;
+    }
+
+    public static List<CharacterCard> characterParsing() {
+
+        JsonArray jarraycard;
+        JsonObject jcard;
+        JsonArray jarrayimm;
+        JsonArray jarrayper;
+
+        int i,j,k;
+        CharacterCard singlecard = new CharacterCard();
+        List<CharacterCard> cardList = new ArrayList<>();
+        Risorsa coin = new Risorsa();
+
+
+
+        try {
+            File filecharacter = new File("C:/Users/Simone/Desktop/character.json");
+            FileReader readingcharacter = new FileReader(filecharacter.getAbsolutePath());
+
+            jarraycard = Json.parse(readingcharacter).asArray();
+
+            for (i = 0; i < jarraycard.size(); i++) {
+
+                List<Integer> effectper = new ArrayList<>();
+                List<Integer> effectimm = new ArrayList<>();
+
+                jcard = jarraycard.get(i).asObject();
+                //NAME
+                singlecard.setname(jcard.get("nome").asString());
+
+                //NUMBER
+                singlecard.setNumber(jcard.get("number").asInt());
+
+                //CARDTYPE
+                singlecard.setCardtype(jcard.get("type").asString());
+
+                //PERIOD
+                singlecard.setPeriod(jcard.get("period").asInt());
+
+                //COST
+                coin.setTipo("Coins");
+                coin.setQuantity(jcard.get("Coins").asInt());
+
+                singlecard.setCost1(coin);
+
+                //IMMEDIATE EFFECTS
+                jarrayimm = jcard.get("immediateeffect").asArray();
+
+                for(j=0; j<jarrayimm.size();j++){
+                    effectimm.add(j,jarrayimm.get(j).asInt());
+                }
+                singlecard.setImmediateEffect(effectimm);
+
+                //PERMANENT EFFECT CHOICE
+                singlecard.setPermchoice(jcard.getBoolean("permchoice",false));
+
+                //PERMANENT EFFECTS
+                jarrayper = jcard.get("permanenteffect").asArray();
+                for(k=0; k<jarrayper.size();k++){
+                    effectper.add(k,jarrayper.get(k).asInt());
+                }
+                singlecard.setPermanentEffect(effectper);
+
+                //CREATING CHARACTER CARD OBJECT
+                cardList.add(i, (CharacterCard) singlecard.clone());
+
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace(); // TODO
+        }
+        return cardList;
+    }
+
+    public static List<VentureCard> ventureParsing() {
+
+        JsonArray jarraycard;
+        JsonObject jcard;
+        JsonArray jarrayimm;
+        JsonArray jarrayper;
+
+        int i,j,k;
+        VentureCard singlecard = new VentureCard();
+        List<VentureCard> cardList = new ArrayList<>();
         Risorsa coin = new Risorsa();
         Risorsa wood = new Risorsa();
         Risorsa stone = new Risorsa();
@@ -90,10 +408,10 @@ public class Game {
 
 
         try {
-            File file = new File("C:/Users/Simone/Desktop/card.json");
-            FileReader reading = new FileReader(file.getAbsolutePath());
+            File fileventure = new File("C:/Users/Simone/Desktop/venture.json");
+            FileReader readingventure = new FileReader(fileventure.getAbsolutePath());
 
-            jarraycard = Json.parse(reading).asArray();
+            jarraycard = Json.parse(readingventure).asArray();
 
             for (i = 0; i < jarraycard.size(); i++) {
                 List<Risorsa> resourceslist = new ArrayList<>();
@@ -145,6 +463,9 @@ public class Game {
                 }
                 singlecard.setImmediateEffect(effectimm);
 
+                //PERMANENT EFFECT CHOICE
+                singlecard.setPermchoice(jcard.getBoolean("permchoice",false));
+
                 //PERMANENT EFFECTS
                 jarrayper = jcard.get("permanenteffect").asArray();
                 for(k=0; k<jarrayper.size();k++){
@@ -152,8 +473,8 @@ public class Game {
                 }
                 singlecard.setPermanentEffect(effectper);
 
-                //CREATING DEVELOP CARD OBJECT
-                cardList.add(i, (DevelopementCard) singlecard.clone());
+                //CREATING VENTURE CARD OBJECT
+                cardList.add(i, (VentureCard) singlecard.clone());
 
             }
 
@@ -231,6 +552,8 @@ public class Game {
                discounts.add(3, (Risorsa) servant.clone());
 
                singlediscount.setDiscount(discounts);
+
+               singlediscount.setTypecard(jdiscount.get("type").asString());
 
                discountlist.add(i, (GetDiscountClass) singlediscount.clone());
 
@@ -639,6 +962,291 @@ public class Game {
         return listendeffect;
     }
 
+    //EXCOMMUNICATION PARSING
+    public List<ExcommunicationReduction> reductionParsing(){
+
+        int i;
+        ExcommunicationReduction effect = new ExcommunicationReduction();
+        List<ExcommunicationReduction> listeffect = new ArrayList<>();
+        JsonArray arrayreduction;
+        JsonObject jreduction;
+
+        try{
+            File reductionfile = new File("C:/Users/Simone/Desktop/effetti/scomunicaboost.json");
+            FileReader readreduction = new FileReader(reductionfile.getAbsolutePath());
+
+            arrayreduction = Json.parse(readreduction).asArray();
+            for(i=0; i<arrayreduction.size();i++){
+                jreduction = arrayreduction.get(i).asObject();
+                effect.setPeriod(jreduction.get("period").asInt());
+                effect.setId(jreduction.get("id").asInt());
+                effect.setType(jreduction.get("type").asString());
+                effect.setDice(jreduction.get("dice").asInt());
+                listeffect.add(i, (ExcommunicationReduction) effect.clone());
+
+                System.out.println(listeffect.get(i).getDice());
+                System.out.println(listeffect.get(i).getId());
+                System.out.println(listeffect.get(i).getPeriod());
+                System.out.println(listeffect.get(i).getType());
+            }
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return listeffect;
+    }
+
+    public ExcommunicationCoverMarket coverMarketParsing(){
+        ExcommunicationCoverMarket covering = new ExcommunicationCoverMarket();
+        JsonObject jcovering;
+
+        try{
+            File file = new File("C:/Users/Simone/Desktop/effetti/scomunicaCoverMarket.json");
+            FileReader readfile = new FileReader(file.getAbsolutePath());
+            jcovering = Json.parse(readfile).asObject();
+            covering.setPeriod(jcovering.get("period").asInt());
+            covering.setId(jcovering.get("id").asInt());
+        }catch (IOException e){
+            e.printStackTrace(); //TODO
+        }
+        return covering;
+    }
+
+    public ExcommunicationServants twoServantsParsing(){
+        ExcommunicationServants twoserv = new ExcommunicationServants();
+        JsonObject jservant;
+
+        try{
+            File fileserv = new File("C:/Users/Simone/Desktop/effetti/scomunicaTwoServants.json");
+            FileReader readserv = new FileReader(fileserv.getAbsolutePath());
+            jservant = Json.parse(readserv).asObject();
+            twoserv.setId(jservant.get("id").asInt());
+            twoserv.setPeriod(jservant.get("period").asInt());
+        }catch (IOException e){
+            e.printStackTrace(); //TODO
+        }
+        return twoserv;
+    }
+
+    public ExcommunicationSkipAction skipActionParsing(){
+        ExcommunicationSkipAction skip = new ExcommunicationSkipAction();
+        JsonObject jskip;
+
+        try{
+            File fileskip = new File("C:/Users/Simone/Desktop/effetti/scomunicaSkipfirstAction.json");
+            FileReader readskip = new FileReader(fileskip.getAbsolutePath());
+            jskip = Json.parse(readskip).asObject();
+            skip.setId(jskip.get("id").asInt());
+            skip.setPeriod(jskip.get("period").asInt());
+        }catch (IOException e){
+            e.printStackTrace(); //TODO
+        }
+        return skip;
+    }
+
+    public List<ExcommunicationLessResources> lessResourcesParsing(){
+        ExcommunicationLessResources effectless = new ExcommunicationLessResources();
+        List<ExcommunicationLessResources> listeffectless = new ArrayList<>();
+        JsonArray arrayless;
+        JsonObject jless;
+        int i;
+
+        try{
+            File fileless = new File("C:/Users/Simone/Desktop/effetti/scomunicalessresources.json");
+            FileReader readless = new FileReader(fileless.getAbsolutePath());
+
+            arrayless = Json.parse(readless).asArray();
+            for(i=0; i<arrayless.size();i++){
+                jless = arrayless.get(i).asObject();
+                effectless.setId(jless.get("id").asInt());
+                effectless.setPeriod(jless.get("period").asInt());
+                effectless.setType(jless.get("type").asString());
+                listeffectless.add(i, (ExcommunicationLessResources) effectless.clone());
+            }
+
+        }catch(IOException e){
+            e.printStackTrace(); //TODO
+        }
+        return listeffectless;
+    }
+
+    public List<ExcommunicationEndVP> notVPparsing(){
+        ExcommunicationEndVP endvp = new ExcommunicationEndVP();
+        List<ExcommunicationEndVP> listendvp = new ArrayList<>();
+        int i;
+        JsonObject jendvp;
+        JsonArray arrayendvp;
+
+        try{
+            File filend = new File("C:/Users/Simone/Desktop/effetti/scomunicanoendVP.json");
+            FileReader readend = new FileReader(filend.getAbsolutePath());
+
+            arrayendvp = Json.parse(readend).asArray();
+            for(i=0; i<arrayendvp.size();i++){
+                jendvp = arrayendvp.get(i).asObject();
+                endvp.setId(jendvp.get("id").asInt());
+                endvp.setPeriod(jendvp.get("period").asInt());
+                endvp.setType(jendvp.get("type").asString());
+
+                listendvp.add(i, (ExcommunicationEndVP) endvp.clone());
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();//TODO
+        }
+
+        return listendvp;
+    }
+
+    public List<ExcommunicationLostVP> lostVPparsing(){
+        ExcommunicationLostVP lostvp = new ExcommunicationLostVP();
+        List<ExcommunicationLostVP> listlostvp = new ArrayList<>();
+        JsonArray arraylost;
+        JsonObject jlost;
+        int i;
+         try{
+             File filelost = new File("C:/Users/Simone/Desktop/effetti/scomunicaendVPlost.json");
+             FileReader readlost = new FileReader(filelost.getAbsolutePath());
+             arraylost = Json.parse(readlost).asArray();
+             for(i=0;i<arraylost.size(); i++){
+                 jlost = arraylost.get(i).asObject();
+                 lostvp.setId(jlost.get("id").asInt());
+                 lostvp.setPeriod(jlost.get("period").asInt());
+                 lostvp.setQuantity(jlost.get("quantity").asInt());
+                 lostvp.setType(jlost.get("type").asString());
+                 listlostvp.add(i, (ExcommunicationLostVP) lostvp.clone());
+             }
+
+         }catch(IOException e){
+             e.printStackTrace();//TODO
+         }
+
+
+        return listlostvp;
+    }
+
+    public void addFMonPalace(Player player, String color){
+       if(player.getMember(color).getValue()>=1) {
+           int i;
+           CellAction space;
+           Risorsa reward = new Risorsa();
+           space = board.createPalace();
+
+           space.setFamilyMemberinCell(color);
+           for(i=0;i<space.getBonus().size();i++){
+               reward.setTipo(space.getBonus().get(i).gettipo());
+               reward.setQuantity(space.getBonus().get(i).getquantity());
+           }
+
+
+
+       }else System.out.println("non puoi fare l'azione"); //TODO
+
+    }
+    //TODO da provare il metodo sopra
+    public void getimmediateBonus(Player player,List<Risorsa> reward, Board board){ //si passa la lista di risorse da prendere
+        int newvalue;
+        int i;
+        Token[] token = player.getToken();
+        Risorsa single = new Risorsa();
+        List<Risorsa> listfavor;
+        for(Risorsa resource : reward) {
+            if (resource.gettipo().equals("PalaceFavor") && resource.getquantity()!=0) {
+                listfavor = choosePalaceFavor(palaceFavorparsing(),resource.getquantity()); //da sostituire il metodo con la listagià parsata dal game
+                getimmediateBonus(player,listfavor,board);
+            }else if(resource.getquantity()!=0){
+                single.setTipo(resource.gettipo());
+                single.setQuantity(resource.getquantity());
+
+                if(single.gettipo().equals("VictoryPoints")) { //fare le modifiche sulla Board
+                    for(i=0;i<3;i++) {
+                        if (token[i].getType().equals("Victory")) {
+                            newvalue = token[i].getPosition() + single.getquantity();
+                            token[i].setPosition(newvalue);
+                        }
+                    }
+                }else if(single.gettipo().equals("FaithPoints")){
+                    for(i=0;i<3;i++){
+                        if(token[i].getType().equals("Faith")){
+                            newvalue=token[i].getPosition()+single.getquantity();
+                            token[i].setPosition(newvalue);
+                        }
+                    }
+
+                }else if (single.gettipo().equals("MilitaryPoints")){
+                    for(i=0;i<3;i++){
+                        if(token[i].getType().equals("Military")){
+                            newvalue=token[i].getPosition()+single.getquantity();
+                            token[i].setPosition(newvalue);
+                        }
+                    }
+                }else {
+
+                    for (Risorsa res : player.getPB().getresources()) {
+                        if (res.gettipo().equals(single.gettipo())) {
+                            newvalue = res.getquantity() + single.getquantity();
+                            res.setQuantity(newvalue);
+                        }
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    public List<Risorsa> choosePalaceFavor(List<Risorsa> palaceBonus, int n) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
+        List<Risorsa> rewards = new ArrayList<>();
+        Risorsa res = new Risorsa();
+        String choice;
+        int i;
+
+        for(i=0;i<n;i++) {
+            //TODO richiedere al client che tipo di risorsa vuole
+            System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
+            Scanner scan = new Scanner(System.in);
+            choice = scan.nextLine();
+            while(!(choice.equals("Coins") || choice.equals("WoodStone") || choice.equals("Servants") || choice.equals("MilitaryPoints") || choice.equals("FaithPoints"))){
+                System.out.println("errore, inserire il corretto dato");
+                System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
+                Scanner scanner = new Scanner(System.in);
+                choice = scanner.nextLine();
+            }
+
+            if (i != 0) {
+                for (Risorsa previouschoice : rewards) {
+                    while ((choice.equals("WoodStone") && previouschoice.gettipo().equals("Woods")) || choice.equals(previouschoice.gettipo())) {
+                        //TODO fai un'altra scelta da mandare al client
+                        System.out.println("You've already chosen this type of favor, type another type");
+                        Scanner sc = new Scanner(System.in);
+                        choice = sc.nextLine();
+                    }
+                }
+            } else{
+                for (Risorsa singlereward : palaceBonus) {
+                    if (choice.equals(singlereward.gettipo()) && choice.equals("WoodStone")) {
+                        res.setTipo("Woods");
+                        res.setQuantity(1);
+                        rewards.add((Risorsa) res.clone());
+                        res.setTipo("Stones");
+                        res.setQuantity(1);
+                        rewards.add((Risorsa) res.clone());
+
+                    } else if (choice.equals(singlereward.gettipo())) {
+                        rewards.add(singlereward);
+
+                    }
+
+                }
+            }
+
+        }
+
+
+        return rewards;
+    }
+
     //GETTERS
     public Board getBoard(){
         return board;
@@ -652,7 +1260,7 @@ public class Game {
         return turn;
     }
 
-    public HashMap<String, AbstractPlayer> getPlayers(){
+    public Player[] getPlayers(){
         return players;
     }
 
@@ -663,4 +1271,6 @@ public class Game {
     public List<PersonalBoard> getPersonalBoard(){
         return personalboard;
     }
+
+
 }

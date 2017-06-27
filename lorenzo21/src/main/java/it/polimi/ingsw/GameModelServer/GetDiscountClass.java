@@ -14,6 +14,7 @@ public class GetDiscountClass extends EffectStrategy implements Cloneable{
     private int id;
     private boolean select;
     private List<Risorsa> discount;
+    private String typecard;
 
     public void setId(int id) {
         this.id = id;
@@ -27,6 +28,10 @@ public class GetDiscountClass extends EffectStrategy implements Cloneable{
         this.select = select;
     }
 
+    public void setTypecard(String typecard) {
+        this.typecard = typecard;
+    }
+
     public int getId() {
         return id;
     }
@@ -37,6 +42,10 @@ public class GetDiscountClass extends EffectStrategy implements Cloneable{
 
     public boolean getSelect(){
         return select;
+    }
+
+    public String getTypecard() {
+        return typecard;
     }
 
     @Override

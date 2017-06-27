@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class ExcommunicationTiles extends Card {
+public class ExcommunicationTiles extends Card implements Cloneable{
 
     /**
      * Default constructor
@@ -13,32 +13,34 @@ public class ExcommunicationTiles extends Card {
     public ExcommunicationTiles() {
     }
 
-    /**
-     * 
-     */
+
     private int periodo;
+    private int effect;
 
-    /**
-     * 
-     */
-    private String description;
+    public void setEffect(int effect) {
+        this.effect = effect;
+    }
 
-    /**
-     * 
-     */
-    private Effect effect;
-
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
 
     public int getPeriod(){
         return periodo;
     }
 
-    public String getDescription(){
-        return description;
+    public int getEffect(){
+        return effect;
     }
 
-    public Effect getEffect(){
-        return effect;
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace(); //TODO
+        }
+        return null;
     }
 
     @Override

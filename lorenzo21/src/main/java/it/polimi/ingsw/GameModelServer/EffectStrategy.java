@@ -23,7 +23,7 @@ public class EffectStrategy {
      * @param player 
      * @return
      */
-    public void apply(Player player) {
+    public void apply(Player player, EffectStrategy effect) {
         // TODO implement here
     }
 

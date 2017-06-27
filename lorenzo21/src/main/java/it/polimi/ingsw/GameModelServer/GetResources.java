@@ -33,7 +33,9 @@ public class GetResources extends EffectStrategy implements Cloneable {
         this.extendedresources = extendedresources;
     }
 
-    public void apply(Player player) {
+    public void apply(Player player,List<GetResources> effects) {
+
+
         // TODO implement here
     }
 

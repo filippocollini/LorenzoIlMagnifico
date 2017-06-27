@@ -10,12 +10,15 @@ public class TerritoryCard extends DevelopementCard {
     /**
      * Default constructor
      */
-    public TerritoryCard() {
-    }
 
+    public TerritoryCard() {}
     @Override
     public void activateEffect(Effect effect){
 
     }
 
+    @Override
+    public String getName() {
+        return super.getName();
+    }
 }

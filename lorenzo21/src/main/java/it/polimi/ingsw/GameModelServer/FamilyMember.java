@@ -24,5 +24,11 @@ public class FamilyMember {
         return value;
     }
 
-    
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }
