@@ -28,6 +28,7 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     private static ArrayList<Stanza> stanze;
     private static final Object ROOMS_MUTEX = new Object();
     private Map<T,Set<PlayerInterface<M>>> subscriptions  = new HashMap<T, Set<PlayerInterface<M>>>();
+    private boolean timerRunning;
 
     public static final int MAXPLAYERS = 4;
 
@@ -40,6 +41,7 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
         socketServer = new SocketServer(this);
         stanze = new ArrayList<>();
         users= new ArrayList<>();
+        timerRunning=false;
     }
 
     public static void main(String[] args) {
@@ -163,7 +165,6 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     }
 
     public boolean joinPlayer(AbstractPlayer player, String username) {
-        Stanza room = null;
         if(users.contains(username))
             return false;
         else {
@@ -189,11 +190,28 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
         if (lastRoom != null && lastRoom.nPlayers()<MAXPLAYERS) {
             lastRoom.joinPlayer(player, username);
             player.setRoom(lastRoom);
+            if(lastRoom.nPlayers()>1 && timerRunning==false){
+                startTimer();
+            }else
+                if(lastRoom.nPlayers()>1 && lastRoom.nPlayers()<4 && timerRunning==true)
+                    restartTimer();
+                else
+                    stopTimer();
             System.out.println("Il giocatore è nella stanza");
         } else {
             System.out.println("Sto creando una nuova stanza");
             createNewRoom(player, username);
         }
+
+    }
+
+    private void stopTimer() {
+    }
+
+    private void restartTimer() {
+    }
+
+    private void startTimer() {
 
     }
 }
