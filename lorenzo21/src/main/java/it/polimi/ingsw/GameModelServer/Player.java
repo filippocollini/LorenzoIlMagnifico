@@ -2,12 +2,13 @@ package it.polimi.ingsw.GameModelServer;
 
 import it.polimi.ingsw.ClientModel.Cell;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * 
  */
-public class Player extends BoardObserver{
+public class Player extends BoardObserver implements Serializable{
 
     private String username;
     private List<FamilyMember> members;

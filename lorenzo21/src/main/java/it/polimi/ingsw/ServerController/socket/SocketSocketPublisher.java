@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by filippocollini on 15/06/17.
  */
-public class SocketSocketPublisher<M extends Serializable, T extends Serializable> extends Thread implements SocketPublisherInterface<M,T> {
+public class SocketSocketPublisher<M extends Serializable, T extends Serializable> implements SocketPublisherInterface<M,T> {
 
 
     private Server<M,T> broker;

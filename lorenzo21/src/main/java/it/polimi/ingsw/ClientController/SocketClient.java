@@ -52,7 +52,7 @@ public class SocketClient<M extends Serializable> extends Thread {
         try {
             System.out.println("SocketClient started");
 
-            Scanner sc = new Scanner(System.in);
+            //Scanner sc = new Scanner(System.in);
 
             Socket socket = new Socket("127.0.0.1", 7771);
             SocketClient<String> client = new SocketClient<String>(new SocketPlayer<>(socket));

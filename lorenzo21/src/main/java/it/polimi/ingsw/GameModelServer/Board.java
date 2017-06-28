@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * 
  */
-public class Board {
+public class Board{
 
     public List victoryPoints;
     public List<CellFaithPoints> faithPoints;

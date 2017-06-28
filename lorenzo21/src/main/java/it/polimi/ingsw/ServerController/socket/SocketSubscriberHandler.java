@@ -77,8 +77,8 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
                 //START TIMEOUT
             } else
                 comm.send("Username not available, try again!\n");
-            */ //TODO gestire timeout
-            //TODO gestire inserimento player nella room dal metodo joinPlayer
+            */
+
         }
     }
 

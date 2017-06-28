@@ -12,12 +12,13 @@ import it.polimi.ingsw.ServerController.Stanza;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * 
  */
-public class Game {
+public class Game implements Serializable {
 
     private Player[] players;
     private Board board;

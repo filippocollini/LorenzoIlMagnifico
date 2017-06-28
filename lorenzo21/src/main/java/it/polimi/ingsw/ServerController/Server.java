@@ -19,7 +19,6 @@ import it.polimi.ingsw.ServerController.socket.SocketSubscriberHandler;
 public class Server<M extends Serializable,T extends Serializable> implements ConnectionInterface<M,T> {
 
     private boolean doneSub = false;
-    private ArrayList<String> users;
     private ServerSocket socketSubscriber = null;
     private RMIServer rmiServer;
     private SocketServer socketServer;
@@ -28,8 +27,6 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     private static ArrayList<Stanza> stanze;
     private static final Object ROOMS_MUTEX = new Object();
     private Map<T,Set<PlayerInterface<M>>> subscriptions  = new HashMap<T, Set<PlayerInterface<M>>>();
-    private boolean timerRunning;
-
     public static final int MAXPLAYERS = 4;
 
 
@@ -40,8 +37,6 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
         rmiServer = new RMIServer(this);
         socketServer = new SocketServer(this);
         stanze = new ArrayList<>();
-        users= new ArrayList<>();
-        timerRunning=false;
     }
 
     public static void main(String[] args) {
@@ -165,10 +160,10 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     }
 
     public boolean joinPlayer(AbstractPlayer player, String username) {
-        if(users.contains(username))
+        Stanza lastRoom = stanze.isEmpty() ? null : stanze.get(stanze.size() - 1);
+        if(lastRoom!= null && lastRoom.players.containsKey(username))
             return false;
         else {
-            users.add(username);
             try {
                 joinLastRoom(player, username);
             } catch (IOException e) {
@@ -187,16 +182,9 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
 
     private void joinLastRoom(AbstractPlayer player, String username) throws IOException {
         Stanza lastRoom = stanze.isEmpty() ? null : stanze.get(stanze.size() - 1);
-        if (lastRoom != null && lastRoom.nPlayers()<MAXPLAYERS) {
+        if (lastRoom != null && lastRoom.nPlayers()<MAXPLAYERS && !lastRoom.matchStarted) {
             lastRoom.joinPlayer(player, username);
             player.setRoom(lastRoom);
-            if(lastRoom.nPlayers()>1 && timerRunning==false){
-                startTimer();
-            }else
-                if(lastRoom.nPlayers()>1 && lastRoom.nPlayers()<4 && timerRunning==true)
-                    restartTimer();
-                else
-                    stopTimer();
             System.out.println("Il giocatore è nella stanza");
         } else {
             System.out.println("Sto creando una nuova stanza");
@@ -205,13 +193,4 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
 
     }
 
-    private void stopTimer() {
-    }
-
-    private void restartTimer() {
-    }
-
-    private void startTimer() {
-
-    }
 }
