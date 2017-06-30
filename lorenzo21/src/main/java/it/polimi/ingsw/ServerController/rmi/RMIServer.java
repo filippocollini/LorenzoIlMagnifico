@@ -37,11 +37,12 @@ public class RMIServer extends AbstractServer implements Callback{
     }
 
     @Override
-    public synchronized int joinPlayer(String username, AbstractClient client) throws RemoteException{
+    public synchronized int joinPlayer(String username, RMIClientInterface client) throws RemoteException{
         if(!(client instanceof RMIClientInterface))
             return Callback.FAILURE;
+        System.out.println("sono nell'rmi server");
         getConnectionHandler().joinPlayer(new RMIPlayer(), username);
-        this.clients.add(client);
+
         return Callback.SUCCESS;
     }
 

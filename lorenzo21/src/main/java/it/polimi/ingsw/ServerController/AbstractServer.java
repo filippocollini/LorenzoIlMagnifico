@@ -13,6 +13,7 @@ public abstract class AbstractServer {
     public ConnectionInterface connectionHandler;
     public ArrayList<AbstractClient> clients;
 
+
     public AbstractServer(ConnectionInterface connectionHandler){
         this.connectionHandler=connectionHandler;
         clients = new ArrayList<AbstractClient>();

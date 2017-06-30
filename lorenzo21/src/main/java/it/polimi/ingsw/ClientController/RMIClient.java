@@ -8,39 +8,56 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
 
 /**
  * 
  */
 public class RMIClient<M extends Serializable, T extends Serializable> extends AbstractClient implements RMIClientInterface {
 
+    private String username;
     static Callback server;
-    String username;
+    private String host;
+    private int port;
 
-    public RMIClient(String username, Callback server) throws RemoteException {
-        this.username=username;
-        this.server=server;
 
+    public RMIClient(String host, int port) throws RemoteException {
+        this.host=host;
+        this.port=port;
+        startClient();
     }
+
 
     public void startClient() {
 
-        try{
-            Registry reg = LocateRegistry.getRegistry(7772);
+        Callback server;
 
-            Callback server = (Callback) reg.lookup(Callback.NAME);
+        try{
+            Scanner sc = new Scanner(System.in);
+
+            Registry reg = LocateRegistry.getRegistry(host, port);
+
+            server = (Callback) reg.lookup(Callback.NAME);
 
             UnicastRemoteObject.exportObject(this,0);
 
             System.out.println("Client up on server");
+            int result;
 
-            int result = login(server, username, this);
-            if (result == Callback.FAILURE)
-            {
-                System.out.println("1. Couldn't send client object to server");
-            }
-            else
-                System.out.println("1. Success sending ClientObject to server");
+            do{
+                System.out.println("Insert username:");
+                String user = sc.nextLine();
+                this.username = user;
+                result = login(server, username, this);
+                if (result == Callback.FAILURE)
+                {
+                    System.out.println("1. Couldn't send client object to server");
+                }
+                else
+                    System.out.println("1. Success sending ClientObject to server");
+            }while(result== Callback.FAILURE);
+
+
 
         } catch (RemoteException | NotBoundException e) {
 
@@ -48,7 +65,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
     }
 
-    private int login(Callback server, String username, AbstractClient client) throws RemoteException {
+    private int login(Callback server, String username, RMIClientInterface client) throws RemoteException {
         return server.joinPlayer(username, client);
     }
 

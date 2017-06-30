@@ -25,7 +25,6 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     private Thread subscriberListener;
     private Set<Thread> publishers = new HashSet<Thread>();
     private static ArrayList<Stanza> stanze;
-    private static final Object ROOMS_MUTEX = new Object();
     private Map<T,Set<PlayerInterface<M>>> subscriptions  = new HashMap<T, Set<PlayerInterface<M>>>();
     public static final int MAXPLAYERS = 4;
 

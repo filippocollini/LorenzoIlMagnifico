@@ -10,10 +10,13 @@ public abstract class AbstractPlayer<M> {
 
     private Stanza room;
 
+    Player player;
+
     /**
      * Default constructor
      */
     public AbstractPlayer() {
+        player= new Player();
     }
 
     //public abstract void dispatchMessage(M msg);
