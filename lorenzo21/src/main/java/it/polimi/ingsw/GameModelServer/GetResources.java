@@ -33,10 +33,16 @@ public class GetResources extends EffectStrategy implements Cloneable {
         this.extendedresources = extendedresources;
     }
 
-    public void apply(Player player,List<GetResources> effects) {
+    @Override
+    public void apply(Player player) {  //TODO implementare anche i token della board con i punti
+        for(Risorsa rex : player.getPB().getresources()) {
+            for (Risorsa reward : extendedresources){
+                if(reward.gettipo().equals(rex.gettipo())){
+                    rex.setQuantity(rex.getquantity()+reward.getquantity());
+                }
+            }
+        }
 
-
-        // TODO implement here
     }
 
     @Override

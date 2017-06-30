@@ -11,7 +11,7 @@ public class Tower {
      * Default constructor
      */
     public Tower() {
-        floors= new ArrayList<CellTower>();
+        floors= new ArrayList<>();
     }
 
     /**

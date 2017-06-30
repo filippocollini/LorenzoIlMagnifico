@@ -7,9 +7,8 @@ import java.util.*;
  */
 public class EffectStrategy {
 
-    int id;
-    public EffectStrategy() {
-    }
+    protected int id;
+    public EffectStrategy() {}
 
     public void setId(int id) {
         this.id = id;
@@ -19,12 +18,6 @@ public class EffectStrategy {
         return id;
     }
 
-    /**
-     * @param player 
-     * @return
-     */
-    public void apply(Player player, EffectStrategy effect) {
-        // TODO implement here
-    }
+    public void apply(Player player) {}
 
 }

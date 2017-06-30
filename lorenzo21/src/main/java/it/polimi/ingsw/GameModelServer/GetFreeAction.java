@@ -38,6 +38,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
         return type;
     }
 
+
     @Override
     public Object clone(){
         try{

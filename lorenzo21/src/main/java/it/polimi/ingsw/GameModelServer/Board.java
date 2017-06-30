@@ -15,27 +15,28 @@ import java.util.*;
  */
 public class Board{
 
-    public List victoryPoints;
-    public List<CellFaithPoints> faithPoints;
-    public List militaryPoints;
-    public List<Player> ordineTurno;
-    public List production;
-    public List harvest;
-    public List<CellAction> market;
-    public List<ExcommunicationTiles> carteScomunica;
-    public List<CellAction> councilpalace;
-    public List<Integer> dadi;
+
+    private List victoryPoints;
+    private List<CellFaithPoints> faithPoints;
+    private List militaryPoints;
+    private List<Player> ordineTurno;
+    private List production;
+    private List harvest;
+    private List<CellAction> market;
+    private List<ExcommunicationTiles> carteScomunica;
+    private List<CellAction> councilpalace;
+    private List<Integer> dadi;
     private static Board instance;
-    public Tower territoriesTower;
+    private Tower territoriesTower;
     private Tower buildingsTower;
     private Tower charactersTower;
     private Tower venturesTower;
-    private Token[] tokens;
+    private List<Token[]> tokens;
+    private Player[] players;
     private List<BoardObserver> observers = new ArrayList<>();
-    private int state;
 
 
-    private Board(int num){
+    private Board(Player[] players){
         territoriesTower = creategreenTower();
         buildingsTower = createyellowTower();
         charactersTower = createblueTower();
@@ -43,12 +44,53 @@ public class Board{
         victoryPoints = new ArrayList();
         faithPoints = setFaithPointsTrack();
         militaryPoints = new ArrayList();
-        market = createMarket(num);
+        market = createMarket(players.length);
         councilpalace = new ArrayList<>();
         harvest = new ArrayList();
-        production = new ArrayList();//WARNING!!! per bonus da caricare da file intendiamo anche i malus nei dadi degli spazi raccolto e produzione?
+        production = new ArrayList();
+        tokens = inizializationTokens(players);
+        this.players = players;
+
+        //WARNING!!! per bonus da caricare da file intendiamo anche i malus nei dadi degli spazi raccolto e produzione?
         //metto tutti i metodi così si creano non appena si crea la board!!!
 
+    }
+
+
+
+    private List<Token[]> inizializationTokens(Player[] players) {
+        int i;
+        List<Token[]> tokens = new ArrayList<>();
+        for(i=0;i<players.length;i++) {
+            Token[] token = new Token[4];
+            token[0] = new Token(players[i].getColor());
+            token[0].setType("VictoryPoints");
+            token[0].setPosition(0);
+            token[1] = new Token(players[i].getColor());
+            token[1].setType("MilitaryPoints");
+            token[1].setPosition(0);
+            token[2] = new Token(players[i].getColor());
+            token[2].setType("FaithPoints");
+            token[2].setPosition(0);
+            token[3] = new Token(players[i].getColor());
+            token[3].setType("Order");
+            tokens.add(i, token);
+        }
+        notifyAllObservers();
+        return tokens;
+
+    }
+
+    //TODO get player per poterli vedere da tutti
+    public PersonalBoard getPBPlayer(String color){
+        PersonalBoard colorpb = new PersonalBoard();
+        int i;
+        for(i=0;i<this.players.length;i++){
+            if(this.players[i].getColor().equals(color))
+                colorpb = this.players[i].getPB();
+        }
+
+        return colorpb;
     }
 
     public CellAction createPalace(){ //TODO sistema CellAction con List
@@ -89,7 +131,7 @@ public class Board{
     }
 
 
-    public List<CellAction> createMarket(int num){
+    private List<CellAction> createMarket(int num){
 
         CellAction stand = new CellAction();
         List<CellAction> market = new ArrayList<>();
@@ -169,11 +211,12 @@ public class Board{
 
     }
 
-    public Tower creategreenTower(){
+    private Tower creategreenTower(){
         Tower tower = new Tower();
         JsonObject jterritory;
         JsonArray arrayterritory;
         CellTower singlecell = new CellTower();
+        List<CellTower> floors = new ArrayList<>();
         Risorsa bonus = new Risorsa();
         int i;
 
@@ -186,22 +229,24 @@ public class Board{
                 jterritory = arrayterritory.get(i).asObject();
                 bonus.setTipo(jterritory.getString("type","Woods"));
                 bonus.setQuantity(jterritory.getInt("quantity",0));
-                singlecell.setBonus((Risorsa) bonus.clone());//dall'alto verso il basso
+                singlecell.setBonus((Risorsa) bonus.clone());
                 singlecell.setDice(jterritory.get("dice").asInt());
-                tower.getFloors().add(i, (CellTower) singlecell.clone());
+                floors.add(i, (CellTower) singlecell.clone());//dal basso verso l'alto
             }
         }catch(IOException e){
             e.printStackTrace(); //TODO
         }
+        tower.setFloors(floors);
 
         return tower;
     }
 
-    public Tower createblueTower(){
+    private Tower createblueTower(){
         Tower tower = new Tower();
         JsonObject jcharacter;
         JsonArray arraycharacter;
         CellTower singlecell = new CellTower();
+        List<CellTower> floors = new ArrayList<>();
         Risorsa bonus = new Risorsa();
         int i;
 
@@ -216,20 +261,21 @@ public class Board{
                 bonus.setQuantity(jcharacter.getInt("quantity",0));
                 singlecell.setBonus((Risorsa) bonus.clone());//dall'alto verso il basso
                 singlecell.setDice(jcharacter.get("dice").asInt());
-                tower.getFloors().add(i, (CellTower) singlecell.clone());
+                floors.add(i, (CellTower) singlecell.clone());
             }
         }catch(IOException e){
             e.printStackTrace(); //TODO
         }
-
+        tower.setFloors(floors);
         return tower;
     }
 
-    public Tower createyellowTower(){
+    private Tower createyellowTower(){
         Tower tower = new Tower();
         JsonObject jbuilding;
         JsonArray arraybuilding;
         CellTower singlecell = new CellTower();
+        List<CellTower> floors = new ArrayList<>();
         Risorsa bonus = new Risorsa();
         int i;
 
@@ -244,20 +290,21 @@ public class Board{
                 bonus.setQuantity(jbuilding.getInt("quantity",0));
                 singlecell.setBonus((Risorsa) bonus.clone());//dall'alto verso il basso
                 singlecell.setDice(jbuilding.get("dice").asInt());
-                tower.getFloors().add(i, (CellTower) singlecell.clone());
+                floors.add(i, (CellTower) singlecell.clone());
             }
         }catch(IOException e){
             e.printStackTrace(); //TODO
         }
-
+        tower.setFloors(floors);
         return tower;
     }
 
-    public Tower createvioletTower(){
+    private Tower createvioletTower(){
         Tower tower = new Tower();
         JsonObject jventure;
         JsonArray arrayventure;
         CellTower singlecell = new CellTower();
+        List<CellTower> floors = new ArrayList<>();
         Risorsa bonus = new Risorsa();
         int i;
 
@@ -272,22 +319,20 @@ public class Board{
                 bonus.setQuantity(jventure.getInt("quantity",0));
                 singlecell.setBonus((Risorsa) bonus.clone());//dall'alto verso il basso
                 singlecell.setDice(jventure.get("dice").asInt());
-                tower.getFloors().add(i, (CellTower) singlecell.clone());
+                floors.add(i, (CellTower) singlecell.clone());
             }
         }catch(IOException e){
             e.printStackTrace(); //TODO
         }
-
+        tower.setFloors(floors);
         return tower;
     }
 
-    public void setState(int state){
-        this.state=state;
-        notifyAllObservers();
-    }
+
     public void addObserver(BoardObserver observer){
         observers.add(observer);
     }
+
     public void notifyAllObservers(){
         for(BoardObserver observer : observers){
             observer.update();
@@ -305,8 +350,7 @@ public class Board{
     }*/
 
 
-
-    public List<CellFaithPoints> setFaithPointsTrack(){
+    private List<CellFaithPoints> setFaithPointsTrack(){
         CellFaithPoints singlecell = new CellFaithPoints();
         List<CellFaithPoints> faithTrack = new ArrayList<>();
         JsonArray arrayfaith;
@@ -334,24 +378,84 @@ public class Board{
     return faithTrack;
     }
 
+    public Tower getBuildingsTower() {
+        return buildingsTower;
+    }
+
+    public Tower getCharactersTower() {
+        return charactersTower;
+    }
+
+    public Tower getTerritoriesTower() {
+        return territoriesTower;
+    }
+
+    public Tower getVenturesTower() {
+        return venturesTower;
+    }
+
     public void getVari() {
         // TODO implement here
     }
 
-    public int getState() {
-        return state;
+    public List<CellFaithPoints> getFaithPoints() {
+        return faithPoints;
     }
 
-    public Token[] getTokens() {
-        return tokens;
+    public List getHarvest() {
+        return harvest;
+    }
+
+    public List getProduction() {
+        return production;
+    }
+
+    public List<CellAction> getMarket() {
+        return market;
+    }
+
+    public List<CellAction> getCouncilpalace() {
+        return councilpalace;
+    }
+
+    public List<ExcommunicationTiles> getCarteScomunica() {
+        return carteScomunica;
+    }
+
+    public List<Integer> getDadi() {
+        return dadi;
+    }
+
+
+    public Token[] getTokens(String color) {
+        int i;
+        Token[] token = new Token[4];
+        for(i=0;i<this.tokens.size();i++){
+            if(this.tokens.get(i)[0].getColor().equals(color)){
+                token = this.tokens.get(i);
+            }
+        }
+        return token;
+    }
+
+    public void setTokens(Token[] tokens){
+        int i,j;
+        for(i=0;i<this.tokens.size();i++){
+            if(this.tokens.get(i)[0].getColor().equals(tokens[0].getColor())){ //Sto lavorando sui tokens del colore giusto
+                for (j=0;j<this.tokens.get(i).length;j++)
+                this.tokens.get(i)[j] = tokens[j];
+            }
+        }
+        notifyAllObservers();
+
     }
 
     public void modifyOrdineTurno(){}
 
 
-    public static Board getInstance(int num) {
+    public static Board getInstance(Player[] players) {
             if (instance == null)
-                instance = new Board(num);
+                instance = new Board(players);
         return instance;
     }
 

@@ -35,6 +35,14 @@ public class GetBoostDice extends EffectStrategy implements Cloneable {
         return effecttype;
     }
 
+
+    public void apply(Player player, String color) { //il client fa l'azione, il server prima di fare l'azione controlla se il giocatore ha diritto al boost
+        int oldvalue;
+        oldvalue = player.getMember(color).getValue();
+        player.getMember(color).setValue(oldvalue+this.diceboost);
+
+    }
+
     @Override
     public Object clone()   {
         try{

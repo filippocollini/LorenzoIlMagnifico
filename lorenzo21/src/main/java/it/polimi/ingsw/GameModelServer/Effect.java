@@ -12,6 +12,7 @@ public class Effect {
      */
     public Effect(EffectStrategy strategy) {
         this.strategy=strategy;
+
         if((int) strategy.getId()/1000 == 2)
             this.permanent=true;
         else
@@ -21,14 +22,6 @@ public class Effect {
 
     private EffectStrategy strategy;
     private boolean permanent;
-
-    public void setStrategy(EffectStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public void setPermanent(boolean permanent) {
-        this.permanent = permanent;
-    }
 
     public EffectStrategy getStrategy() {
         return strategy;

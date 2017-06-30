@@ -26,11 +26,14 @@ public class BuildingCard extends DevelopementCard {
         this.choice = choice;
     }
 
-    public BuildingCard(){}
-
-    @Override
-    public void activateEffect(Effect effect){
-
+    public BuildingCard(){
+        super();
+        cost1 = new ArrayList<>();
     }
 
+
+    @Override
+    public void activateEffect(int id) {
+        super.activateEffect(id);
+    }
 }

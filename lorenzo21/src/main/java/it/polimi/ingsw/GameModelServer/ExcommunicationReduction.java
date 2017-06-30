@@ -55,4 +55,6 @@ public class ExcommunicationReduction extends EffectStrategy implements Cloneabl
         }
     return null;
     }
+
+
 }

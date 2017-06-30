@@ -18,17 +18,18 @@ public abstract class Card {
     /**
      * 
      */
-    public List<Effect> effetti;
+    protected List<Effect> effetti;
 
 
-    public abstract void activateEffect(Effect effect);
+
+    public abstract void activateEffect(int id);
 
 
-    public void activateEffects(){
+    /*public void activateEffects(){
         for(Effect e : effetti){
             activateEffect(e);
         }
-    }
+    }*/
 
 
 

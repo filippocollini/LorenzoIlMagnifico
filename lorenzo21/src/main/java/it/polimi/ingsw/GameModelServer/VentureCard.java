@@ -7,7 +7,10 @@ import java.util.*;
  */
 public class VentureCard extends DevelopementCard {
 
-   public VentureCard(){}
+   public VentureCard(){
+       super();
+       cost1 = new ArrayList<>();
+   }
     private List<Risorsa> cost1;
     private boolean choice;
 
@@ -28,9 +31,9 @@ public class VentureCard extends DevelopementCard {
         this.choice = choice;
     }
 
+
     @Override
-    public void activateEffect(Effect effect){
-
+    public void activateEffect(int id) {
+        super.activateEffect(id);
     }
-
 }

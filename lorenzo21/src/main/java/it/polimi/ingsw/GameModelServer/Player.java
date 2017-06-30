@@ -1,6 +1,6 @@
 package it.polimi.ingsw.GameModelServer;
 
-import it.polimi.ingsw.ClientModel.Cell;
+
 
 import java.io.Serializable;
 import java.util.*;
@@ -15,50 +15,27 @@ public class Player extends BoardObserver implements Serializable{
     private String color;
     private PersonalBoard personalBoard;
     private List<Effect> effects;
-    private int puntiVittoria;
-    private int puntiMilitari;
-    private int puntiFede;
-    private List<CardFactory> carteLeader;
+    private List<LeaderCard> carteLeader;
     private BonusTile tesseraBonus;
     private Token[] token;
+
 
     //private int genericResources;
     //private int buildingcost;
 
-    public Player(String username, String color,Board board/*,  BonusTile tesseraBonus*/) {
+    public Player(String username, String color, Board board/*,  BonusTile tesseraBonus*/) {
         this.username = username;
         members = new ArrayList<>();
         this.color = color;
         personalBoard = new PersonalBoard();
         effects = new ArrayList<Effect>();
-        puntiFede = 0;
-        puntiMilitari = 0;
-        puntiVittoria = 0;
-        carteLeader = new ArrayList<CardFactory>();
+        carteLeader = new ArrayList<LeaderCard>();
         this.tesseraBonus = tesseraBonus;
-        token = inizializationToken(color);
         this.board = board;
         this.board.addObserver(this);
     }
 
-    public Token[] inizializationToken(String color) {
-        Token[] token = new Token[4];
-        token[0] = new Token(color);
-        token[0].setType("Victory");
-        token[0].setPosition(0);
-        token[1]=new Token(color);
-        token[1].setType("Military");
-        token[1].setPosition(0);
-        token[2] = new Token(color);
-        token[2].setType("Faith");
-        token[2].setPosition(0);
-        token[3] = new Token(color);
-        token[3].setType("Order");
-
-        return token;
-    }
-
-    public FamilyMember getMember(String color) {
+    public FamilyMember getMember(String color) {//questo color deve essere passato come scanner del client
         int i = 0;
         for(FamilyMember member : members) {
             if (member.getColor() == color)
@@ -73,6 +50,8 @@ public class Player extends BoardObserver implements Serializable{
     public Token[] getToken() {
         return token;
     }
+
+
 
     public String getUsername(){
          return username;
@@ -90,30 +69,13 @@ public class Player extends BoardObserver implements Serializable{
         return tesseraBonus;
     }
 
-    public int getVP(){
-        return puntiVittoria;
-    }
-
-    public int getMP(){
-        return puntiMilitari;
-    }
-
-    public int getFP(){
-        return puntiFede;
-    }
-
-    public
-    List<CardFactory> getcarteLeader(){
+    protected List<LeaderCard> getcarteLeader(){
         return carteLeader;
     }
 
-    public PersonalBoard setPB(PersonalBoard personalBoard) {
-        this.personalBoard = personalBoard;
-        return this.personalBoard;
-    }
 
     //TODO appena i punti militari arrivano a X sblocchi la cella nella PB
-    public static void unlockGreenCell(int puntiMilitari, PersonalBoard pboard){
+    public void unlockGreenCell(int puntiMilitari, PersonalBoard pboard){
         int i;
         for(i=0;i<pboard.getterritories().size();i++){
             if (pboard.getterritories().get(i).getMpNecessary() <= puntiMilitari)
@@ -124,7 +86,7 @@ public class Player extends BoardObserver implements Serializable{
 
     @Override
     public void update() {
-
+        this.token = board.getTokens(this.color);
     }
 // public void doAction() {}
     // TODO implement here

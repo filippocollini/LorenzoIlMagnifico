@@ -27,6 +27,9 @@ public class GetVPEnd extends EffectStrategy implements Cloneable{
         this.VP = VP;
     }
 
+
+
+
     @Override
     public Object clone()  {
         try{

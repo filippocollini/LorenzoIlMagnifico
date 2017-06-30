@@ -1,9 +1,6 @@
 package it.polimi.ingsw.ServerController;
 
-import it.polimi.ingsw.ClientController.ClientRules;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 /**

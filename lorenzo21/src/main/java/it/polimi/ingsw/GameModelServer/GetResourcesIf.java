@@ -38,6 +38,20 @@ public class GetResourcesIf extends EffectStrategy implements Cloneable{
         return rewards;
     }
 
+
+    public void apply(Player player, String color) { //TODO implementa il get di punti con i token
+        if(player.getMember(color).getValue()>= this.dicepower){
+            for(Risorsa ress : player.getPB().getresources()) {
+                for (Risorsa reward : rewards){
+                    if(reward.gettipo().equals(ress.gettipo())){
+                        ress.setQuantity(ress.getquantity()+reward.getquantity());
+                    }
+                }
+            }
+        }else
+            System.out.println("non puoi fare l'azione"); //TODO
+    } //OVERLOADING
+
     @Override
     public Object clone() {
         try {

@@ -49,6 +49,13 @@ public class GetDiscountClass extends EffectStrategy implements Cloneable{
     }
 
     @Override
+    public void apply(Player player) {//il client fa l'azione, il server controlla se ha diritto ad uno sconto
+        int oldvalue;
+        if(!select){ //TODO
+        }
+    }
+
+    @Override
     public Object clone(){
         try{
             return super.clone();

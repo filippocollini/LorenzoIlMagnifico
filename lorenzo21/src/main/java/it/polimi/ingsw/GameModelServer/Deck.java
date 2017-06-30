@@ -23,6 +23,8 @@ public abstract class Deck {
      * 
      */
     private List<Card> deck;
+    private int turn;
+
 
     protected Deck() {
     }

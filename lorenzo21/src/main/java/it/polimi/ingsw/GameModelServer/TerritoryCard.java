@@ -11,9 +11,13 @@ public class TerritoryCard extends DevelopementCard {
      * Default constructor
      */
 
-    public TerritoryCard() {}
+
+    public TerritoryCard() {
+        super();
+    }
     @Override
-    public void activateEffect(Effect effect){
+    public void activateEffect(int id){
+
 
     }
 

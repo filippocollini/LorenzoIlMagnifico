@@ -174,12 +174,33 @@ public class PersonalBoard {
         return characters;
     }
 
+    public List<CellPB> gettypecards(String type){
+        if(type.equals("TerritoryCards"))
+            return territories;
+        else if(type.equals("BuildingCards"))
+            return buildings;
+        else if (type.equals("VentureCards"))
+            return ventures;
+        else if(type.equals("CharacterCards"))
+            return characters;
+        return null; //TODO avviso dato passato errato
+    }
+
     public BonusTile gettesserabonus(){
         return bonustile;
     }
 
     public List<Risorsa> getresources(){
         return risorse;
+    }
+
+    public Risorsa getsingleresource(String type){
+        Risorsa resource = new Risorsa();
+        for(Risorsa single : risorse){
+            if (single.gettipo().equals(type))
+                resource=single;
+        }
+        return resource;
     }
 
 

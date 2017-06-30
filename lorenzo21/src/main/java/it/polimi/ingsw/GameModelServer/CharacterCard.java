@@ -10,7 +10,10 @@ public class CharacterCard extends DevelopementCard {
     private Risorsa cost1;
     private boolean choice;
 
-    public CharacterCard() {}
+    public CharacterCard() {
+        super();
+        cost1 = new Risorsa();
+    }
 
     public Risorsa getCost1(){
         return cost1;
@@ -40,9 +43,10 @@ public class CharacterCard extends DevelopementCard {
         return charactcard;
     }
 
-    @Override
-    public void activateEffect(Effect effect) {
 
+    @Override
+    public void activateEffect(int id) {
+        super.activateEffect(id);
     }
 }
 
