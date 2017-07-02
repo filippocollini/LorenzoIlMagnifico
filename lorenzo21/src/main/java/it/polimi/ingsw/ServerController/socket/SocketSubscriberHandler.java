@@ -24,7 +24,7 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
     public SocketSubscriberHandler(ConnectionInterface<M,T> b, SocketPlayer<Serializable> sc) {
         comm = sc;
         broker = b;
-        rules = new Rules(comm);
+        rules = new Rules();
     }
     public void dispatchMessage(M msg) {
         buffer.add(msg);

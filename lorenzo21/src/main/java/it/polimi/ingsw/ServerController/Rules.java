@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ServerController;
 
 
+import it.polimi.ingsw.ClientController.AbstractClient;
+
 import java.util.HashMap;
 
 /**
@@ -8,15 +10,14 @@ import java.util.HashMap;
  */
 public class Rules implements RulesInterface{
 
-    private final HashMap <String, Event> eventMap;
+    public final HashMap <String, Event> eventMap;
 
     private TurnHandler turn;
 
     /**
      * Default constructor
-     * @param abstractPlayer
      */
-    public Rules(AbstractPlayer abstractPlayer) {
+    public Rules() {
         eventMap= new HashMap();
         createMapping();
     }
@@ -29,13 +30,7 @@ public class Rules implements RulesInterface{
     }
 
     public void handleRequest(String request){
-        Event event = eventMap.get(request);
-        if(event!=null)
-            System.out.println("trovato l'evento");
-        else
-            System.out.println("evento non trovato");
-        if(event.isLegal())
-            event.eventHappened();
+
     }
 
 }

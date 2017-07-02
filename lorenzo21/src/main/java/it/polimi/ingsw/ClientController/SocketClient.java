@@ -36,6 +36,15 @@ public class SocketClient<M extends Serializable> extends AbstractClient impleme
             e.printStackTrace();
         }
 
+        System.out.println("Waiting for the match to start...");
+
+        try {
+            String started = (String) comm.receive();
+            System.out.println(started);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
         while(!done){
             System.out.println("Inserisci richiesta");
             String msg = sc.nextLine();

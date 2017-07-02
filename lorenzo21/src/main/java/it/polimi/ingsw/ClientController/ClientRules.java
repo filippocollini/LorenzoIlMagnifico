@@ -43,13 +43,6 @@ public class ClientRules {
 
     //----------------------------------------------------------
 
-    public void login(String username){
-        try {
-            out.writeObject(Message.LOGIN);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void responseHandler(Object object) {
         Handler handler = eventMap.get(object);

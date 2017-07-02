@@ -16,10 +16,11 @@ import it.polimi.ingsw.ServerController.socket.SocketSubscriberHandler;
 /**
  * proxy to SocketServer and RMIServer
  */
-public class Server<M extends Serializable,T extends Serializable> implements ConnectionInterface<M,T> {
+public class Server<M extends Serializable,T extends Serializable> implements ConnectionInterface<M,T>, ClientRequestHandler {
 
     private boolean doneSub = false;
     private ServerSocket socketSubscriber = null;
+    private Rules rules;
     private RMIServer rmiServer;
     private SocketServer socketServer;
     private Thread subscriberListener;
@@ -36,6 +37,7 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
         rmiServer = new RMIServer(this);
         socketServer = new SocketServer(this);
         stanze = new ArrayList<>();
+        rules= new Rules();
     }
 
     public static void main(String[] args) {
@@ -192,4 +194,15 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
 
     }
 
+    @Override
+    public int handleRequest(String request) {
+        Event event = rules.eventMap.get(request);
+        if(event!=null)
+            System.out.println("trovato l'evento");
+        else
+            System.out.println("evento non trovato");
+        if(event.isLegal())
+            event.eventHappened();//far ritornare intero
+        return 0;
+    }
 }

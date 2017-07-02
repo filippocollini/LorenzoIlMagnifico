@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ServerController;
 
+import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.GameModelServer.Player;
 
@@ -64,6 +65,7 @@ public class Stanza implements Serializable {
                 System.out.println("riparte il countdown");
                 timerHandler();
             }
+        System.out.println("notifica i clients");
     }
 
     private void timerHandler(){
@@ -75,13 +77,18 @@ public class Stanza implements Serializable {
                 System.out.print(i-- +" ... ");
                 if (i< 0){
                     timer.cancel();
+                    timer.purge();
                     matchStarted=true;
                     //chiama gameConfiguration
                     System.out.println("INIZIA LA PARTITA!");
+                    for(AbstractPlayer c: players.values()){
+                        c.send("inizia la partita");
+                    }
                 }
 
             }
         }, 0, 1000);
+
     }
 
     public int nPlayers(){

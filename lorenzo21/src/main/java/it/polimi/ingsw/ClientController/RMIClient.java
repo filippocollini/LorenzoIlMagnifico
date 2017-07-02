@@ -57,8 +57,6 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
                     System.out.println("1. Success sending ClientObject to server");
             }while(result== Callback.FAILURE);
 
-
-
         } catch (RemoteException | NotBoundException e) {
 
         }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.ClientView;
 import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.ClientController.RMIClient;
 import it.polimi.ingsw.ClientController.SocketClient;
+import it.polimi.ingsw.ServerController.Rules;
 import it.polimi.ingsw.ServerController.Server;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
 
@@ -39,7 +40,7 @@ public class CommandLineUI extends AbstactUI {
             connection = scanner.nextLine();
         }while(!connection.matches("rmi||socket"));
 
-        AbstractClient client;
+        AbstractClient client=null;
 
         if(connection.matches("rmi")){
             try {
@@ -56,6 +57,14 @@ public class CommandLineUI extends AbstactUI {
                 e.printStackTrace();
             }
         }
+
+        Rules rules;
+
+        if(client==null)
+            System.out.println("manda eccezione");
+        else
+            rules = new Rules();
+
     }
 
 

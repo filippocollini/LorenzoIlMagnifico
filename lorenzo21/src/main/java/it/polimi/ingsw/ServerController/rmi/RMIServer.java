@@ -41,8 +41,9 @@ public class RMIServer extends AbstractServer implements Callback{
         if(!(client instanceof RMIClientInterface))
             return Callback.FAILURE;
         System.out.println("sono nell'rmi server");
-        getConnectionHandler().joinPlayer(new RMIPlayer(), username);
-
+        boolean used = getConnectionHandler().joinPlayer(new RMIPlayer(), username);
+        if(false == used)
+            return Callback.FAILURE;
         return Callback.SUCCESS;
     }
 

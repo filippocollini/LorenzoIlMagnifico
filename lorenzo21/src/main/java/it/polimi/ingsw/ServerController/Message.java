@@ -7,7 +7,6 @@ import java.io.Serializable;
  */
 public class Message{
 
-    public static final String LOGIN="login";
     public static final String FMONMARKET="fm on market";
 
 
