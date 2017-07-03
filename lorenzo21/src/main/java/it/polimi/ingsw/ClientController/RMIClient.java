@@ -96,6 +96,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         cli.gameStarted(game);
     }
 
+    @Override
+    public void notifyProva() throws RemoteException {
+        cli.esempio();
+    }
+
 
     public String move(String msg) {
         return null;

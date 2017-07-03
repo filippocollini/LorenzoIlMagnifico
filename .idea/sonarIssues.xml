@@ -158,6 +158,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/ClientRequestHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/ClientRules.java">
           <value>
             <set />
@@ -248,7 +253,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/LorenzoIlMagnifico.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/Message.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/NotificationInterface.java">
           <value>
             <set />
           </value>

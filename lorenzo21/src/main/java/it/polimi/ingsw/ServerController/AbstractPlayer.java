@@ -24,6 +24,8 @@ public abstract class AbstractPlayer<M> {
 
     public abstract void dispatchGameSettings(Game game) throws RemoteException;
 
+    public abstract void dispatchEsempio() throws RemoteException;
+
     /**
      * 
      */

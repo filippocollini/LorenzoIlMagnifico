@@ -79,5 +79,9 @@ public class CommandLineUI extends AbstactUI {
         System.out.println("Game started, auannad!");
     }
 
+    public void esempio(){
+        System.out.println("iniziamo, auannad!");
+    }
+
 
 }

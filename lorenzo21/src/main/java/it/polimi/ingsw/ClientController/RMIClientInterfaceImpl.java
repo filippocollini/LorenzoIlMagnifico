@@ -32,4 +32,9 @@ public class RMIClientInterfaceImpl extends UnicastRemoteObject implements RMICl
     public void notifyGameStarted(Game game) throws RemoteException {
 
     }
+
+    @Override
+    public void notifyProva() throws RemoteException {
+
+    }
 }

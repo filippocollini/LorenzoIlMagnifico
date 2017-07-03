@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.SocketException;
+import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
 
 /**
@@ -38,6 +39,11 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
     @Override
     public void dispatchGameSettings(Game game) {
         rules.notifyGameConfigurationDone(game);
+    }
+
+    @Override
+    public void dispatchEsempio() throws RemoteException {
+
     }
 
     public M receive() throws SocketException {

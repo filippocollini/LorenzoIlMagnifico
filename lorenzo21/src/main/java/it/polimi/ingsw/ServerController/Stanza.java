@@ -107,11 +107,33 @@ public class Stanza implements Serializable {
         @Override
         public void run() {
             System.out.println("start");
-            configuration();
+            //configuration();
             System.out.println("creato tutto");
-            dispatchGameToPlayers();
+            //dispatchGameToPlayers();
+            dispatchProva();
+            timer.schedule(new TurnHandler(), 10*1000L);
 
         }
+
+
+    }
+
+    private class TurnHandler extends TimerTask{
+
+        @Override
+        public void run() {
+            for(AbstractPlayer p : players.values()){
+                try {
+                    dispatchToPlayer(p);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void dispatchToPlayer(AbstractPlayer player) throws RemoteException {
+        player.dispatchEsempio();
     }
 
     private void configuration(){
@@ -122,6 +144,16 @@ public class Stanza implements Serializable {
         for (AbstractPlayer p : players.values()){
             try {
                 p.dispatchGameSettings(game);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void dispatchProva(){
+        for (AbstractPlayer p : players.values()){
+            try {
+                p.dispatchEsempio();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
