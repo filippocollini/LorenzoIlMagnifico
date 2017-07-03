@@ -3,20 +3,17 @@ package it.polimi.ingsw.ServerController;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.rmi.RemoteException;
 import java.util.*;
+
+import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.rmi.RMIServer;
-import it.polimi.ingsw.ServerController.socket.SocketPlayer;
 import it.polimi.ingsw.ServerController.socket.SocketServer;
-import it.polimi.ingsw.ServerController.socket.SocketSubscriberHandler;
 
 /**
  * proxy to SocketServer and RMIServer
  */
-public class Server<M extends Serializable,T extends Serializable> implements ConnectionInterface<M,T>, ClientRequestHandler {
+public class Server<M extends Serializable,T extends Serializable> implements ConnectionInterface<M,T> {
 
     private boolean doneSub = false;
     private ServerSocket socketSubscriber = null;
@@ -28,7 +25,9 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     private static ArrayList<Stanza> stanze;
     private Map<T,Set<PlayerInterface<M>>> subscriptions  = new HashMap<T, Set<PlayerInterface<M>>>();
     public static final int MAXPLAYERS = 4;
-
+    public static final String EVENT_FAILED="fail";
+    public static final String CLIENT_NEEDED="need";
+    public static final String EVENT_DONE="done";
 
     /**
      * Default constructor
@@ -195,14 +194,17 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
     }
 
     @Override
-    public int handleRequest(String request) {
+    public String handleRequest(String request) {
         Event event = rules.eventMap.get(request);
+        String result=EVENT_FAILED;
         if(event!=null)
             System.out.println("trovato l'evento");
         else
             System.out.println("evento non trovato");
         if(event.isLegal())
-            event.eventHappened();//far ritornare intero
-        return 0;
+            result = event.eventHappened();
+        return result;
     }
+
+    
 }

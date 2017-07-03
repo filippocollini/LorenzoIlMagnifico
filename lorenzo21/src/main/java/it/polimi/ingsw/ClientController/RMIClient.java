@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ClientController;
 
+import it.polimi.ingsw.ClientView.CommandLineUI;
+import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.rmi.Callback;
 
 import java.io.Serializable;
@@ -19,11 +21,13 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     static Callback server;
     private String host;
     private int port;
+    CommandLineUI cli;
 
 
-    public RMIClient(String host, int port) throws RemoteException {
+    public RMIClient(String host, int port, CommandLineUI cli) throws RemoteException {
         this.host=host;
         this.port=port;
+        this.cli = cli;
         startClient();
     }
 
@@ -82,4 +86,28 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
     }
 
+    @Override
+    public void dispatchMessage(Object msg) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyGameStarted(Game game) throws RemoteException {
+        cli.gameStarted(game);
+    }
+
+
+    public String move(String msg) {
+        return null;
+    }
+
+    @Override
+    public String handleClientRequest(String request) {
+        return null;
+    }
+
+    @Override
+    public void connect() {
+
+    }
 }

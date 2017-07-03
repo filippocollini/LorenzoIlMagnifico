@@ -1,36 +1,30 @@
 
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(ø·””øÿÿÿÿ8ßã‘æË+
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ì‰ïÍ8àÓ¢ÃÊ+
-Ksquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8ç“®ÙÊ+
-Asquid:S1166"%Either log or rethrow this exception.(™÷£Ñ8ŒÆŞæË+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(»“™Š8«ÍŞÂÊ+
-Fsquid:S1166"%Either log or rethrow this exception.(Êú‹şÿÿÿÿ8÷›ô×Ê+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(»“™Š8ßã‘æË+
-zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(íê÷üÿÿÿÿ8®‚êÂÊ+
+Gsquid:S1068"+Remove this unused "doneSub" private field.(ØÍöÄ8ÌÇ—ÅÎ+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ì‰ïÍ8¤Ì‹ÖÍ+
+rsquid:S1450"VRemove the "doneSub" field and declare it as a local variable in the relevant methods.(ØÍöÄ8ÌÇ—ÅÎ+
 Dsquid:S3010"#Remove this assignment of "stanze".(²ô­°şÿÿÿÿ8ÈµŠÃÊ+
-ksquid:S1132"JMove the "exit" string literal on the left side of this string comparison.(Ş‚‘şÿÿÿÿ8«ÍŞÂÊ+
 V
-squid:S106";Replace this usage of System.out or System.err by a logger.(ÈÄÅÂ8ŒÆŞæË+
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¨ı™„Ë+
-usquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(†¾Ö½8÷›ô×Ê+
+squid:S106";Replace this usage of System.out or System.err by a logger.(Ø¼¢ƒ8½ñÏÉÎ+
 [
-squid:S106";Replace this usage of System.out or System.err by a logger.(ØĞÓµúÿÿÿÿ8«ÍŞÂÊ+
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8´ŠßæË+
-Isquid:S1172"-Remove this unused method parameter "player".(õÑ­ÿ8Û¾ÿ‹Ë+
-Rsquid:S1068"1Remove this unused "rmiSubscriber" private field.(„Ô¤úÿÿÿÿ8·ã×Ê+
-^squid:S1163"=Refactor this code to not throw exceptions in finally blocks.(¾™¸¿ıÿÿÿÿ8÷›ô×Ê+
-Asquid:S1166"%Either log or rethrow this exception.(®ŞØÍ8´ŠßæË+
-Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8÷›ô×Ê+
-Psquid:S1068"/Remove this unused "ROOMS_MUTEX" private field.(˜Œ£ëıÿÿÿÿ8ÌÑ’Ë+
+squid:S106";Replace this usage of System.out or System.err by a logger.(ç±¸¿ûÿÿÿÿ8¸÷àĞÎ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(ØĞÓµúÿÿÿÿ8¤Ì‹ÖÍ+
+Psquid:S1068"4Remove this unused "socketSubscriber" private field.(éû¿×8ÌÇ—ÅÎ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(ß‡Î“ÿÿÿÿÿ8¸æŒÇÎ+
+Asquid:S1166"%Either log or rethrow this exception.(™÷£Ñ8¤Ì‹ÖÍ+
+Asquid:S1166"%Either log or rethrow this exception.(ï­£Ä8¤Ì‹ÖÍ+
+ksquid:S1132"JMove the "show" string literal on the left side of this string comparison.(ı‘«ÿÿÿÿÿ8½ñÏÉÎ+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¤Ì‹ÖÍ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(àş¦úÿÿÿÿ8õ£ŸÚÎ+
+U
+squid:S106";Replace this usage of System.out or System.err by a logger.(«¨ÂW8Ü¼»”Ğ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(áñÁ·8«ÏÑÉÎ+
+\squid:S2259"@NullPointerException might be thrown as 'event' is nullable here(”ÜÿÌ8Ü¼»”Ğ+
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(íê÷üÿÿÿÿ8®‚êÂÊ+
 usquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(… õ¯8ìÙâÿÊ+
-Asquid:S1166"%Either log or rethrow this exception.(ï­£Ä8«ÍŞÂÊ+
-ksquid:S1132"JMove the "exit" string literal on the left side of this string comparison.(Ş‚‘şÿÿÿÿ8ßã‘æË+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(à’ ÿÿÿÿÿ8÷›ô×Ê+
-Asquid:S1166"%Either log or rethrow this exception.(ï­£Ä8¨ı™„Ë+
-Usquid:S1143"4Remove this throw statement from this finally block.(¾™¸¿ıÿÿÿÿ8÷›ô×Ê+
-Asquid:S1166"%Either log or rethrow this exception.(™÷£Ñ8½ÒüèË+
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8½ÒüèË+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(Šóùì8Ü¼»”Ğ+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¤Ì‹ÖÍ+

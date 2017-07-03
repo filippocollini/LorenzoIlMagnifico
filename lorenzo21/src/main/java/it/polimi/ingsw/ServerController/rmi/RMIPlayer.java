@@ -1,10 +1,14 @@
 package it.polimi.ingsw.ServerController.rmi;
 
+import it.polimi.ingsw.ClientController.RMIClientInterface;
+import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
+import it.polimi.ingsw.ServerController.PlayerInterface;
 
 import java.io.Serializable;
 import java.net.SocketException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -12,10 +16,19 @@ import java.util.*;
  */
 public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implements Remote {
 
+    private RMIClientInterface playerInt;
+
     /**
      * Default constructor
+     * @param playerInt
      */
-    public RMIPlayer() {
+    public RMIPlayer(RMIClientInterface playerInt) {
+        this.playerInt=playerInt;
+    }
+
+    @Override
+    public void dispatchGameSettings(Game game) throws RemoteException {
+        playerInt.notifyGameStarted(game);
     }
 
 

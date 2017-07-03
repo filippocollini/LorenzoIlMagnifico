@@ -8,5 +8,5 @@ import java.io.Serializable;
 public interface Event extends Serializable {
 
     public boolean isLegal();
-    public void eventHappened();
+    public String eventHappened();
 }

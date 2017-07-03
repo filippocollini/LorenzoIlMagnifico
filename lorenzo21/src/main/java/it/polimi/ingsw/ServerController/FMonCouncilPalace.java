@@ -15,7 +15,8 @@ public class FMonCouncilPalace implements Event {
     }
 
     @Override
-    public void eventHappened() {
+    public String eventHappened() {
 
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.GameModelServer.Player;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -24,6 +25,7 @@ public class Stanza implements Serializable {
     }
 
     private transient Timer timer;
+
     public static final int MAXPLAYERS = 4;
 
     /**
@@ -49,23 +51,28 @@ public class Stanza implements Serializable {
     public boolean matchStarted;
 
 
+
     public void joinPlayer(AbstractPlayer player, String username) {
         players.put(username, player);
         if(players.size()>1 && !timerStarted) {
-            timerHandler();
+            timer = new Timer();
+            timer.schedule(new GameHandler(), 20*1000L);
+            timerStarted=true;
             System.out.println("parte il countdown");
         }else
             if(players.size()==MAXPLAYERS){
                 timer.cancel();
-                matchStarted=true;
+                timer.purge();
+                timer.schedule(new GameHandler(), 0L);
                 System.out.println("numero massimo di giocatori raggiunto, INIZIA LA PARTITA!");
-                //chiama gameConfiguration
             }else if(players.size()>1 && timerStarted){
                 timer.cancel();
+                timer.purge();
                 System.out.println("riparte il countdown");
-                timerHandler();
+                timer = new Timer();
+                timer.schedule(new GameHandler(), 20*1000L);
+                timerStarted=true;
             }
-        System.out.println("notifica i clients");
     }
 
     private void timerHandler(){
@@ -81,9 +88,9 @@ public class Stanza implements Serializable {
                     matchStarted=true;
                     //chiama gameConfiguration
                     System.out.println("INIZIA LA PARTITA!");
-                    for(AbstractPlayer c: players.values()){
+                    /*for(AbstractPlayer c: players.values()){
                         c.send("inizia la partita");
-                    }
+                    }*/
                 }
 
             }
@@ -95,5 +102,30 @@ public class Stanza implements Serializable {
         return players.size();
     }
 
+    private class GameHandler extends TimerTask{
+
+        @Override
+        public void run() {
+            System.out.println("start");
+            configuration();
+            System.out.println("creato tutto");
+            dispatchGameToPlayers();
+
+        }
+    }
+
+    private void configuration(){
+        this.game=new Game(players, this);
+    }
+
+    private void dispatchGameToPlayers(){
+        for (AbstractPlayer p : players.values()){
+            try {
+                p.dispatchGameSettings(game);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

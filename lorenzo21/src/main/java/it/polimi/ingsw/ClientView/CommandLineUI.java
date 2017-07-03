@@ -3,6 +3,7 @@ package it.polimi.ingsw.ClientView;
 import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.ClientController.RMIClient;
 import it.polimi.ingsw.ClientController.SocketClient;
+import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.Rules;
 import it.polimi.ingsw.ServerController.Server;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
@@ -20,6 +21,7 @@ public class CommandLineUI extends AbstactUI {
     private static final int SOCKETPORT= 7771;
     private static final int RMIPORT= 7772;
     private static final String HOST = "127.0.0.1";
+    private Game game;
 
     /**
      * Default constructor
@@ -28,10 +30,12 @@ public class CommandLineUI extends AbstactUI {
 
     }
 
-    public static void main(String[] args) {
+    public void start() {
         Server server = new Server();
 
         Scanner scanner = new Scanner(System.in);
+
+        String request;
 
         String connection;
 
@@ -44,7 +48,7 @@ public class CommandLineUI extends AbstactUI {
 
         if(connection.matches("rmi")){
             try {
-                client = new RMIClient(HOST, RMIPORT);
+                client = new RMIClient(HOST, RMIPORT, this);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -52,19 +56,27 @@ public class CommandLineUI extends AbstactUI {
             try {
                 Socket socket = new Socket(HOST, SOCKETPORT);
                 client = new SocketClient(new SocketPlayer(socket), HOST, SOCKETPORT);
-                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        Rules rules;
+        client.connect();
 
-        if(client==null)
-            System.out.println("manda eccezione");
-        else
-            rules = new Rules();
+        while(true){
+            System.out.println("Fai la tua mossa: ");
+            request = scanner.nextLine();
+            client.move(request);
+        }
 
+
+
+
+    }
+
+    public void gameStarted(Game game){
+        this.game = game;
+        System.out.println("Game started, auannad!");
     }
 
 

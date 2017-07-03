@@ -1,6 +1,8 @@
 package it.polimi.ingsw.ServerController.socket;
 
+import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
+import it.polimi.ingsw.ServerController.Rules;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,14 +16,16 @@ import java.util.NoSuchElementException;
  * Created by filippocollini on 14/06/17.
  */
 
-public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M>{
+public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
     Socket socket;
     ObjectInputStream in;
     ObjectOutputStream out;
+    Rules rules;
 
     public SocketPlayer(Socket sc) {
         socket = sc;
+        rules = new Rules();
 
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -31,12 +35,18 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M>{
         }
     }
 
+    @Override
+    public void dispatchGameSettings(Game game) {
+        rules.notifyGameConfigurationDone(game);
+    }
+
     public M receive() throws SocketException {
         try{
             return ((M) in.readObject());
         }catch(NoSuchElementException | ClassNotFoundException | IOException e){
-            throw new SocketException("Socket failed");
+            e.printStackTrace();
         }
+        return null;
     }
 
     public void send(M message) {

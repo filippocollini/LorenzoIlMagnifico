@@ -14,7 +14,8 @@ public class SellLeaderCard implements Event {
     }
 
     @Override
-    public void eventHappened() {
+    public String eventHappened() {
 
+        return null;
     }
 }

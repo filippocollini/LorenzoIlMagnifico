@@ -14,7 +14,8 @@ public class FMonMarket implements Event {
         return true;
     }
 
-    public void eventHappened(){ //non serve passare l'event
+    public String eventHappened(){ //non serve passare l'event
         System.out.println("market");
+        return "scegli cosa prendere dal mercato";
     }
 }

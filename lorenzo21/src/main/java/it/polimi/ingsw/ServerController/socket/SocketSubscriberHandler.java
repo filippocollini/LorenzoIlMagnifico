@@ -43,16 +43,24 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
         login();
         System.out.println("login fatto");
         comm.send(Message.LOGINOK);
-        //TODO sincronizzare questo in base al turno
-        while(!isDone()){
+
+        //TODO sincronizzare questo in base al turno e aggiungere il login come azione nelle rules
+        String result;
+        while(true){
             try {
                 String request = (String) comm.receive();
                 System.out.println("richiesta ricevuta");
-                rules.handleRequest(request);
+                result=broker.handleRequest(request);
+                comm.send(result);
+                if (!result.equalsIgnoreCase(Server.EVENT_DONE) && !result.equalsIgnoreCase(Server.EVENT_FAILED));
+                    System.out.println(comm.receive());
             } catch (SocketException e) {
                 e.printStackTrace();
+            }finally {
+                comm.close();
             }
         }
+
     }
 
     private void login(){
@@ -60,26 +68,30 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
         boolean correct=false;
         while (!correct) {
             try {
-                comm.send("Insert Username to Login: ");
                 username = (String) comm.receive();
-                System.out.println("Ricevuto il nome");
             } catch (SocketException e) {
                 e.printStackTrace();
             }
             correct=broker.joinPlayer(comm, username);
             if(correct==false)
                 comm.send(Message.LOGINKO);
-            /*if (room != null) {
-                broker.subscribe(this, (T) room);
-                correct = true;
-                System.out.println("Player Joined");
-                comm.send("Player joined");
-                //START TIMEOUT
-            } else
-                comm.send("Username not available, try again!\n");
-            */
-
         }
+    }
+
+    public String receiveRequest(String request){
+        String result = "...";
+        try {
+            System.out.println("richiesta ricevuta");
+            result=broker.handleRequest(request);
+            comm.send(result);
+            if (!result.equalsIgnoreCase(Server.EVENT_DONE) && !result.equalsIgnoreCase(Server.EVENT_FAILED));
+            System.out.println(comm.receive());
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }finally {
+            comm.close();
+        }
+        return result;
     }
 
     private boolean done = false;

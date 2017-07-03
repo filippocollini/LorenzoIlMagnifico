@@ -1,6 +1,9 @@
 package it.polimi.ingsw.ServerController;
 
+import it.polimi.ingsw.GameModelServer.Game;
+
 import java.net.SocketException;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -19,7 +22,7 @@ public abstract class AbstractPlayer<M> {
         player= new Player();
     }
 
-    //public abstract void dispatchMessage(M msg);
+    public abstract void dispatchGameSettings(Game game) throws RemoteException;
 
     /**
      * 

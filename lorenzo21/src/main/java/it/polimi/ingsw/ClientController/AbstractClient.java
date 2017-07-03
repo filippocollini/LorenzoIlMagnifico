@@ -15,6 +15,8 @@ public abstract class AbstractClient  {
 
     }
 
+    public abstract String handleClientRequest(String request);
+
     /**
      *
      */
@@ -31,4 +33,7 @@ public abstract class AbstractClient  {
     private AbstractPlayer player;
 
 
+    public abstract void connect();
+
+    public abstract String move(String request);
 }

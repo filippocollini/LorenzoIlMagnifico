@@ -14,7 +14,8 @@ public class PlayLeaderCard implements Event {
     }
 
     @Override
-    public void eventHappened() {
+    public String eventHappened() {
 
+        return null;
     }
 }

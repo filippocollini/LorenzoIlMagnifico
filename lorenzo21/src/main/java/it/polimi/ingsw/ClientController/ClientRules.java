@@ -8,52 +8,53 @@ import it.polimi.ingsw.ServerController.TurnHandler;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Created by filippocollini on 11/06/17.
  */
 public class ClientRules {
 
-    private final EventInputStream in;
-
-    private final EventOutputStream out;
-
-    private final ClientRules clientRules;
-
-    private final HashMap<String, Handler> eventMap;
+    private final HashMap<String, Handler> answerMap;
 
     private TurnHandler turn;
 
-    public ClientRules(EventInputStream in, EventOutputStream out, ClientRules clientRules){
-        this.in=in;
-        this.out=out;
-        this.clientRules=clientRules;
-        eventMap= new HashMap<>();
+    public static final String ERROR = "error, cannot answer";
+
+    private Scanner scanner;
+
+    public ClientRules(){
+        scanner = new Scanner(System.in);
+        answerMap= new HashMap<>();
         createMapping();
     }
 
     private void createMapping() {
-        eventMap.put(Message.ESEMPIO_REPLY, this::esempio);
+        answerMap.put(Message.ESEMPIO_REPLY, this::esempio);
 
     }
 
-    public void esempio(){
-
+    public String esempio(){
+        System.out.println("Cosa vuoi dal market?");
+        String answer = scanner.nextLine();
+        return answer;
     }
 
     //----------------------------------------------------------
 
 
-    public void responseHandler(Object object) {
-        Handler handler = eventMap.get(object);
+    public String responseHandler(Object object) {
+        String response = ERROR;
+        Handler handler = answerMap.get(object);
         if (handler != null) {
-            handler.handle();
+            response = handler.handle();
         }
+        return response;
     }
 
     @FunctionalInterface
     private interface Handler {
-        void handle();
+        String handle();
     }
 
 }

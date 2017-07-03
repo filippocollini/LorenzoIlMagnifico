@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ClientController;
 
+import it.polimi.ingsw.GameModelServer.Game;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -18,6 +20,16 @@ public class RMIClientInterfaceImpl extends UnicastRemoteObject implements RMICl
 
     @Override
     public void notify2(long val1, long val2) throws RemoteException, Exception {
+
+    }
+
+    @Override
+    public void dispatchMessage(Object msg) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyGameStarted(Game game) throws RemoteException {
 
     }
 }
