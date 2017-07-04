@@ -1,4 +1,6 @@
 
-Isquid:S1068"(Remove this unused "turn" private field.( âÍ¢úÿÿÿÿ8­Œì»É+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(¬ÏåĞ8³è·ÆĞ+
 ‘squid:S1319"pThe type of the "eventMap" object should be an interface such as "Map" rather than the implementation "HashMap".(’ØÅÇüÿÿÿÿ8óé½”Ğ+
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(÷ç»™8–‚»”Ğ+
+Lsquid:S1172"+Remove this unused method parameter "game".(™„ÇÁùÿÿÿÿ8³è·ÆĞ+
+Isquid:S1068"(Remove this unused "turn" private field.( âÍ¢úÿÿÿÿ8­Œì»É+

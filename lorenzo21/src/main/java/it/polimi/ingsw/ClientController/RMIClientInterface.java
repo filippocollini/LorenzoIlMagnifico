@@ -16,4 +16,5 @@ public interface RMIClientInterface<M> extends Remote {
     public void dispatchMessage(M msg) throws RemoteException;
     public void notifyGameStarted(Game game) throws RemoteException;
     public void notifyProva() throws RemoteException;
+    public void notifyTurnStarted() throws RemoteException;
 }

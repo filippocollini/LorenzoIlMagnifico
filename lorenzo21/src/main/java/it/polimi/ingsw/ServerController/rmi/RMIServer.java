@@ -1,25 +1,29 @@
 package it.polimi.ingsw.ServerController.rmi;
 
-import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.ClientController.RMIClientInterface;
 import it.polimi.ingsw.ServerController.*;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by filippocollini on 21/06/17.
  */
 public class RMIServer extends AbstractServer implements Callback{
+
     public RMIServer(ConnectionInterface connectionHandler) {
         super(connectionHandler);
+        map = new HashMap<>();
     }
 
     private Object callbackObj;
+
+    private HashMap<String, AbstractPlayer> map;
 
     public void startRMIServer(int rmiPort) {
 
@@ -37,24 +41,30 @@ public class RMIServer extends AbstractServer implements Callback{
     }
 
     @Override
-    public synchronized int joinPlayer(String username, RMIClientInterface client) throws RemoteException{
+    public synchronized String joinPlayer(String username, RMIClientInterface client) throws RemoteException{
         if(!(client instanceof RMIClientInterface))
             return Callback.FAILURE;
-        System.out.println("sono nell'rmi server");
-        boolean used = getConnectionHandler().joinPlayer(new RMIPlayer(client), username);
+        RMIPlayer rmiPlayer = new RMIPlayer(client);
+        boolean used = getConnectionHandler().joinPlayer(rmiPlayer, username);
         if(false == used)
             return Callback.FAILURE;
-        return Callback.SUCCESS;
+        String uuid = UUID.randomUUID().toString();
+        map.put(uuid, rmiPlayer);
+        return uuid;
     }
 
     @Override
-    public synchronized String sendObject(Object Obj) throws RemoteException {
-        return "mueve tu cuerpo alegria macarena";
+    public void sendRequest(String request) throws RemoteException {
+
+    }
+
+    public void marketMove(String uuid) throws RemoteException{
+        map.get(uuid).getRoom().marketEvent(map.get(uuid));
     }
 
     @Override
-    public String sendLong(long val) throws RemoteException, Exception {
-        return null;
+    public void sendLong(long val) throws RemoteException, Exception {
+
     }
 
 }

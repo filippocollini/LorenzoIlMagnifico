@@ -46,6 +46,11 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
     }
 
+    @Override
+    public void notifyTurnStarted() throws RemoteException {
+
+    }
+
     public M receive() throws SocketException {
         try{
             return ((M) in.readObject());

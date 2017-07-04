@@ -19,9 +19,10 @@ public class Stanza implements Serializable {
      */
     public Stanza() {
         players= new HashMap<>();
-        list = new ArrayList<AbstractPlayer>((Collection<? extends AbstractPlayer>) players.values());
+        stack = new Stack();
         timerStarted = false;
         matchStarted= false;
+        turnHandler = new TurnHandler(stack, this);
     }
 
     private transient Timer timer;
@@ -31,7 +32,7 @@ public class Stanza implements Serializable {
     /**
      *
      */
-    ArrayList<AbstractPlayer> list;
+    Stack stack;
 
     /**
      *
@@ -49,6 +50,10 @@ public class Stanza implements Serializable {
     private boolean timerStarted;
 
     public boolean matchStarted;
+
+    TurnHandler turnHandler;
+
+    PlayerTurn turn;
 
 
 
@@ -111,26 +116,39 @@ public class Stanza implements Serializable {
             System.out.println("creato tutto");
             //dispatchGameToPlayers();
             dispatchProva();
-            timer.schedule(new TurnHandler(), 10*1000L);
+            //timer.schedule(new TurnHandler(), 10*1000L);
+            //turnHandler.run();
+            setStack();
+            AbstractPlayer p = (AbstractPlayer) stack.pop();
+            for(; stack.size()==1; p= (AbstractPlayer) stack.pop()){
+                startPlayerTurn(p);
+            }
 
         }
 
 
     }
 
-    private class TurnHandler extends TimerTask{
+    private void startPlayerTurn(AbstractPlayer p){
+        turn = new PlayerTurn(p, this);
+    }
+
+    /*private class TurnHandler extends TimerTask{
 
         @Override
         public void run() {
             for(AbstractPlayer p : players.values()){
                 try {
                     dispatchToPlayer(p);
+                    Thread.sleep(10000);
                 } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
-    }
+    }*/
 
     private void dispatchToPlayer(AbstractPlayer player) throws RemoteException {
         player.dispatchEsempio();
@@ -158,6 +176,31 @@ public class Stanza implements Serializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setStack(){
+        for(AbstractPlayer p : players.values()){
+            if(p.disconnected==false)
+                stack.push(p);
+        }
+    }
+
+    public void playerDisconnected(AbstractPlayer player){
+        player.disconnected=true;
+        //TODO player disconnesso ritorna
+    }
+
+    public void marketEvent(AbstractPlayer abstractPlayer){
+        if (turn!=null && turn.getPlayer().equals(abstractPlayer))
+            System.out.println("chiamo il metodo vero e proprio");
+    }
+
+    public void notifyPlayerMadeAMove(){
+        turn.playerMadeAMove();
+    }
+
+    public void notifyEndTurn(){
+        turn.endTurn();
     }
 
 }

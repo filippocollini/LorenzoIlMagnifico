@@ -15,6 +15,8 @@ public abstract class AbstractPlayer<M> {
 
     Player player;
 
+    public boolean disconnected = false;
+
     /**
      * Default constructor
      */
@@ -25,6 +27,8 @@ public abstract class AbstractPlayer<M> {
     public abstract void dispatchGameSettings(Game game) throws RemoteException;
 
     public abstract void dispatchEsempio() throws RemoteException;
+
+    public abstract void notifyTurnStarted() throws RemoteException;
 
     /**
      * 

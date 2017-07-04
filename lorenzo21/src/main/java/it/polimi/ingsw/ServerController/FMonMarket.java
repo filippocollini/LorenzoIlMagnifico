@@ -1,5 +1,9 @@
 package it.polimi.ingsw.ServerController;
 
+import it.polimi.ingsw.ClientController.AbstractClient;
+
+import java.rmi.RemoteException;
+
 /**
  * Created by filippocollini on 26/05/17.
  */
@@ -14,8 +18,9 @@ public class FMonMarket implements Event {
         return true;
     }
 
-    public String eventHappened(){ //non serve passare l'event
+    public void eventHappened(AbstractClient client, String uuid) throws RemoteException {
         System.out.println("market");
-        return "scegli cosa prendere dal mercato";
+        client.marketMove(uuid);
+
     }
 }

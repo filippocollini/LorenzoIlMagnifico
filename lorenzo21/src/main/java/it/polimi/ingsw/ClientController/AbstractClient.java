@@ -1,6 +1,9 @@
 package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ServerController.AbstractPlayer;
+import it.polimi.ingsw.ServerController.State;
+
+import java.rmi.RemoteException;
 
 /**
  * 
@@ -35,5 +38,7 @@ public abstract class AbstractClient  {
 
     public abstract void connect();
 
-    public abstract String move(String request);
+    public abstract void handle(String request, State state) throws RemoteException;
+
+    public abstract void marketMove(String uuid) throws RemoteException;
 }

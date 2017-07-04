@@ -37,4 +37,9 @@ public class RMIClientInterfaceImpl extends UnicastRemoteObject implements RMICl
     public void notifyProva() throws RemoteException {
 
     }
+
+    @Override
+    public void notifyTurnStarted() throws RemoteException {
+
+    }
 }

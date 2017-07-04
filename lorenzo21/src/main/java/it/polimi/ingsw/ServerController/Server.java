@@ -195,7 +195,7 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
 
     @Override
     public String handleRequest(String request) {
-        Event event = rules.eventMap.get(request);
+        /*Event event = rules.eventMap.get(request);
         String result=EVENT_FAILED;
         if(event!=null)
             System.out.println("trovato l'evento");
@@ -203,7 +203,8 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
             System.out.println("evento non trovato");
         if(event.isLegal())
             result = event.eventHappened();
-        return result;
+        return result;*/
+        return null;
     }
 
     

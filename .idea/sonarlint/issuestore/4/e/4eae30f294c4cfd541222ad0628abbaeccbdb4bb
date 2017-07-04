@@ -1,17 +1,19 @@
 
+Asquid:S1166"%Either log or rethrow this exception.(«Òéú8‘ğÄÊÎ+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(í‘®şúÿÿÿÿ8š®ô«Í+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(óç­˜ÿÿÿÿÿ8ëÈëÇĞ+
 U
 squid:S106";Replace this usage of System.out or System.err by a logger.(èÇß98ÇÕ¥ËÏ+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(Àúû‹ıÿÿÿÿ8ÇÕ¥ËÏ+
-Asquid:S1166"%Either log or rethrow this exception.(«Òéú8‘ğÄÊÎ+
-7squid:S2326"T is not used in the class.(Ê’îÕ8¸Å¸®Í+
 V
 squid:S106";Replace this usage of System.out or System.err by a logger.(ïÉß™8‘ğÄÊÎ+
 [
 squid:S106";Replace this usage of System.out or System.err by a logger.(ıÍ¦¿ûÿÿÿÿ8––¡ËÏ+
 [
-squid:S106";Replace this usage of System.out or System.err by a logger.(¡ÜÜ”ûÿÿÿÿ8š›ƒ¯Í+
+squid:S106";Replace this usage of System.out or System.err by a logger.(Àúû‹ıÿÿÿÿ8ÇÕ¥ËÏ+
+7squid:S2326"M is not used in the class.(Ê’îÕ8¸Å¸®Í+
+7squid:S2326"T is not used in the class.(Ê’îÕ8¸Å¸®Í+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‰¦àı8Ç’±¨Ğ+
 [
 squid:S106";Replace this usage of System.out or System.err by a logger.(Û¬óÜûÿÿÿÿ8š›ƒ¯Í+
-7squid:S2326"M is not used in the class.(Ê’îÕ8¸Å¸®Í+
-¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(í‘®şúÿÿÿÿ8š®ô«Í+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(¡ÜÜ”ûÿÿÿÿ8š›ƒ¯Í+

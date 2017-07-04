@@ -1,14 +1,14 @@
 package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ServerController.Message;
-import it.polimi.ingsw.ServerController.Player;
 import it.polimi.ingsw.ServerController.Server;
+import it.polimi.ingsw.ServerController.State;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.Socket;
 import java.net.SocketException;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -78,27 +78,31 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
 
     }
 
-    public String move(String msg){
+    public void handle(String msg, State state){
         comm.send((M) msg);
         try {
             String answer = (String) comm.receive();
             System.out.println(answer);
             if (answer.equalsIgnoreCase(Server.EVENT_FAILED)){
                 System.out.println("evento andato male");
-                return Server.EVENT_FAILED;
+
             }else if (answer.equalsIgnoreCase(Server.EVENT_DONE)) {
                 System.out.println("evento riuscito");
-                return Server.EVENT_DONE;
+
             }else {
                 System.out.println("serve interazione col client");
-                return answer;
+
             }
 
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        //point that should never be reached
-        return null;
+
+    }
+
+    @Override
+    public void marketMove(String uuid) throws RemoteException {
+
     }
 
     @Override

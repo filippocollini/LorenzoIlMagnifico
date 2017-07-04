@@ -159,9 +159,9 @@ z
 Jlorenzo21/src/main/java/it/polimi/ingsw/ServerController/rmi/Callback.java,f/2/f2cd9ba500d67874a9962fd9c798f0048c1a6b0b
 {
 Klorenzo21/src/main/java/it/polimi/ingsw/ServerController/rmi/RMIServer.java,1/3/13a90f8eb40960c32ca9d4f3f753979b613c4396
-‚
-Rlorenzo21/src/main/java/it/polimi/ingsw/ServerController/ClientRequestHandler.java,7/c/7c7d371deced32c08990fc1093a0f27b83e86385
 u
 Elorenzo21/src/main/java/it/polimi/ingsw/ClientView/CommandLineUI.java,b/a/ba96543c81cad263b8cc832bd4439384aa7ebf68
 Œ
 \lorenzo21/src/main/java/it/polimi/ingsw/ServerController/socket/SocketSubscriberHandler.java,4/e/4e776c10964d27da7769542d00e737556325c649
+€
+Plorenzo21/src/main/java/it/polimi/ingsw/ServerController/LorenzoIlMagnifico.java,7/6/760d143b6f74672a76b6fb820e9ff9d62cde610f

@@ -36,6 +36,11 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
         playerInt.notifyProva();
     }
 
+    @Override
+    public void notifyTurnStarted() throws RemoteException {
+        playerInt.notifyTurnStarted();
+    }
+
 
     @Override
     public M receive() {

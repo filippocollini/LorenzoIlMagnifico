@@ -2,6 +2,7 @@ package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ClientView.CommandLineUI;
 import it.polimi.ingsw.GameModelServer.Game;
+import it.polimi.ingsw.ServerController.State;
 import it.polimi.ingsw.ServerController.rmi.Callback;
 
 import java.io.Serializable;
@@ -18,10 +19,12 @@ import java.util.Scanner;
 public class RMIClient<M extends Serializable, T extends Serializable> extends AbstractClient implements RMIClientInterface {
 
     private String username;
-    static Callback server;
+    static Callback server; //TODO NullPointerException
     private String host;
     private int port;
     CommandLineUI cli;
+    private String uuid;
+
 
 
     public RMIClient(String host, int port, CommandLineUI cli) throws RemoteException {
@@ -46,20 +49,21 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
             UnicastRemoteObject.exportObject(this,0);
 
             System.out.println("Client up on server");
-            int result;
+            String result;
 
             do{
                 System.out.println("Insert username:");
                 String user = sc.nextLine();
                 this.username = user;
                 result = login(server, username, this);
-                if (result == Callback.FAILURE)
+                if (result.equals(Callback.FAILURE))
                 {
                     System.out.println("1. Couldn't send client object to server");
                 }
                 else
                     System.out.println("1. Success sending ClientObject to server");
-            }while(result== Callback.FAILURE);
+            }while(result.equals(Callback.FAILURE));
+            uuid=result;
 
         } catch (RemoteException | NotBoundException e) {
 
@@ -67,7 +71,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
     }
 
-    private int login(Callback server, String username, RMIClientInterface client) throws RemoteException {
+    private String login(Callback server, String username, RMIClientInterface client) throws RemoteException {
         return server.joinPlayer(username, client);
     }
 
@@ -101,9 +105,18 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         cli.esempio();
     }
 
+    @Override
+    public void notifyTurnStarted() throws RemoteException {
+        cli.notifyTurnStarted();
+    }
 
-    public String move(String msg) {
-        return null;
+
+    public void handle(String request, State state) throws RemoteException {
+        state.handle(request, this, uuid);
+    }
+
+    public void marketMove(String uuid) throws RemoteException {
+        server.marketMove(uuid);
     }
 
     @Override
