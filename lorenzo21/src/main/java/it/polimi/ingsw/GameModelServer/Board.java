@@ -212,7 +212,7 @@ public class Board{
     }
 
     private Tower creategreenTower(){
-        Tower tower = new Tower();
+        Tower tower = new Tower("Territory");
         JsonObject jterritory;
         JsonArray arrayterritory;
         CellTower singlecell = new CellTower();
@@ -242,7 +242,7 @@ public class Board{
     }
 
     private Tower createblueTower(){
-        Tower tower = new Tower();
+        Tower tower = new Tower("Character");
         JsonObject jcharacter;
         JsonArray arraycharacter;
         CellTower singlecell = new CellTower();
@@ -271,7 +271,7 @@ public class Board{
     }
 
     private Tower createyellowTower(){
-        Tower tower = new Tower();
+        Tower tower = new Tower("Building");
         JsonObject jbuilding;
         JsonArray arraybuilding;
         CellTower singlecell = new CellTower();
@@ -300,7 +300,7 @@ public class Board{
     }
 
     private Tower createvioletTower(){
-        Tower tower = new Tower();
+        Tower tower = new Tower("Venture");
         JsonObject jventure;
         JsonArray arrayventure;
         CellTower singlecell = new CellTower();
@@ -378,22 +378,18 @@ public class Board{
     return faithTrack;
     }
 
-    public Tower getBuildingsTower() {
-        return buildingsTower;
+    public Tower getTower(String type){
+        Tower tower;
+        if(type.equals("Territory"))
+            tower = territoriesTower;
+        else if(type.equals("Character"))
+            tower = charactersTower;
+        else if(type.equals("Venture"))
+            tower = venturesTower;
+        else
+            tower = buildingsTower;
+        return tower;
     }
-
-    public Tower getCharactersTower() {
-        return charactersTower;
-    }
-
-    public Tower getTerritoriesTower() {
-        return territoriesTower;
-    }
-
-    public Tower getVenturesTower() {
-        return venturesTower;
-    }
-
     public void getVari() {
         // TODO implement here
     }

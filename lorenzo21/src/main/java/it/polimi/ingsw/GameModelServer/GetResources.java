@@ -21,7 +21,7 @@ public class GetResources extends EffectStrategy implements Cloneable {
         return id;
     }
 
-    public List<Risorsa> getResources(){
+    public List<Risorsa> getResource(){
         return extendedresources;
     }
 
@@ -29,28 +29,38 @@ public class GetResources extends EffectStrategy implements Cloneable {
         this.id = id;
     }
 
-    public void setResources(List<Risorsa> extendedresources) {
+    public void setResource(List<Risorsa> extendedresources) {
         this.extendedresources = extendedresources;
     }
 
     @Override
-    public void apply(Player player) {  //TODO implementare anche i token della board con i punti
+    public Player apply(Player player) {
+        int i = 0;
+        int j = 0;
+        int oldvalue;
         for(Risorsa rex : player.getPB().getresources()) {
             for (Risorsa reward : extendedresources){
                 if(reward.gettipo().equals(rex.gettipo())){
-                    rex.setQuantity(rex.getquantity()+reward.getquantity());
+                    player.getPB().getresources().get(j).setQuantity(rex.getquantity()+reward.getquantity());
                 }
             }
+            j++;
+        }
+        for(Token token : player.board.getTokens(player.getColor())){
+            for(Risorsa reward : extendedresources){
+                if(reward.gettipo().equals(token.getType())){
+                    oldvalue = player.board.getTokens(player.getColor())[i].getPosition();
+                    player.board.getTokens(player.getColor())[i].setPosition(oldvalue + reward.getquantity());
+                }
+            }
+            i++;
         }
 
+        return player;
     }
 
     @Override
     public Object clone()  {
-       try{ return super.clone();
-    }catch(CloneNotSupportedException e){
-      e.printStackTrace();//TODO
-       }
-    return null;
+       return super.clone();
     }
 }

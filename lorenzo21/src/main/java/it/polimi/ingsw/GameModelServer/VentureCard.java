@@ -15,7 +15,8 @@ public class VentureCard extends DevelopementCard {
     private boolean choice;
 
 
-    public List<Risorsa> getCost1(){
+    @Override
+    public List<Risorsa> getCost1() {
         return cost1;
     }
 
@@ -33,7 +34,31 @@ public class VentureCard extends DevelopementCard {
 
 
     @Override
-    public void activateEffect(int id) {
-        super.activateEffect(id);
+    public EffectStrategy activateEffect(int id) {
+        EffectStrategy righteffect = null;
+        if(id==0)
+            return righteffect;
+        for(GetResources effect : getres){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetFreeAction effect : freeaction){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+
+        for(GetResourcesIf effect : resif){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetBoostDice effect : boost){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetVPEnd effect : getvp){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        return righteffect;
     }
 }

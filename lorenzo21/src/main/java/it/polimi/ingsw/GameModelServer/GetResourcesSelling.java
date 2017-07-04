@@ -54,16 +54,11 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
 
     @Override
     public Object clone() {
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO
-        }
-    return null;
+        return super.clone();
     }
 
 
-    public void apply(Player player,String color) {
+    public Player apply(Player player, String color) {
         int oldvalue;
         int newvalue;
         int i;
@@ -90,7 +85,6 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
                             if(player.board.getTokens(player.getColor())[i].getType().equals(token.getType()))
                             player.board.getTokens(player.getColor())[i].setPosition(oldvalue - single.getquantity());
                         }
-
                     }
                 }
                 for(Risorsa singlereward : reward){  //punti da guadagnare
@@ -105,6 +99,7 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
             }
         }else
             System.out.println("non puoi");//TODO
+        return player;
     }
 }
 

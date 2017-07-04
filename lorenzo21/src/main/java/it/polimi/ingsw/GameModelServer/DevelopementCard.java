@@ -19,25 +19,32 @@ public class DevelopementCard extends Card implements Cloneable{
     protected int period;
     protected String cardtype;
     protected boolean permchoice;
+
+    private List<Risorsa> listcost;
+    private boolean costchoice;
     protected List<Integer> immediateeffect;
     protected List<Integer> permanenteffect;
     protected List<GetResources> getres;
     protected List<GetFreeAction> freeaction;
-    protected List<GetDiscountClass> discount;
+    protected List<GetFreeandDiscount> discountandfree;
     protected List<GetResourcesSelling> selling;
     protected List<GetResourcesIf> resif;
     protected List<GetBoostDice> boost;
     protected List<GetForEach> resfor;
     protected List<GetVPEnd> getvp;
-    protected Player player;
-    protected String colormember;
+
+
+    protected List<GetBoostandDiscount> discountandboost;
 
     public DevelopementCard() {
         immediateeffect = new ArrayList<>();
         permanenteffect = new ArrayList<>();
+
+        listcost = new ArrayList<>();
         getres = getResourcesparsing();
         freeaction = freeactionparse();
-        discount = discountparse();
+        discountandboost = boostdiscountparse();
+        discountandfree = freediscountparse();
         selling = sellingparse();
         resif = ifparsing();
         boost = getboostparsing();
@@ -46,52 +53,71 @@ public class DevelopementCard extends Card implements Cloneable{
     }
 
     @Override
-    public void activateEffect(int id) {
-
+    public EffectStrategy activateEffect(int id) {
+        EffectStrategy righteffect = null;
+        if(id == 0)
+            return righteffect;
         for(GetResources effect : getres){
             if(effect.getId() == id)
-                effect.apply(this.player);
+                righteffect = effect;
         }
         for(GetFreeAction effect : freeaction){
             if(effect.getId() == id)
-                effect.apply(this.player);
+                righteffect = effect;
         }
-        for(GetDiscountClass effect : discount){
+        for(GetFreeandDiscount effect : discountandfree){
             if(effect.getId() == id)
-                effect.apply(this.player);
+                righteffect = effect;
+        }
+        for(GetBoostandDiscount effect : discountandboost){
+            if(effect.getId() == id)
+                righteffect = effect;
         }
         for (GetResourcesSelling effect : selling){
             if(effect.getId() == id)
-                effect.apply(this.player);
+                righteffect = effect;
         }
         for(GetResourcesIf effect : resif){
             if(effect.getId() == id)
-                effect.apply(player,colormember);
+                righteffect = effect;
         }
         for(GetBoostDice effect : boost){
             if(effect.getId() == id)
-                effect.apply(player);
+                righteffect = effect;
         }
         for(GetForEach effect : resfor){
             if(effect.getId() == id)
-                effect.apply(player,colormember);
+                righteffect = effect;
         }
         for(GetVPEnd effect : getvp){
             if(effect.getId() == id)
-                effect.apply(player);
+                righteffect = effect;
         }
+        return righteffect;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    } //da settare quando si prende la carta
-
-    public void setColor(String color){
-        this.colormember = color;
-    } //da settare se l'effetto si attiva tramite un dado
 
     public String getName(){
         return name;
+    }
+
+
+    public List<Risorsa> getCost1(){
+        return listcost;
+    }
+
+
+
+    public void setCost1(List<Risorsa> cost1){
+        this.listcost = cost1;
+    }
+
+    public void setChoice(boolean costchoice) {
+        this.costchoice = costchoice;
+    }
+
+    public boolean getChoice(){
+        return costchoice;
     }
 
     public int getNumber(){
@@ -122,8 +148,12 @@ public class DevelopementCard extends Card implements Cloneable{
         return boost;
     }
 
-    public List<GetDiscountClass> getDiscount() {
-        return discount;
+    public List<GetFreeandDiscount> getDiscountandFree() {
+        return discountandfree;
+    }
+
+    public List<GetBoostandDiscount> getDiscountandboost() {
+        return discountandboost;
     }
 
     public List<GetForEach> getResfor() {
@@ -185,7 +215,7 @@ public class DevelopementCard extends Card implements Cloneable{
     public List<GetFreeAction> freeactionparse(){
         int i;
         List <GetFreeAction> freeActionlist = new ArrayList<>();
-        GetFreeAction singleeffect = new GetFreeAction();
+        EffectStrategy singleeffect = new GetFreeAction();
         JsonArray arrayfree;
         JsonObject jfree;
         try {
@@ -197,7 +227,7 @@ public class DevelopementCard extends Card implements Cloneable{
                 jfree = arrayfree.get(i).asObject();
                 singleeffect.setId(jfree.get("id").asInt());
                 singleeffect.setDicepower(jfree.get("dice").asInt());
-                singleeffect.setType(jfree.get("type").asString());
+                singleeffect.setTypecard(jfree.get("type").asString());
                 freeActionlist.add(i, (GetFreeAction) singleeffect.clone());
 
 
@@ -208,30 +238,31 @@ public class DevelopementCard extends Card implements Cloneable{
         return freeActionlist;
     }
 
-    //parsing 'getdiscount' effects
-    public List<GetDiscountClass> discountparse(){
+    //parsing 'getboostanddiscount' effects
+    public List<GetBoostandDiscount> boostdiscountparse(){
 
         int i;
-        List<GetDiscountClass> discountlist = new ArrayList<>();
-        GetDiscountClass singlediscount = new GetDiscountClass();
+        List<GetBoostandDiscount> discountboostlist = new ArrayList<>();
+        EffectStrategy singlediscountboost = new GetBoostandDiscount();
         JsonArray arraydiscount;
         JsonObject jdiscount;
         Risorsa coin = new Risorsa();
         Risorsa wood = new Risorsa();
         Risorsa stone = new Risorsa();
-        Risorsa servant = new Risorsa();
+
 
 
         try {
-            File discfile = new File("C:/Users/Simone/Desktop/effetti/payLessResources.json");
+            File discfile = new File("C:/Users/Simone/Desktop/effetti/getBoostandDiscount.json");
             FileReader read = new FileReader(discfile.getAbsolutePath());
 
             arraydiscount = Json.parse(read).asArray();
             for(i=0; i<arraydiscount.size();i++){
                 List<Risorsa> discounts = new ArrayList<>();
                 jdiscount = arraydiscount.get(i).asObject();
-                singlediscount.setId(jdiscount.get("id").asInt());
-                singlediscount.setSelect(jdiscount.getBoolean("choice", false));
+                singlediscountboost.setId(jdiscount.get("id").asInt());
+                singlediscountboost.setSelect(jdiscount.getBoolean("choice", false));
+                singlediscountboost.setDiceboost(jdiscount.getInt("dice",2));
 
                 //RESOURCES
                 coin.setTipo("Coins");
@@ -243,15 +274,13 @@ public class DevelopementCard extends Card implements Cloneable{
                 stone.setTipo("Stones");
                 stone.setQuantity(jdiscount.getInt("Stones", 0));
                 discounts.add(2, (Risorsa) stone.clone());
-                servant.setTipo("Servants");
-                servant.setQuantity(jdiscount.getInt("Servants",0));
-                discounts.add(3, (Risorsa) servant.clone());
 
-                singlediscount.setDiscount(discounts);
 
-                singlediscount.setTypecard(jdiscount.get("type").asString());
+                singlediscountboost.setDiscount(discounts);
 
-                discountlist.add(i, (GetDiscountClass) singlediscount.clone());
+                singlediscountboost.setTypecard(jdiscount.get("type").asString());
+
+                discountboostlist.add(i, (GetBoostandDiscount) singlediscountboost.clone());
 
             }
         }catch(IOException e){
@@ -259,13 +288,65 @@ public class DevelopementCard extends Card implements Cloneable{
         }
 
 
-        return discountlist;
+        return discountboostlist;
+    }
+
+    //parsing 'getfreeanddiscount' effects
+    public List<GetFreeandDiscount> freediscountparse(){
+        int i;
+        List<GetFreeandDiscount> discountfreelist = new ArrayList<>();
+        EffectStrategy singlediscountfree = new GetFreeandDiscount();
+        JsonArray arraydiscount;
+        JsonObject jdiscount;
+        Risorsa coin = new Risorsa();
+        Risorsa wood = new Risorsa();
+        Risorsa stone = new Risorsa();
+
+
+
+        try {
+            File discfile = new File("C:/Users/Simone/Desktop/effetti/getFreeandDiscount.json");
+            FileReader read = new FileReader(discfile.getAbsolutePath());
+
+            arraydiscount = Json.parse(read).asArray();
+            for(i=0; i<arraydiscount.size();i++){
+                List<Risorsa> discounts = new ArrayList<>();
+                jdiscount = arraydiscount.get(i).asObject();
+                singlediscountfree.setId(jdiscount.get("id").asInt());
+
+                singlediscountfree.setDicepower(jdiscount.getInt("dice",2));
+
+                //RESOURCES
+                coin.setTipo("Coins");
+                coin.setQuantity(jdiscount.getInt("Coins",0));
+                discounts.add(0, (Risorsa) coin.clone());
+                wood.setTipo("Woods");
+                wood.setQuantity(jdiscount.getInt("Woods",0));
+                discounts.add(1, (Risorsa) wood.clone());
+                stone.setTipo("Stones");
+                stone.setQuantity(jdiscount.getInt("Stones", 0));
+                discounts.add(2, (Risorsa) stone.clone());
+
+
+                singlediscountfree.setResource(discounts);
+
+                singlediscountfree.setTypecard(jdiscount.get("type").asString());
+
+                discountfreelist.add(i, (GetFreeandDiscount) singlediscountfree.clone());
+
+            }
+        }catch(IOException e){
+            e.printStackTrace(); // TODO
+        }
+
+
+        return discountfreelist;
     }
 
     //'getResourcesSelling' effects parsing
     public List<GetResourcesSelling> sellingparse(){
         int i;
-        GetResourcesSelling singleselling = new GetResourcesSelling();
+        EffectStrategy singleselling = new GetResourcesSelling();
         List<GetResourcesSelling> sellinglist = new ArrayList<>();
         JsonArray arrayselling;
         JsonObject jselling;
@@ -354,7 +435,7 @@ public class DevelopementCard extends Card implements Cloneable{
 
         int i;
         List<GetResourcesIf> iflist = new ArrayList<>();
-        GetResourcesIf singleif = new GetResourcesIf();
+        EffectStrategy singleif = new GetResourcesIf();
         JsonArray arrayif;
         JsonObject jif;
         Risorsa coin = new Risorsa();
@@ -404,7 +485,7 @@ public class DevelopementCard extends Card implements Cloneable{
                 favor.setQuantity(jif.getInt("PalaceFavor", 0));
                 ifresources.add(7, (Risorsa) favor.clone());
 
-                singleif.setResources(ifresources);
+                singleif.setResource(ifresources);
                 iflist.add(i, (GetResourcesIf) singleif.clone());
 
             }
@@ -419,7 +500,7 @@ public class DevelopementCard extends Card implements Cloneable{
     //'getReources' effects parsing
     public List<GetResources> getResourcesparsing(){
         int i;
-        GetResources res = new GetResources();
+        EffectStrategy res = new GetResources();
         List<GetResources> reslist = new ArrayList<>();
         JsonArray arrayres;
         JsonObject jres;
@@ -468,7 +549,7 @@ public class DevelopementCard extends Card implements Cloneable{
                 favor.setQuantity(jres.getInt("PalaceFavor", 0));
                 resources.add(7, (Risorsa) favor.clone());
 
-                res.setResources(resources);
+                res.setResource(resources);
                 reslist.add(i, (GetResources) res.clone());
             }
 
@@ -482,7 +563,7 @@ public class DevelopementCard extends Card implements Cloneable{
     //'GetBoostdice' effects parsing
     public List<GetBoostDice> getboostparsing(){
         int i;
-        GetBoostDice boost = new GetBoostDice();
+        EffectStrategy boost = new GetBoostDice();
         List<GetBoostDice> boostlist = new ArrayList<>();
         JsonArray boostarray;
         JsonObject jboost;
@@ -496,7 +577,7 @@ public class DevelopementCard extends Card implements Cloneable{
             for(i=0; i<boostarray.size();i++){
                 jboost = boostarray.get(i).asObject();
                 boost.setId(jboost.get("id").asInt());
-                boost.setEffecttype(jboost.get("type").asString());
+                boost.setTypecard(jboost.get("type").asString());
                 boost.setDiceboost(jboost.get("dice").asInt());
                 boostlist.add(i, (GetBoostDice) boost.clone());
 
@@ -514,18 +595,16 @@ public class DevelopementCard extends Card implements Cloneable{
     public List<GetForEach> forEachparsing(){
 
         int i,j;
-        GetForEach effect = new GetForEach();
+        EffectStrategy effect = new GetForEach();
         List<GetForEach> effectlist = new ArrayList<>();
         JsonArray arrayeffect;
         JsonObject jeffect;
         Risorsa coin = new Risorsa();
-        Risorsa wood = new Risorsa();
-        Risorsa stone = new Risorsa();
-        Risorsa servant = new Risorsa();
+
         Risorsa military = new Risorsa();
-        Risorsa faith = new Risorsa();
+
         Risorsa victory = new Risorsa();
-        Risorsa favor = new Risorsa();
+
         Risorsa character = new Risorsa();
         Risorsa venture = new Risorsa();
         Risorsa territory = new Risorsa();
@@ -588,7 +667,7 @@ public class DevelopementCard extends Card implements Cloneable{
     public List<GetVPEnd> getVPparsing() {
 
         int i;
-        GetVPEnd endeffect = new GetVPEnd();
+        EffectStrategy endeffect = new GetVPEnd();
         List<GetVPEnd> listendeffect = new ArrayList<>();
         JsonArray arrayendeffect;
         JsonObject jendeffect;
@@ -614,6 +693,8 @@ public class DevelopementCard extends Card implements Cloneable{
     }
 
 
+
+
     @Override
     public Object clone(){
         try{
@@ -623,5 +704,6 @@ public class DevelopementCard extends Card implements Cloneable{
             return null;
         }
     }
+
 
 }

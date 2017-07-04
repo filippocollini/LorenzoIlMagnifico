@@ -28,12 +28,7 @@ public class ExcommunicationServants extends EffectStrategy implements Cloneable
     }
 
     @Override
-    public Object clone()  {
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO
-        }
-    return null;
+    public Object clone() {
+        return super.clone();
     }
 }

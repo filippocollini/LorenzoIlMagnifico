@@ -11,10 +11,12 @@ public class CellTower implements Cloneable {
      * Default constructor
      */
     public CellTower() {
+        fMIsPresent = false;
     }
 
     private boolean fMIsPresent;
-    private Card carta;
+    private FamilyMember fmOnIt;
+    private DevelopementCard carta;
     private Risorsa bonus;
     private int dice;
 
@@ -23,7 +25,15 @@ public class CellTower implements Cloneable {
         return fMIsPresent;
     }
 
-    public Card getCard(){
+    public void setFmOnIt(FamilyMember fmOnIt) {
+        this.fmOnIt = fmOnIt;
+    }
+
+    public FamilyMember getFmOnIt() {
+        return fmOnIt;
+    }
+
+    public DevelopementCard getCard(){
         return carta;
     }
 
@@ -43,7 +53,7 @@ public class CellTower implements Cloneable {
         this.bonus = bonus;
     }
 
-    public void setCarta(Card carta) {
+    public void setCarta(DevelopementCard carta) {
         this.carta = carta;
     }
 

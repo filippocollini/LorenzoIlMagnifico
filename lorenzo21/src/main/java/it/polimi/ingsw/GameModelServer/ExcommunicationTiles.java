@@ -25,12 +25,8 @@ public class ExcommunicationTiles extends Card implements Cloneable{
     }
 
     @Override
-    public void activateEffect(int id) {
-       for(ExcommunicationReduction effect : reduction){
-           if(effect.getId()==id)
-               effect.apply(player);
-       }
-
+    public EffectStrategy activateEffect(int id) {
+        return null;
     }
 
     private int id;

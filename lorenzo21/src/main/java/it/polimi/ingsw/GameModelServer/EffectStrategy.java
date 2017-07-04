@@ -5,19 +5,75 @@ import java.util.*;
 /**
  * 
  */
-public class EffectStrategy {
+public abstract class EffectStrategy implements Cloneable{
 
     protected int id;
+
     public EffectStrategy() {}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public abstract void setId(int id);
 
     public int getId() {
         return id;
     }
 
-    public void apply(Player player) {}
+    public Player apply(Player player){
+        return null;
+    }
+    public List<Risorsa> apply(List<Risorsa> cost){
+        return cost;
+    }
 
+    public Player apply(Player player, String color){
+        return null;
+    }
+
+    @Override
+    public Object clone()  {
+        try{ return super.clone();
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace();//TODO
+        }
+        return null;
+    }
+
+    public void setTospend(List<Risorsa> selling) {
+    }
+
+    public void setReward(List<Risorsa> reward) {
+    }
+
+    public void setDicepower(int dado) {
+    }
+
+    public void setTypecard(String type) {
+    }
+
+    public void setSelect(boolean choice) {
+    }
+
+    public void setDiceboost(int dice) {
+    }
+
+    public void setDiscount(List<Risorsa> discounts) {
+    }
+
+    public void setResource(List<Risorsa> discounts) {
+    }
+
+    public void setDice(int dado) {
+    }
+
+    public void setResourcesfor(List<Risorsa> foreach) {
+    }
+
+
+    public void setResourcesget(List<Risorsa> getres){}
+
+    public void setVP(int vp) {
+    }
+
+    public String getTypeCard() {
+        return null;
+    }
 }
