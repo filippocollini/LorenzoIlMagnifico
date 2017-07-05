@@ -51,9 +51,11 @@ public class Stanza implements Serializable {
 
     public boolean matchStarted;
 
-    TurnHandler turnHandler;
+    private TurnHandler turnHandler;
 
-    PlayerTurn turn;
+    private PlayerTurn turn;
+
+    private boolean endTurn=false;
 
 
 
@@ -61,7 +63,7 @@ public class Stanza implements Serializable {
         players.put(username, player);
         if(players.size()>1 && !timerStarted) {
             timer = new Timer();
-            timer.schedule(new GameHandler(), 20*1000L);
+            timer.schedule(new GameHandler(), 10*1000L);
             timerStarted=true;
             System.out.println("parte il countdown");
         }else
@@ -75,7 +77,7 @@ public class Stanza implements Serializable {
                 timer.purge();
                 System.out.println("riparte il countdown");
                 timer = new Timer();
-                timer.schedule(new GameHandler(), 20*1000L);
+                timer.schedule(new GameHandler(), 10*1000L);
                 timerStarted=true;
             }
     }
@@ -119,10 +121,35 @@ public class Stanza implements Serializable {
             //timer.schedule(new TurnHandler(), 10*1000L);
             //turnHandler.run();
             setStack();
-            AbstractPlayer p = (AbstractPlayer) stack.pop();
-            for(; stack.size()==1; p= (AbstractPlayer) stack.pop()){
+
+            for(AbstractPlayer p = (AbstractPlayer) stack.pop(); stack.size()==1;p= (AbstractPlayer) stack.pop()){
+                System.out.println("turno iniziatooooooooooo");
                 startPlayerTurn(p);
+                try {
+                    synchronized (Stanza.this){
+                        Stanza.this.wait();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
+            //TODO turni e ere
+
+            /*int i = 0;
+            while(i<2){
+                System.out.println("turno iniziatooooooooooo");
+                AbstractPlayer p = (AbstractPlayer) stack.pop();
+                startPlayerTurn(p);
+                try {
+                    synchronized (Stanza.this){
+                        Stanza.this.wait();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                i++;
+            }*/
 
         }
 
@@ -130,7 +157,7 @@ public class Stanza implements Serializable {
     }
 
     private void startPlayerTurn(AbstractPlayer p){
-        turn = new PlayerTurn(p, this);
+        this.turn = new PlayerTurn(p, this);
     }
 
     /*private class TurnHandler extends TimerTask{
@@ -191,16 +218,44 @@ public class Stanza implements Serializable {
     }
 
     public void marketEvent(AbstractPlayer abstractPlayer){
-        if (turn!=null && turn.getPlayer().equals(abstractPlayer))
+        if (turn!=null && turn.getPlayer()==abstractPlayer)
             System.out.println("chiamo il metodo vero e proprio");
+        String request = "me lo ritorna il metodo";
+        notifyPlayerMadeAMove();
+        notifyActionMade();
+    }
+
+    public void endEvent(AbstractPlayer abstractPlayer){
+        if (turn!=null && turn.getPlayer()==abstractPlayer)
+            System.out.println(abstractPlayer.toString()+" ha finito il turno");
+        notifyEndTurn();
+        synchronized (Stanza.this){
+            Stanza.this.notify();
+        }
     }
 
     public void notifyPlayerMadeAMove(){
         turn.playerMadeAMove();
     }
 
+    public void notifyActionMade(){
+        try {
+            turn.getPlayer().notifyActionMade();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        //notifico che ha fatto l'azione, poi nella cli entrerà nello stato in cui potrà solo vedere la board
+        //oppure finire il turno
+        //forse da mettere insieme a notifyPlayerMadeAMove
+    }
+
     public void notifyEndTurn(){
         turn.endTurn();
+        try {
+            turn.getPlayer().notifyEndTurn();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -17,4 +17,6 @@ public interface RMIClientInterface<M> extends Remote {
     public void notifyGameStarted(Game game) throws RemoteException;
     public void notifyProva() throws RemoteException;
     public void notifyTurnStarted() throws RemoteException;
+    public void notifyActionMade() throws RemoteException;
+    public void notifyEndTurn() throws RemoteException;
 }

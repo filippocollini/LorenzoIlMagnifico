@@ -11,7 +11,7 @@ public class FMonTower implements Event {
     }
 
     @Override
-    public boolean isLegal() {
+    public boolean isLegal(AbstractClient client, String uuid) {
         return false;
     }
 

@@ -31,6 +31,7 @@ public class PlayerTurn {
     }
 
     private void startTimer(){
+        System.out.println("se in 20 secondi non farai niente verrai disconnesso");
         timer = new Timer();
         timer.schedule(new DisconnectPlayer(), 20*1000L);
     }
@@ -45,6 +46,7 @@ public class PlayerTurn {
     }
 
     public void playerMadeAMove(){
+        System.out.println("riparte il countdown del turno");
         timer.cancel();
         timer.purge();
         startTimer();
@@ -58,4 +60,5 @@ public class PlayerTurn {
     public AbstractPlayer getPlayer() {
         return p;
     }
+
 }

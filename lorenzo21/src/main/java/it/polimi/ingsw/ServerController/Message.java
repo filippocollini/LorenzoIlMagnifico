@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Message{
 
     public static final String FMONMARKET="fm on market";
-    public static final String LOGIN="login";
+    public static final String ENDTURN="end";
 
 
     public static final String ESEMPIO_REPLY="reply";

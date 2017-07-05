@@ -5,23 +5,18 @@ import it.polimi.ingsw.ClientController.AbstractClient;
 import java.rmi.RemoteException;
 
 /**
- * Created by filippocollini on 26/05/17.
+ * Created by filippocollini on 05/07/17.
  */
-public class FMonMarket implements Event {
-
-    public FMonMarket(){
-        
-    }
+public class EndTurn implements Event {
 
     @Override
     public boolean isLegal(AbstractClient client, String uuid) {
-
         return true;
     }
 
+    @Override
     public void eventHappened(AbstractClient client, String uuid) throws RemoteException {
-        System.out.println("market");
-        client.marketMove(uuid);
-
+        System.out.println("end turn");
+        client.endMove(uuid);
     }
 }

@@ -3,13 +3,11 @@ package it.polimi.ingsw.ServerController.rmi;
 import it.polimi.ingsw.ClientController.RMIClientInterface;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
-import it.polimi.ingsw.ServerController.PlayerInterface;
+import it.polimi.ingsw.ServerController.State;
 
 import java.io.Serializable;
-import java.net.SocketException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.*;
 
 /**
  * 
@@ -41,6 +39,15 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
         playerInt.notifyTurnStarted();
     }
 
+    @Override
+    public void notifyActionMade() throws RemoteException {
+        playerInt.notifyActionMade();
+    }
+
+    @Override
+    public void notifyEndTurn() throws RemoteException {
+        playerInt.notifyEndTurn();
+    }
 
     @Override
     public M receive() {
@@ -48,7 +55,7 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     }
 
     @Override
-    public void send(M message) {
+    public void send(M message, State state) {
 
     }
 }

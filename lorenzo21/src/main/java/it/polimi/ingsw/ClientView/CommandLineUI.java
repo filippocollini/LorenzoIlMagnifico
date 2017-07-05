@@ -4,9 +4,7 @@ import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.ClientController.RMIClient;
 import it.polimi.ingsw.ClientController.SocketClient;
 import it.polimi.ingsw.GameModelServer.Game;
-import it.polimi.ingsw.ServerController.GameState;
-import it.polimi.ingsw.ServerController.Server;
-import it.polimi.ingsw.ServerController.State;
+import it.polimi.ingsw.ServerController.*;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
 
 import java.io.IOException;
@@ -30,7 +28,6 @@ public class CommandLineUI extends AbstactUI {
      * Default constructor
      */
     public CommandLineUI() {
-
     }
 
     public void start() {
@@ -66,15 +63,7 @@ public class CommandLineUI extends AbstactUI {
 
         this.client = client;
 
-
-    }
-
-    private void move() throws RemoteException {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Fai la tua mossa: ");
-        String request = scanner.nextLine();
-        client.handle(request, state);
+        new RequestHandler().run();
 
     }
 
@@ -88,13 +77,40 @@ public class CommandLineUI extends AbstactUI {
     }
 
     public void notifyTurnStarted(){
-        System.out.println("E' il tuo turno!");
+        System.out.println("It's your turn! Make your move!");
         state = new GameState();
-        try {
-            move();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+
+    }
+
+    public void notifyActionMade(){
+        System.out.println("Ora puoi solo vedere, ma non toccare!");
+        state = new NonActionState();
+    }
+
+    public void notifyEndTurn(){
+        System.out.println("Turn ended");
+        state = null;
+    }
+
+    private class RequestHandler implements Runnable{
+
+        @Override
+        public void run() {
+            Scanner scanner = new Scanner(System.in);
+            String request;
+            while(true){
+                request = scanner.nextLine();
+                if(state!=null) {
+                    try {
+                        client.handle(request, state);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
         }
     }
+
 
 }

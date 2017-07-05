@@ -66,7 +66,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
             while(msg.equals(Message.LOGINKO)){
                 System.out.println("Insert username to login: ");
                 String user = sc.nextLine();
-                comm.send((M) user);
+                comm.send((M) user, null);
                 msg = (String) comm.receive();
             }
             System.out.println("login t'apposto");
@@ -79,7 +79,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     public void handle(String msg, State state){
-        comm.send((M) msg);
+        comm.send((M) msg, state);
         try {
             String answer = (String) comm.receive();
             System.out.println(answer);
@@ -106,18 +106,23 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
+    public void endMove(String uuid) throws RemoteException {
+
+    }
+
+    @Override
     public String handleClientRequest(String request) {
-        String answer = clientRules.responseHandler(request);
+        /*String answer = clientRules.responseHandler(request);
 
         if(!answer.equalsIgnoreCase(ClientRules.ERROR))
-            comm.send((M) answer);
-
+            comm.send((M) answer, );
+        */
         String result = null;
-        try {
+        /*try {
             result = (String) comm.receive();
         } catch (SocketException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return result;
     }

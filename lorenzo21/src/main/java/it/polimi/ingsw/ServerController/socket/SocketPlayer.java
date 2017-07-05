@@ -3,6 +3,7 @@ package it.polimi.ingsw.ServerController.socket;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.Rules;
+import it.polimi.ingsw.ServerController.State;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -51,6 +52,16 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
     }
 
+    @Override
+    public void notifyActionMade() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyEndTurn() throws RemoteException {
+
+    }
+
     public M receive() throws SocketException {
         try{
             return ((M) in.readObject());
@@ -60,7 +71,7 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
         return null;
     }
 
-    public void send(M message) {
+    public void send(M message, State state) {
         try {
             out.writeObject(message);
             out.flush();

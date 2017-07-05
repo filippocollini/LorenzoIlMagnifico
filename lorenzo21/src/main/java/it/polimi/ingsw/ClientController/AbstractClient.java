@@ -41,4 +41,6 @@ public abstract class AbstractClient  {
     public abstract void handle(String request, State state) throws RemoteException;
 
     public abstract void marketMove(String uuid) throws RemoteException;
+
+    public abstract void endMove(String uuid) throws RemoteException;
 }

@@ -42,4 +42,15 @@ public class RMIClientInterfaceImpl extends UnicastRemoteObject implements RMICl
     public void notifyTurnStarted() throws RemoteException {
 
     }
+
+    @Override
+    public void notifyActionMade() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyEndTurn() throws RemoteException {
+
+    }
+
 }

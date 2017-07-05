@@ -45,11 +45,12 @@ public class RMIServer extends AbstractServer implements Callback{
         if(!(client instanceof RMIClientInterface))
             return Callback.FAILURE;
         RMIPlayer rmiPlayer = new RMIPlayer(client);
+        String uuid = UUID.randomUUID().toString();
+        map.put(uuid, rmiPlayer);
         boolean used = getConnectionHandler().joinPlayer(rmiPlayer, username);
         if(false == used)
             return Callback.FAILURE;
-        String uuid = UUID.randomUUID().toString();
-        map.put(uuid, rmiPlayer);
+
         return uuid;
     }
 
@@ -59,7 +60,28 @@ public class RMIServer extends AbstractServer implements Callback{
     }
 
     public void marketMove(String uuid) throws RemoteException{
-        map.get(uuid).getRoom().marketEvent(map.get(uuid));
+        /*for (String s : map.keySet())
+            System.out.println(" ... "+s);
+        for (AbstractPlayer p : map.values())
+            System.out.println(" ... "+p);*/
+
+        AbstractPlayer player = map.get(uuid);
+        //System.out.println(player);
+
+        Stanza room = player.getRoom();
+        //System.out.println(room);
+
+        room.marketEvent(player);
+
+    }
+
+    @Override
+    public void endMove(String uuid) throws RemoteException {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.endEvent(player);
     }
 
     @Override

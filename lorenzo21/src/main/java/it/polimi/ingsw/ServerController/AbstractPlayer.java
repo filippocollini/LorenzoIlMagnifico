@@ -4,31 +4,26 @@ import it.polimi.ingsw.GameModelServer.Game;
 
 import java.net.SocketException;
 import java.rmi.RemoteException;
-import java.util.*;
 
 /**
  * 
  */
-public abstract class AbstractPlayer<M> {
+public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServer.Player*/ {
 
     private Stanza room;
 
-    Player player;
-
     public boolean disconnected = false;
 
-    /**
-     * Default constructor
-     */
-    public AbstractPlayer() {
-        player= new Player();
-    }
 
     public abstract void dispatchGameSettings(Game game) throws RemoteException;
 
     public abstract void dispatchEsempio() throws RemoteException;
 
     public abstract void notifyTurnStarted() throws RemoteException;
+
+    public abstract void notifyActionMade() throws RemoteException;
+
+    public abstract void notifyEndTurn() throws RemoteException;
 
     /**
      * 
@@ -42,5 +37,5 @@ public abstract class AbstractPlayer<M> {
     }
 
     public abstract M receive() throws SocketException;
-    public abstract void send(M message);
+    public abstract void send(M message, State state);
 }

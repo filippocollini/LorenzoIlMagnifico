@@ -10,6 +10,6 @@ import java.rmi.RemoteException;
  */
 public interface Event extends Serializable {
 
-    public boolean isLegal();
+    public boolean isLegal(AbstractClient client, String uuid);
     public void eventHappened(AbstractClient client, String uuid) throws RemoteException;
 }

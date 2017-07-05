@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class RMIClient<M extends Serializable, T extends Serializable> extends AbstractClient implements RMIClientInterface {
 
     private String username;
-    static Callback server; //TODO NullPointerException
+    private Callback server; //TODO NullPointerException
     private String host;
     private int port;
     CommandLineUI cli;
@@ -63,7 +63,10 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
                 else
                     System.out.println("1. Success sending ClientObject to server");
             }while(result.equals(Callback.FAILURE));
-            uuid=result;
+
+            this.uuid=result;
+
+            this.server = server;
 
         } catch (RemoteException | NotBoundException e) {
 
@@ -110,14 +113,33 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         cli.notifyTurnStarted();
     }
 
+    @Override
+    public void notifyActionMade() throws RemoteException {
+        cli.notifyActionMade();
+    }
+
+    @Override
+    public void notifyEndTurn() throws RemoteException {
+        cli.notifyEndTurn();
+    }
+
 
     public void handle(String request, State state) throws RemoteException {
-        state.handle(request, this, uuid);
+        System.out.println("gestisco");
+        state.handle(request, this, this.uuid);
     }
 
     public void marketMove(String uuid) throws RemoteException {
+        /*System.out.println("server: ");
+        System.out.println(server);
+        System.out.println("uuid: "+uuid);*/
         server.marketMove(uuid);
     }
+
+    public void endMove(String uuid) throws RemoteException {
+        server.endMove(uuid);
+    }
+
 
     @Override
     public String handleClientRequest(String request) {

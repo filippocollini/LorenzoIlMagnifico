@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ServerController.socket;
 
 import it.polimi.ingsw.ServerController.*;
-import it.polimi.ingsw.ServerController.socket.SocketPlayer;
+
 import java.io.Serializable;
 import java.net.SocketException;
 import java.rmi.RemoteException;
@@ -42,24 +42,11 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
     public void run() {
         login();
         System.out.println("login fatto");
-        comm.send(Message.LOGINOK);
+        comm.send(Message.LOGINOK, null);
 
         //TODO sincronizzare questo in base al turno e aggiungere il login come azione nelle rules
         String result;
-        while(true){
-            try {
-                String request = (String) comm.receive();
-                System.out.println("richiesta ricevuta");
-                result=broker.handleRequest(request);
-                comm.send(result);
-                if (!result.equalsIgnoreCase(Server.EVENT_DONE) && !result.equalsIgnoreCase(Server.EVENT_FAILED));
-                    System.out.println(comm.receive());
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }finally {
-                comm.close();
-            }
-        }
+        result = receiveRequest();
 
     }
 
@@ -74,16 +61,22 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
             }
             correct=broker.joinPlayer(comm, username);
             if(correct==false)
-                comm.send(Message.LOGINKO);
+                comm.send(Message.LOGINKO, new GameState());
         }
     }
 
-    public String receiveRequest(String request){
+    public String receiveRequest(){
+        String request = null;
+        try {
+            request = (String) comm.receive();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         String result = "...";
         try {
             System.out.println("richiesta ricevuta");
             result=broker.handleRequest(request);
-            comm.send(result);
+            comm.send(result, new GameState());//TODO da rivedere
             if (!result.equalsIgnoreCase(Server.EVENT_DONE) && !result.equalsIgnoreCase(Server.EVENT_FAILED));
             System.out.println(comm.receive());
         } catch (SocketException e) {

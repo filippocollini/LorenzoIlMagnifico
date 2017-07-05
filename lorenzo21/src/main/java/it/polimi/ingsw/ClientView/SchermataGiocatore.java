@@ -28,7 +28,6 @@ public class SchermataGiocatore extends it.polimi.ingsw.Observable implements it
      * @return
      */
     public void attach(it.polimi.ingsw.Observer observer) {
-        // TODO implement here
     }
 
     /**
@@ -36,21 +35,18 @@ public class SchermataGiocatore extends it.polimi.ingsw.Observable implements it
      * @return
      */
     public void detach(it.polimi.ingsw.Observer observer) {
-        // TODO implement here
     }
 
     /**
      * @return
      */
     /*public void notify() {
-        // TODO implement here
     }*/
 
     /**
      * @return
      */
     public void update() {
-        // TODO implement here
     }
 
 

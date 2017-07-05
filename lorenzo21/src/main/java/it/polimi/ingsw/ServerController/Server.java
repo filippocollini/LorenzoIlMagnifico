@@ -177,6 +177,7 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
         Stanza room = new Stanza();
         stanze.add(room);
         room.joinPlayer(player, username);
+        player.setRoom(room);
         System.out.println("Il giocatore è nella stanza (con creazione di stanza)");
     }
 
