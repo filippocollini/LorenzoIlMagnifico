@@ -10,25 +10,22 @@ public class Effect {
     /**
      * Default constructor
      */
-    public Effect(EffectStrategy strategy) {
-        this.strategy=strategy;
+    public Effect() {
 
-        if((int) strategy.getId()/1000 == 2)
-            this.permanent=true;
-        else
-            this.permanent=false;
+
+
     }
 
 
-    private EffectStrategy strategy;
-    private boolean permanent;
+    private List<EffectStrategy> strategy;
 
-    public EffectStrategy getStrategy() {
+
+
+    public List<EffectStrategy> getStrategy() {
         return strategy;
     }
 
-    public boolean getPermanent(){
-        return permanent;
-    }
+
+
 
 }

@@ -38,13 +38,6 @@ public class ExcommunicationEndVP extends EffectStrategy implements Cloneable {
 
     @Override
     public Object clone() {
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO
-        }
-    return null;
+        return super.clone();
     }
-
-
 }

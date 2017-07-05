@@ -6,8 +6,10 @@ package it.polimi.ingsw.GameModelServer;
 public class GetBoostDice extends EffectStrategy implements Cloneable {
 
     private int id;
-    private String effecttype;
+    private String typecard;
     private int diceboost;
+
+    public GetBoostDice(){}
 
     @Override
     public void setId(int id) {
@@ -18,8 +20,8 @@ public class GetBoostDice extends EffectStrategy implements Cloneable {
         this.diceboost = diceboost;
     }
 
-    public void setEffecttype(String effecttype) {
-        this.effecttype = effecttype;
+    public void setTypecard(String effecttype) {
+        this.typecard = effecttype;
     }
 
     @Override
@@ -31,25 +33,22 @@ public class GetBoostDice extends EffectStrategy implements Cloneable {
         return diceboost;
     }
 
-    public String getEffecttype() {
-        return effecttype;
+    public String getTypecard() {
+        return typecard;
     }
 
 
-    public void apply(Player player, String color) { //il client fa l'azione, il server prima di fare l'azione controlla se il giocatore ha diritto al boost
+    public FamilyMember apply(FamilyMember member) {
         int oldvalue;
-        oldvalue = player.getMember(color).getValue();
-        player.getMember(color).setValue(oldvalue+this.diceboost);
-
+        oldvalue = member.getValue();
+        member.setValue(oldvalue+this.diceboost);
+        return member;
     }
 
     @Override
     public Object clone()   {
-        try{
+
             return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace();//TODO
-        }
-    return null;
+
     }
 }

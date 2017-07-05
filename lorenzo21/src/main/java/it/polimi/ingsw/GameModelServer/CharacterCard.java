@@ -7,24 +7,24 @@ import java.util.*;
  */
 public class CharacterCard extends DevelopementCard {
 
-    private Risorsa cost1;
+    private List<Risorsa> cost;
     private boolean choice;
 
     public CharacterCard() {
         super();
-        cost1 = new Risorsa();
+        cost = new ArrayList<>();
     }
 
-    public Risorsa getCost1(){
-        return cost1;
+    public List<Risorsa> getCost1(){
+        return cost;
     }
 
     public boolean getChoice(){
         return choice;
     }
 
-    public void setCost1(Risorsa cost1){
-        this.cost1 = cost1;
+    public void setCost1(List<Risorsa> cost1){
+        this.cost = cost1;
     }
 
     public void setChoice(boolean choice){
@@ -45,8 +45,35 @@ public class CharacterCard extends DevelopementCard {
 
 
     @Override
-    public void activateEffect(int id) {
-        super.activateEffect(id);
+    public EffectStrategy activateEffect(int id) {
+        EffectStrategy righteffect = null;
+        if(id==0)
+            return righteffect;
+        for(GetResources effect : getres){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetFreeAction effect : freeaction){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetBoostandDiscount effect : discountandboost){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetResourcesIf effect : resif){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetBoostDice effect : boost){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        for(GetForEach effect : resfor){
+            if(effect.getId() == id)
+                righteffect = effect;
+        }
+        return righteffect;
     }
 }
 

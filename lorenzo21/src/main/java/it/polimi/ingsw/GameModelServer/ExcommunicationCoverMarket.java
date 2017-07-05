@@ -29,11 +29,6 @@ public class ExcommunicationCoverMarket extends EffectStrategy implements Clonea
 
     @Override
     public Object clone() {
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO
-        }
-    return null;
+        return super.clone();
     }
 }

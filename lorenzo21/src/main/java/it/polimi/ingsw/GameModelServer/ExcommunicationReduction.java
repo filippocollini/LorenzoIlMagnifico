@@ -46,15 +46,7 @@ public class ExcommunicationReduction extends EffectStrategy implements Cloneabl
     }
 
     @Override
-    public Object clone()  {
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO
-
-        }
-    return null;
+    public Object clone() {
+        return super.clone();
     }
-
-
 }

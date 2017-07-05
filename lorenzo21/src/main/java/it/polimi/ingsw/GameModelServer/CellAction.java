@@ -23,9 +23,9 @@ public class CellAction implements Cloneable {
         this.bonus = bonus;
     }
 
-    public void setFamilyMemberinCell(String color) {
+    public void setFamilyMemberinCell(String color,String colorplayer) {
         this.fMisOn = true;
-        this.member = new FamilyMember(color);
+        this.member = new FamilyMember(color,colorplayer);
     }
 
     public String getcolorMember() {

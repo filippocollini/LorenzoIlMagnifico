@@ -98,7 +98,18 @@ public class PersonalBoard {
     return listcell;
     }
 
-    public void addTCard(TerritoryCard card){
+   public void addCard(DevelopementCard card){
+        if(card.getCardtype().equals("territory") ){
+           addTCard(card);
+       }else if(card.getCardtype().equals("buildings")){
+            addBCard(card);
+       }else if(card.getCardtype().equals("ventures")){
+           addVCard(card);
+       }else
+           addCCard(card);
+   }
+
+    public void addTCard(DevelopementCard card){
 
         int i = 0;
 
@@ -113,11 +124,7 @@ public class PersonalBoard {
         //TODO try catch nel main quando si addano carte
     }
 
-
-
-
-
-    public void addBCard(BuildingCard card){
+    public void addBCard(DevelopementCard card){
         int number;
         CellPB cell = new CellPB();
         number = buildings.size();
@@ -131,7 +138,7 @@ public class PersonalBoard {
         //TODO per le buildingcard non serve il try catch quando si addano carte
     }
 
-    public void addVCard(VentureCard card){
+    public void addVCard(DevelopementCard card){
         int number;
         CellPB cell = new CellPB();
         number = ventures.size();
@@ -143,7 +150,8 @@ public class PersonalBoard {
 
         //TODO per le venturecard non serve il try catch quando si addano carte
     }
-    public void addCCard(CharacterCard card){
+
+    public void addCCard(DevelopementCard card){
 
         int i = 0;
 

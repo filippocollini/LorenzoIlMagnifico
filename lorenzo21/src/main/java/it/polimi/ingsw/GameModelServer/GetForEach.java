@@ -53,7 +53,7 @@ public class GetForEach extends EffectStrategy implements  Cloneable {
     }
 
 
-    public void apply(Player player, String color) {
+    public Player apply(Player player, String color) {
         int coeff;
         int quantity;
         int oldvalue;
@@ -83,15 +83,12 @@ public class GetForEach extends EffectStrategy implements  Cloneable {
             }
         }else
             System.out.println("non puoi fare l'azione"); //TODO
-    } //OVERLOADING
+        return player;
+    }
 
     @Override
     public Object clone()  {
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e ){
-            e.printStackTrace();//TODO
-        }
-      return null;
+
+        return super.clone();
     }
 }

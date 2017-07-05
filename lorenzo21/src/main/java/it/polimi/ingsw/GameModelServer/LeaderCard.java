@@ -16,8 +16,8 @@ public class LeaderCard extends Card {
     }
 
     @Override
-    public void activateEffect(int id) {
-
+    public EffectStrategy activateEffect(int id) {
+        return null;
     }
 
     public void setName(String name){

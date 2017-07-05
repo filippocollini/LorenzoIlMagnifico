@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GameModelServer;
 
-import java.util.*;
-
 /**
  * 
  */
@@ -9,7 +7,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
 
     private int id;
     private int dicepower;
-    private String type;
+    private String typecard;
 
     public GetFreeAction() {
     }
@@ -22,8 +20,8 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
         this.id = id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypecard(String type) {
+        this.typecard = type;
     }
 
     public int getDicepower() {
@@ -34,27 +32,48 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
         return id;
     }
 
-    public String getType() {
-        return type;
+    public String getTypecard() {
+        return typecard;
     }
 
 
     @Override
     public Object clone(){
-        try{
-            return super.clone();
-        }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO return to server
-            return null;
-        }
+        return super.clone();
+
     }
 
-    /**
-     * @param player 
-     * @return
-     */
-    public void apply(Player player) {
-        // TODO implement here
-    }
+
+    /*public Player apply(Player player) {
+        FamilyMember ghostmember = new FamilyMember("ghost","ghost");
+        ghostmember.setValue(dicepower);
+        String tower = null;
+        int floor;
+        boolean free = false;
+        if(typecard.equalsIgnoreCase("harvest") || typecard.equalsIgnoreCase("production")){
+            //TODO action production e harvest
+        }else {
+            if(typecard.equalsIgnoreCase("color")){
+                tower = Game.askTower();
+            }
+            else if (typecard.equalsIgnoreCase("territory"))
+                tower = "Territory";
+            else if (typecard.equalsIgnoreCase("venture"))
+                tower = "Venture";
+            ghostmember.setValue( Game.controlboost(player , ghostmember).getValue());
+
+            floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
+
+            if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
+                ghostmember.setValue(dicepower);
+                System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
+                return player;
+            }
+            ghostmember = Game.isFMok(ghostmember,floor,player,dicepower).getValue();
+            player = Game.addFMonTowerAction(player, ghostmember, floor, tower, free);
+        }
+
+        return player;
+    }*/
 
 }

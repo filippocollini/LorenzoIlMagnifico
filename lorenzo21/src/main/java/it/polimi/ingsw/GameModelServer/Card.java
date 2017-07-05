@@ -22,7 +22,7 @@ public abstract class Card {
 
 
 
-    public abstract void activateEffect(int id);
+    public abstract EffectStrategy activateEffect(int id);
 
 
     /*public void activateEffects(){
