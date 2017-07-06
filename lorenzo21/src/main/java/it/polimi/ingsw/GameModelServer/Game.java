@@ -23,7 +23,9 @@ public class Game implements Serializable {
 
     private Player[] players;
     private Board board;
-
+    private static final String SUCCESS="success";
+    private static final String FAIL="fail";
+    private static final String EXCOMM="excomm";
     private int turn;
     private List<BonusTile> bonustiles;
     private GameStatus stato;
@@ -795,32 +797,29 @@ public class Game implements Serializable {
        return player;
     }
 
-    public Player addFMonMarket(Player player){
-        for(EffectStrategy effect : player.getEffects().getStrategy()){
-            if(effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationCoverMarket")){
-                System.out.println("YOU'VE BEEN EXCOMMUNICATED! Go away from Magnifico's Market");
-                return player;
-            }
-        }
-        String color = askMember();
-
-
-        if(player.getMember(color).getValue()>1) {
-
-            String choice = askCellMarket();
-            for (CellAction cell : board.getMarket()) {
-                if (cell.getType().equalsIgnoreCase(choice)){
-                    player = getimmediateBonus(player,cell.getBonus(),false);
+    public String addFMonMarket(Player player, String member, String request){
+        if (player.getEffects().getStrategy()!=null){
+            for(EffectStrategy effect : player.getEffects().getStrategy()){
+                if(effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationCoverMarket")){
+                    System.out.println("YOU'VE BEEN EXCOMMUNICATED! Go away from Magnifico's Market");
+                    return EXCOMM;
                 }
             }
+            if(player.getMember(member).getValue()>1) {
+                for (CellAction cell : board.getMarket()) {
+                    if (cell.getType().equalsIgnoreCase(request)){
+                        player = getimmediateBonus(player,cell.getBonus(),false);
+                    }
+                }
+                return SUCCESS;
 
-        }else
-            System.out.println("non puoi fare l'azione"); //TODO
-
-       return player;
+            }else
+                System.out.println("non puoi fare l'azione"); //TODO
+        }
+        return FAIL;
     }
 
-    public String askCellMarket(){
+    /*public String askCellMarket(){
         int size = board.getMarket().size();
         String choice;
         if(size==2){
@@ -838,7 +837,7 @@ public class Game implements Serializable {
             choice = scanner.nextLine();
         }
         return choice;
-    }
+    }*/
 
     public static String askTower(){
         String type;

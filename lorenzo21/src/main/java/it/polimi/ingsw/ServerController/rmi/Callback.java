@@ -15,7 +15,7 @@ public interface Callback extends Remote{
 
     public String joinPlayer(String username, RMIClientInterface client) throws RemoteException;
     public void sendRequest(String request)throws RemoteException;
-    public void marketMove(String uuid) throws RemoteException;
+    public void marketMove(String uuid, String member, String cell) throws RemoteException;
     public void endMove(String uuid) throws RemoteException;
     public void sendLong(long val) throws RemoteException, Exception;
 

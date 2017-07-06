@@ -219,7 +219,7 @@ public class DevelopementCard extends Card implements Cloneable{
         JsonArray arrayfree;
         JsonObject jfree;
         try {
-            File filefree = new File("C:/Users/Simone/Desktop/effetti/getfreeAction.json");
+            File filefree = new File("lorenzo21/src/main/resources/effects/getfreeAction.json");
             FileReader readfree = new FileReader(filefree.getAbsolutePath());
 
             arrayfree = Json.parse(readfree).asArray();
@@ -253,7 +253,7 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
         try {
-            File discfile = new File("C:/Users/Simone/Desktop/effetti/getBoostandDiscount.json");
+            File discfile = new File("lorenzo21/src/main/resources/effects/getBoostandDiscount.json");
             FileReader read = new FileReader(discfile.getAbsolutePath());
 
             arraydiscount = Json.parse(read).asArray();
@@ -305,7 +305,7 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
         try {
-            File discfile = new File("C:/Users/Simone/Desktop/effetti/getFreeandDiscount.json");
+            File discfile = new File("lorenzo21/src/main/resources/effects/getFreeandDiscount.json");
             FileReader read = new FileReader(discfile.getAbsolutePath());
 
             arraydiscount = Json.parse(read).asArray();
@@ -360,7 +360,7 @@ public class DevelopementCard extends Card implements Cloneable{
         Risorsa favor = new Risorsa();
 
         try{
-            File sellingfile = new File("C:/Users/Simone/Desktop/effetti/getexresIfandSell.json");
+            File sellingfile = new File("lorenzo21/src/main/resources/effects/getexresIfandSell.json");
             FileReader reader = new FileReader(sellingfile.getAbsolutePath());
             arrayselling = Json.parse(reader).asArray();
 
@@ -448,7 +448,7 @@ public class DevelopementCard extends Card implements Cloneable{
         Risorsa favor = new Risorsa();
 
         try{
-            File fileif = new File("C:/Users/Simone/Desktop/effetti/getexresif.json");
+            File fileif = new File("lorenzo21/src/main/resources/effects/getexresif.json");
             FileReader ifread = new FileReader(fileif.getAbsolutePath());
 
             arrayif = Json.parse(ifread).asArray();
@@ -514,7 +514,7 @@ public class DevelopementCard extends Card implements Cloneable{
         Risorsa favor = new Risorsa();
 
         try{
-            File resfile = new File("C:/Users/Simone/Desktop/effetti/getexres.json");
+            File resfile = new File("lorenzo21/src/main/resources/effects/getexres.json");
             FileReader readfile = new FileReader(resfile.getAbsolutePath());
 
             arrayres = Json.parse(readfile).asArray();
@@ -570,7 +570,7 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
         try{
-            File fileboost = new File("C:/Users/Simone/Desktop/effetti/getboostdiceonAction.json");
+            File fileboost = new File("lorenzo21/src/main/resources/effects/getboostdiceonAction.json");
             FileReader readboost = new FileReader(fileboost.getAbsolutePath());
             boostarray = Json.parse(readboost).asArray();
 
@@ -611,7 +611,7 @@ public class DevelopementCard extends Card implements Cloneable{
         Risorsa building = new Risorsa();
 
         try {
-            File fileeffect = new File("C:/Users/Simone/Desktop/effetti/getForEach.json");
+            File fileeffect = new File("lorenzo21/src/main/resources/effects/getForEach.json");
             FileReader readfile = new FileReader(fileeffect.getAbsolutePath());
 
             arrayeffect = Json.parse(readfile).asArray();
@@ -673,7 +673,7 @@ public class DevelopementCard extends Card implements Cloneable{
         JsonObject jendeffect;
 
         try{
-            File endfile = new File("C:/Users/Simone/Desktop/effetti/getVPendgame.json");
+            File endfile = new File("lorenzo21/src/main/resources/effects/getVPendgame.json");
             FileReader readend = new FileReader(endfile.getAbsolutePath());
 
             arrayendeffect = Json.parse(readend).asArray();

@@ -133,7 +133,38 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         /*System.out.println("server: ");
         System.out.println(server);
         System.out.println("uuid: "+uuid);*/
-        server.marketMove(uuid);
+        String member = askMember();
+        String cell = askCellMarket();
+        server.marketMove(uuid, member, cell);
+    }
+
+    public String askMember() {
+        String choice;
+        System.out.println("Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextLine();
+        while(!(choice.equals("White") || choice.equals("Black") || choice.equals("Orange") || choice.equals("Neutral"))) {
+            System.out.println("Error on input : Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
+            Scanner scans = new Scanner(System.in);
+            choice = scans.nextLine();
+        }
+        return choice;
+    }
+
+    public String askCellMarket(){
+        String choice;
+
+        System.out.println("What do you want to pick from Market?" +
+                    "5 Coins(C) - 5 Servants(S) - 3MP and 2 Coins(MPC) - 2PalaceFavors(PF) ");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextLine();
+        while(!choice.equalsIgnoreCase("C") && !choice.equalsIgnoreCase("S") &&
+                !choice.equalsIgnoreCase("MPC") && !choice.equalsIgnoreCase("PF")){
+            System.out.println("Error in input");
+            Scanner scanner = new Scanner(System.in);
+            choice = scanner.nextLine();
+        }
+        return choice;
     }
 
     public void endMove(String uuid) throws RemoteException {

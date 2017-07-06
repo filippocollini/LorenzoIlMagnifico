@@ -103,7 +103,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         JsonObject jreduction;
 
         try{
-            File reductionfile = new File("src/main/resources/excommunications/scomunicaboost");
+            File reductionfile = new File("lorenzo21/src/main/resources/excommunications/scomunicaboost.json");
             FileReader readreduction = new FileReader(reductionfile.getAbsolutePath());
 
             arrayreduction = Json.parse(readreduction).asArray();
@@ -129,7 +129,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         JsonObject jcovering;
 
         try{
-            File file = new File("src/main/resources/excommunications/scomunicaCoverMarket");
+            File file = new File("lorenzo21/src/main/resources/excommunications/scomunicaCoverMarket.json");
             FileReader readfile = new FileReader(file.getAbsolutePath());
             jcovering = Json.parse(readfile).asObject();
             covering.setPeriod(jcovering.get("period").asInt());
@@ -145,7 +145,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         JsonObject jservant;
 
         try{
-            File fileserv = new File("src/main/resources/excommunications/scomunicaTwoServants");
+            File fileserv = new File("lorenzo21/src/main/resources/excommunications/scomunicaTwoServants.json");
             FileReader readserv = new FileReader(fileserv.getAbsolutePath());
             jservant = Json.parse(readserv).asObject();
             twoserv.setId(jservant.get("id").asInt());
@@ -161,7 +161,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         JsonObject jskip;
 
         try{
-            File fileskip = new File("src/main/resources/excommunications/scomunicaSkipfirstAction");
+            File fileskip = new File("lorenzo21/src/main/resources/excommunications/scomunicaSkipfirstAction.json");
             FileReader readskip = new FileReader(fileskip.getAbsolutePath());
             jskip = Json.parse(readskip).asObject();
             skip.setId(jskip.get("id").asInt());
@@ -180,7 +180,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         int i;
 
         try{
-            File fileless = new File("src/main/resources/excommunications/scomunicalessresources");
+            File fileless = new File("lorenzo21/src/main/resources/excommunications/scomunicalessresources.json");
             FileReader readless = new FileReader(fileless.getAbsolutePath());
 
             arrayless = Json.parse(readless).asArray();
@@ -206,7 +206,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         JsonArray arrayendvp;
 
         try{
-            File filend = new File("src/main/resources/excommunications/scomunicanoendVP");
+            File filend = new File("lorenzo21/src/main/resources/excommunications/scomunicanoendVP.json");
             FileReader readend = new FileReader(filend.getAbsolutePath());
 
             arrayendvp = Json.parse(readend).asArray();
@@ -233,7 +233,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         JsonObject jlost;
         int i;
         try{
-            File filelost = new File("src/main/resources/excommunications/scomunicaendVPlost");
+            File filelost = new File("lorenzo21/src/main/resources/excommunications/scomunicaendVPlost.json");
             FileReader readlost = new FileReader(filelost.getAbsolutePath());
             arraylost = Json.parse(readlost).asArray();
             for(i=0;i<arraylost.size(); i++){

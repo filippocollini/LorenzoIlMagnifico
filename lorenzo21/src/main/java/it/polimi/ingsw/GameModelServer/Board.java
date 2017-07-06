@@ -231,7 +231,7 @@ public class Board{
         int i;
 
         try{
-            File greenfile = new File("src/main/resources/towersbonus/greenTower");
+            File greenfile = new File("lorenzo21/src/main/resources/towersbonus/greenTower.json");
             FileReader readgreen = new FileReader(greenfile.getAbsolutePath());
             arrayterritory = Json.parse(readgreen).asArray();
             for(i=0;i<arrayterritory.size();i++){
@@ -261,7 +261,7 @@ public class Board{
         int i;
 
         try{
-            File bluefile = new File("src/main/resources/towersbonus/blueTower");
+            File bluefile = new File("lorenzo21/src/main/resources/towersbonus/blueTower.json");
             FileReader readblue = new FileReader(bluefile.getAbsolutePath());
             arraycharacter = Json.parse(readblue).asArray();
             for(i=0;i<arraycharacter.size();i++){
@@ -290,7 +290,7 @@ public class Board{
         int i;
 
         try{
-            File yellowfile = new File("src/main/resources/towersbonus/yellowTower");
+            File yellowfile = new File("lorenzo21/src/main/resources/towersbonus/yellowTower.json");
             FileReader readyellow = new FileReader(yellowfile.getAbsolutePath());
             arraybuilding = Json.parse(readyellow).asArray();
             for(i=0;i<arraybuilding.size();i++){
@@ -319,7 +319,7 @@ public class Board{
         int i;
 
         try{
-            File violetfile = new File("src/main/resources/towersbonus/violetTower");
+            File violetfile = new File("lorenzo21/src/main/resources/towersbonus/violetTower.json");
             FileReader readviolet = new FileReader(violetfile.getAbsolutePath());
             arrayventure = Json.parse(readviolet).asArray();
             for(i=0;i<arrayventure.size();i++){

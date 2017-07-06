@@ -1,10 +1,7 @@
 package it.polimi.ingsw.ServerController;
 
-import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.GameModelServer.Game;
-import it.polimi.ingsw.GameModelServer.Player;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -19,6 +16,7 @@ public class Stanza implements Serializable {
      */
     public Stanza() {
         players= new HashMap<>();
+        usernames= new HashMap<>();
         stack = new Stack();
         timerStarted = false;
         matchStarted= false;
@@ -39,6 +37,7 @@ public class Stanza implements Serializable {
      */
     public HashMap<String, AbstractPlayer> players = null;
 
+    public HashMap<AbstractPlayer, String> usernames = null;
     /**
      *
      */
@@ -61,6 +60,7 @@ public class Stanza implements Serializable {
 
     public void joinPlayer(AbstractPlayer player, String username) {
         players.put(username, player);
+        usernames.put(player, username);
         if(players.size()>1 && !timerStarted) {
             timer = new Timer();
             timer.schedule(new GameHandler(), 10*1000L);
@@ -114,15 +114,33 @@ public class Stanza implements Serializable {
         @Override
         public void run() {
             System.out.println("start");
-            //configuration();
+            configuration();
             System.out.println("creato tutto");
             //dispatchGameToPlayers();
             dispatchProva();
             //timer.schedule(new TurnHandler(), 10*1000L);
             //turnHandler.run();
             setStack();
-
-            for(AbstractPlayer p = (AbstractPlayer) stack.pop(); stack.size()==1;p= (AbstractPlayer) stack.pop()){
+            for(int i=0;i<3;i++){
+                System.out.println("Era: "+(i+1));
+                for(int j=0;j<2;j++){
+                    System.out.println("Turno: "+(j+1));
+                    AbstractPlayer p = (AbstractPlayer) stack.pop();
+                    System.out.println("turno iniziatooooooooooo");
+                    startPlayerTurn(p);
+                    try {
+                        synchronized (Stanza.this){
+                            Stanza.this.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(stack.isEmpty()){
+                        setStack();
+                    }
+                }
+            }
+            /*for(AbstractPlayer p = (AbstractPlayer) stack.pop(); stack.size()==1;p= (AbstractPlayer) stack.pop()){
                 System.out.println("turno iniziatooooooooooo");
                 startPlayerTurn(p);
                 try {
@@ -132,7 +150,8 @@ public class Stanza implements Serializable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+                System.out.println("ci arrivo?");
+            }*/
 
             //TODO turni e ere
 
@@ -217,9 +236,10 @@ public class Stanza implements Serializable {
         //TODO player disconnesso ritorna
     }
 
-    public void marketEvent(AbstractPlayer abstractPlayer){
-        if (turn!=null && turn.getPlayer()==abstractPlayer)
-            System.out.println("chiamo il metodo vero e proprio");
+    public void marketEvent(AbstractPlayer abstractPlayer, String member, String cell){
+        if (turn!=null && turn.getPlayer()==abstractPlayer){
+            game.addFMonMarket(game.herethePlayer(usernames.get(abstractPlayer)), member, cell);
+        }
         String request = "me lo ritorna il metodo";
         notifyPlayerMadeAMove();
         notifyActionMade();

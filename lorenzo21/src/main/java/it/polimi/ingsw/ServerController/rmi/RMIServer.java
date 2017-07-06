@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -59,7 +58,7 @@ public class RMIServer extends AbstractServer implements Callback{
 
     }
 
-    public void marketMove(String uuid) throws RemoteException{
+    public void marketMove(String uuid, String member, String cell) throws RemoteException{
         /*for (String s : map.keySet())
             System.out.println(" ... "+s);
         for (AbstractPlayer p : map.values())
@@ -71,7 +70,7 @@ public class RMIServer extends AbstractServer implements Callback{
         Stanza room = player.getRoom();
         //System.out.println(room);
 
-        room.marketEvent(player);
+        room.marketEvent(player, member, cell);
 
     }
 
