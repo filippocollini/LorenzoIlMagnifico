@@ -38,10 +38,13 @@ public class GetBoostDice extends EffectStrategy implements Cloneable {
     }
 
 
-    public FamilyMember apply(FamilyMember member) {
-        int oldvalue;
-        oldvalue = member.getValue();
-        member.setValue(oldvalue+this.diceboost);
+    public FamilyMember apply(FamilyMember member, String type) {
+
+        if(this.typecard.equalsIgnoreCase(type)) {
+            int oldvalue;
+            oldvalue = member.getValue();
+            member.setValue(oldvalue + this.diceboost);
+        }
         return member;
     }
 

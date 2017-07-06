@@ -16,7 +16,7 @@ public class ExcommunicationLostVP extends EffectStrategy implements Cloneable {
         this.id = id;
     }
 
-    public void setType(String type) {
+    public void setTypecard(String type) {
         this.type = type;
     }
 
@@ -37,7 +37,48 @@ public class ExcommunicationLostVP extends EffectStrategy implements Cloneable {
         return period;
     }
 
-    public String getType() {
+    @Override
+    public Player apply(Player player) {
+        int malus = 0; //calcolo dei punti vittoria da perdere
+        int coeff = 0; //quante risorse o punti ha il giocatore
+        int i = 0;
+
+        if(this.type.equalsIgnoreCase("GenericResources")){
+            for(Risorsa res : player.getPB().getresources()){
+                coeff = coeff +(res.getquantity());
+            }
+
+        }else if(this.type.equalsIgnoreCase("BuildingCost")){
+            for(CellPB cell : player.getPB().getbuildings()){
+                for(Risorsa cost : cell.getCard().getCost1()){
+                    if(cost.gettipo().equalsIgnoreCase("Woods")
+                            || cost.gettipo().equalsIgnoreCase("Stones"))
+                        coeff = coeff + (cost.getquantity());
+                }
+            }
+
+        }else{
+            for(Token token : player.board.getTokens(player.getColor())){
+                if(token.getType().equals(this.type)){
+                    coeff = token.getPosition();
+                }
+            }
+        }
+        malus = coeff/this.quantity;
+        Token[] tokens = player.board.getTokens(player.getColor());
+        for(Token token : tokens){
+            if(token.getType().equalsIgnoreCase("VictoryPoints")) {
+                tokens[i].setPosition(token.getPosition()-malus);
+            }
+            i++;
+        }
+        player.board.setTokens(tokens);
+
+
+        return player;
+    }
+
+    public String getTypeCard() {
         return type;
     }
 

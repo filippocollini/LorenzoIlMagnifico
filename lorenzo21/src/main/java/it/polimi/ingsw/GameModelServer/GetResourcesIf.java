@@ -44,7 +44,7 @@ public class GetResourcesIf extends EffectStrategy implements Cloneable{
         int j = 0;
         int oldvalue;
         if(player.getMember(color).getValue()>= this.dicepower){
-            for(Risorsa ress : player.getPB().getresources()) {
+            /*for(Risorsa ress : player.getPB().getresources()) {
                 for (Risorsa reward : rewards){
                     if(reward.gettipo().equals(ress.gettipo())){
                         player.getPB().getresources().get(j).setQuantity(ress.getquantity()+reward.getquantity());
@@ -52,17 +52,21 @@ public class GetResourcesIf extends EffectStrategy implements Cloneable{
                 }
                 j++;
             }
-            for(Token token : player.board.getTokens(player.getColor())){
+            Token[] tokens = player.board.getTokens(player.getColor());
+            for(Token token : tokens){
                 for(Risorsa reward : rewards){
                     if(reward.gettipo().equals(token.getType())){
-                        oldvalue = player.board.getTokens(player.getColor())[i].getPosition();
-                        player.board.getTokens(player.getColor())[i].setPosition(oldvalue + reward.getquantity());
+                        oldvalue = tokens[i].getPosition();
+                        tokens[i].setPosition(oldvalue + reward.getquantity());
                     }
                 }
                 i++;
             }
+            player.board.setTokens(tokens);
+            */
+            player = Game.getimmediateBonus(player,this.rewards,false);
         }else
-            System.out.println("non puoi fare l'azione"); //TODO
+            System.out.println("non prendi risorse perchè ha valore troppo basso"); //TODO
         return player;
     }
 

@@ -33,7 +33,7 @@ public class Player extends BoardObserver implements Serializable{
         this.board.addObserver(this);
     }
 
-    public FamilyMember getMember(String color) {//questo color deve essere passato come scanner del client
+    public FamilyMember getMember(String color) {
         int i = 0;
         for(FamilyMember member : members) {
             if (member.getColor() == color)
@@ -42,6 +42,10 @@ public class Player extends BoardObserver implements Serializable{
             i++;
         }
         return null; //TODO familiare già utilizzato
+    }
+
+    public List<FamilyMember> getMembers() {
+        return members;
     }
 
     private List<FamilyMember> createFamilyMember(String color){
@@ -101,19 +105,26 @@ public class Player extends BoardObserver implements Serializable{
     public void update() {
         this.token = board.getTokens(this.color);
     }
-// public void doAction() {}
-    // TODO implement here
 
 
 
-    public FamilyMember spendservants(FamilyMember member ,int servants){
+
+    public FamilyMember spendservants(FamilyMember member ,int servants){ //servant==punti da aggiungere al dado
         int oldvalue;
         int oldservants;
+        int coeff = 1;
+
+        for(EffectStrategy effect : this.effects.getStrategy()){
+            if(effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationServants")){
+                coeff = 2;
+            }
+        }
+
         oldservants = this.getPB().getsingleresource("Servants").getquantity();
-        if(oldservants>servants){
+        if(oldservants>(coeff*servants)){
             oldvalue = member.getValue();
-            member.setValue(oldvalue + servants);
-            this.getPB().getsingleresource("Servants").setQuantity(oldservants - servants);
+            member.setValue(oldvalue + (servants));
+            this.getPB().getsingleresource("Servants").setQuantity(oldservants - (coeff*servants));
         }else
             System.out.println("non hai abbastanza servants "); //TODO
         return member;

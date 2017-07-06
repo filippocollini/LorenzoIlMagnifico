@@ -1,0 +1,5 @@
+[{"dice":1},
+  {"dice":3},
+  {"type":"Stones","quantity":1,"dice":5},
+  {"type":"Stones","quantity":2,"dice":7}
+]

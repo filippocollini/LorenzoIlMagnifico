@@ -49,7 +49,7 @@ public class PersonalBoard {
         int i;
 
         try{
-            File filegreenPb = new File("C:/Users/Simone/Desktop/greenPB.json");
+            File filegreenPb = new File("src/main/resources/greenPB");
             FileReader read = new FileReader(filegreenPb.getAbsolutePath());
 
             arraycell = Json.parse(read).asArray();
@@ -79,7 +79,7 @@ public class PersonalBoard {
         int i;
 
         try{
-            File filebluePb = new File("C:/Users/Simone/Desktop/bluePB.json");
+            File filebluePb = new File("src/main/resources/bluePb");
             FileReader read = new FileReader(filebluePb.getAbsolutePath());
 
             array = Json.parse(read).asArray();
@@ -99,7 +99,7 @@ public class PersonalBoard {
     }
 
    public void addCard(DevelopementCard card){
-        if(card.getCardtype().equals("territory") ){
+        if(card.getCardtype().equals("cards/territory") ){
            addTCard(card);
        }else if(card.getCardtype().equals("buildings")){
             addBCard(card);

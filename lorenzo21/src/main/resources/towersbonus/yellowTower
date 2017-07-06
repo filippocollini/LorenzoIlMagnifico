@@ -1,0 +1,5 @@
+[{"dice":1},
+  {"dice":3},
+  {"type":"MilitaryPoints","quantity":1,"dice":5},
+  {"type":"MilitaryPoints","quantity":2,"dice":7}
+]

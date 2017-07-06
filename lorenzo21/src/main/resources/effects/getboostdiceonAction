@@ -1,0 +1,9 @@
+[{"id":2501,"type":"building","dice":2},
+  {"id":2490,"type":"territory","dice":2},
+  {"id":2511,"type":"character","dice":2},
+  {"id":2520,"type":"venture","dice":2},
+  {"id":2530,"type":"harvest","dice":2},
+  {"id":2610,"type":"harvest","dice":3},
+  {"id":2540,"type":"production","dice":2},
+  {"id":2620,"type":"production","dice":3}
+]

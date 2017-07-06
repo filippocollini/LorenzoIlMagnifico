@@ -53,17 +53,17 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
         return typecard;
     }
 
-    /*public Player apply(Player player) {
+    public Player apply(Player player) {
         FamilyMember ghostmember = new FamilyMember(null,player.getColor());
         ghostmember.setValue(dicepower);
         String tower = null;
         boolean free = true;
         int floor;
         if (typecard.equalsIgnoreCase("characters"))
-            tower = "Character";
+            tower = typecard;
         else if (typecard.equalsIgnoreCase("buildings"))
-            tower = "Building";
-        ghostmember.setValue( Game.controlboost(player , ghostmember).getValue());
+            tower = typecard;
+        ghostmember.setValue( Game.controlboost(player , ghostmember,tower).getValue());
 
         floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
 
@@ -71,14 +71,14 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
         if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
             ghostmember.setValue(dicepower);
             System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
-            return;
+            return player;
         }
 
-        ghostmember = Game.isFMok(ghostmember,floor,player,dicepower).getValue();
+        ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
         player = Game.addFMonTowerAction(player, ghostmember, floor, tower,free);
 
         return player;
-    }*/
+    }
 
     public List<Risorsa> apply(List<Risorsa> cost) {//il client fa l'azione, il server controlla se ha diritto ad uno sconto
         int i = 0;

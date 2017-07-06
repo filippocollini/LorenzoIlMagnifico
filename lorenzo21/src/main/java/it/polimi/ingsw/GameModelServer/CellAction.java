@@ -10,6 +10,7 @@ public class CellAction implements Cloneable {
     private List<Risorsa> bonus;
     private boolean fMisOn;
     private FamilyMember member;
+    private String type;
 
     public CellAction(){
         bonus = new ArrayList<Risorsa>();
@@ -19,25 +20,37 @@ public class CellAction implements Cloneable {
         this.dice = dice;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public void setBonus(List<Risorsa> bonus) {
         this.bonus = bonus;
     }
 
-    public void setFamilyMemberinCell(String color,String colorplayer) {
+    public void setFamilyMemberinCell(FamilyMember member) {
         this.fMisOn = true;
-        this.member = new FamilyMember(color,colorplayer);
+        this.member = member;
     }
 
     public String getcolorMember() {
-        return member.getColor();
+        return member.getColorplayer();
     }
 
     public int getDice() {
         return dice;
     }
 
+    public FamilyMember getMember() {
+        return member;
+    }
+
     public List<Risorsa> getBonus() {
         return bonus;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public boolean isfMOn(){

@@ -27,6 +27,7 @@ public class ExcommunicationServants extends EffectStrategy implements Cloneable
         this.period = period;
     }
 
+
     @Override
     public Object clone() {
         return super.clone();

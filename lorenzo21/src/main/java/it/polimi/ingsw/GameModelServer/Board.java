@@ -16,16 +16,16 @@ import java.util.*;
 public class Board{
 
 
-    private List victoryPoints;
+
     private List<CellFaithPoints> faithPoints;
-    private List militaryPoints;
+
     private List<Player> ordineTurno;
-    private List production;
-    private List harvest;
+    private List<CellAction> production;
+    private List<CellAction> harvest;
     private List<CellAction> market;
     private List<ExcommunicationTiles> carteScomunica;
     private List<CellAction> councilpalace;
-    private List<Integer> dadi;
+    private List<Dices> dices;
     private static Board instance;
     private Tower territoriesTower;
     private Tower buildingsTower;
@@ -41,15 +41,16 @@ public class Board{
         buildingsTower = createyellowTower();
         charactersTower = createblueTower();
         venturesTower = createvioletTower();
-        victoryPoints = new ArrayList();
+
         faithPoints = setFaithPointsTrack();
-        militaryPoints = new ArrayList();
+
         market = createMarket(players.length);
         councilpalace = new ArrayList<>();
-        harvest = new ArrayList();
-        production = new ArrayList();
+        harvest = new ArrayList<>();
+        production = new ArrayList<>();
         tokens = inizializationTokens(players);
         this.players = players;
+        dices = creatingDices();
 
         //WARNING!!! per bonus da caricare da file intendiamo anche i malus nei dadi degli spazi raccolto e produzione?
         //metto tutti i metodi così si creano non appena si crea la board!!!
@@ -93,12 +94,8 @@ public class Board{
         return colorpb;
     }
 
-    public CellAction createPalace(){ //TODO sistema CellAction con List
-            int i;
+    public CellAction createCellPalace(){
 
-            i=0;
-            for(CellAction space : this.councilpalace)
-                i++;
 
             JsonObject jpalace;
             CellAction cell = new CellAction();
@@ -106,7 +103,7 @@ public class Board{
             Risorsa coin = new Risorsa();
             List<Risorsa> reward = new ArrayList<>();
             try {
-                File cellpalace = new File("C:/Users/Simone/Desktop/palace.json");
+                File cellpalace = new File("src/main/resources/palace");
                 FileReader readpalace = new FileReader(cellpalace.getAbsolutePath());
                 jpalace = Json.parse(readpalace).asObject();
                 cell.setDice(jpalace.getInt("dice", 1));
@@ -124,12 +121,30 @@ public class Board{
             } catch (IOException e) {
                 //TODO
             }
-             this.councilpalace.add(i,cell);
 
-        return this.councilpalace.get(i);
+
+        return cell;
 
     }
 
+    public CellAction createCellHarvestorPoduction(){
+        CellAction cell = new CellAction();
+        cell.setDice(0);
+        return cell;
+    }
+
+    public List<Dices> creatingDices(){
+        List<Dices> dices = new ArrayList<>();
+        Dices orange = new Dices("Orange");
+        Dices black = new Dices("Black");
+        Dices white = new Dices("White");
+
+        dices.add(orange);
+        dices.add(black);
+        dices.add(white);
+
+        return dices;
+    }
 
     private List<CellAction> createMarket(int num){
 
@@ -147,7 +162,7 @@ public class Board{
 
         if(num==4) {
             try {
-                File marketfile = new File("C:/Users/Simone/Desktop/market.json");
+                File marketfile = new File("src/main/resources/market");
                 FileReader readmarket = new FileReader(marketfile.getAbsolutePath());
 
                 arraystand = Json.parse(readmarket).asArray();
@@ -169,6 +184,7 @@ public class Board{
                     ware.add(3, (Risorsa) palacefavor.clone());
 
                     stand.setBonus(ware);
+                    stand.setType(jstand.get("type").asString());
                     stand.setDice(jstand.getInt("dice", 1));
                     market.add(i, (CellAction) stand.clone());
 
@@ -181,7 +197,7 @@ public class Board{
             return market;
         }else{
             try {
-                File smarketfile = new File("C:/Users/Simone/Desktop/smallmarket.json");
+                File smarketfile = new File("src/main/resources/smallMarket");
                 FileReader readsmarket = new FileReader(smarketfile.getAbsolutePath());
 
                 arraystand = Json.parse(readsmarket).asArray();
@@ -197,6 +213,7 @@ public class Board{
                     ware.add(1, (Risorsa) servant.clone());
 
                     stand.setBonus(ware);
+                    stand.setType(jstand.get("type").asString());
                     stand.setDice(jstand.getInt("dice", 1));
                     smallmarket.add(i, (CellAction) stand.clone());
 
@@ -212,7 +229,7 @@ public class Board{
     }
 
     private Tower creategreenTower(){
-        Tower tower = new Tower("Territory");
+        Tower tower = new Tower("territory");
         JsonObject jterritory;
         JsonArray arrayterritory;
         CellTower singlecell = new CellTower();
@@ -221,7 +238,7 @@ public class Board{
         int i;
 
         try{
-            File greenfile = new File("C:/Users/Simone/Desktop/greenTower.json");
+            File greenfile = new File("src/main/resources/towersbonus/greenTower");
             FileReader readgreen = new FileReader(greenfile.getAbsolutePath());
             arrayterritory = Json.parse(readgreen).asArray();
             for(i=0;i<arrayterritory.size();i++){
@@ -242,7 +259,7 @@ public class Board{
     }
 
     private Tower createblueTower(){
-        Tower tower = new Tower("Character");
+        Tower tower = new Tower("characters");
         JsonObject jcharacter;
         JsonArray arraycharacter;
         CellTower singlecell = new CellTower();
@@ -251,7 +268,7 @@ public class Board{
         int i;
 
         try{
-            File bluefile = new File("C:/Users/Simone/Desktop/blueTower.json");
+            File bluefile = new File("src/main/resources/towersbonus/blueTower");
             FileReader readblue = new FileReader(bluefile.getAbsolutePath());
             arraycharacter = Json.parse(readblue).asArray();
             for(i=0;i<arraycharacter.size();i++){
@@ -271,7 +288,7 @@ public class Board{
     }
 
     private Tower createyellowTower(){
-        Tower tower = new Tower("Building");
+        Tower tower = new Tower("buildings");
         JsonObject jbuilding;
         JsonArray arraybuilding;
         CellTower singlecell = new CellTower();
@@ -280,7 +297,7 @@ public class Board{
         int i;
 
         try{
-            File yellowfile = new File("C:/Users/Simone/Desktop/yellowTower.json");
+            File yellowfile = new File("src/main/resources/towersbonus/yellowTower");
             FileReader readyellow = new FileReader(yellowfile.getAbsolutePath());
             arraybuilding = Json.parse(readyellow).asArray();
             for(i=0;i<arraybuilding.size();i++){
@@ -300,7 +317,7 @@ public class Board{
     }
 
     private Tower createvioletTower(){
-        Tower tower = new Tower("Venture");
+        Tower tower = new Tower("ventures");
         JsonObject jventure;
         JsonArray arrayventure;
         CellTower singlecell = new CellTower();
@@ -309,7 +326,7 @@ public class Board{
         int i;
 
         try{
-            File violetfile = new File("C:/Users/Simone/Desktop/violetTower.json");
+            File violetfile = new File("src/main/resources/towersbonus/violetTower");
             FileReader readviolet = new FileReader(violetfile.getAbsolutePath());
             arrayventure = Json.parse(readviolet).asArray();
             for(i=0;i<arrayventure.size();i++){
@@ -360,7 +377,7 @@ public class Board{
         int i;
 
         try{
-            File faithfile = new File("C:Users/Simone/Desktop/faithTrack.json");
+            File faithfile = new File("src/main/resources/faithTrack");
             FileReader readfaith = new FileReader(faithfile.getAbsolutePath());
             arrayfaith = Json.parse(readfaith).asArray();
             for(i=0;i<arrayfaith.size();i++){
@@ -390,19 +407,16 @@ public class Board{
             tower = buildingsTower;
         return tower;
     }
-    public void getVari() {
-        // TODO implement here
-    }
 
     public List<CellFaithPoints> getFaithPoints() {
         return faithPoints;
     }
 
-    public List getHarvest() {
+    public List<CellAction> getHarvest() {
         return harvest;
     }
 
-    public List getProduction() {
+    public List<CellAction> getProduction() {
         return production;
     }
 
@@ -418,16 +432,16 @@ public class Board{
         return carteScomunica;
     }
 
-    public List<Integer> getDadi() {
-        return dadi;
+    public List<Dices> getDices() {
+        return dices;
     }
 
 
-    public Token[] getTokens(String color) {
+    public Token[] getTokens(String colorplayer) {
         int i;
         Token[] token = new Token[4];
         for(i=0;i<this.tokens.size();i++){
-            if(this.tokens.get(i)[0].getColor().equals(color)){
+            if(this.tokens.get(i)[0].getColor().equals(colorplayer)){
                 token = this.tokens.get(i);
             }
         }

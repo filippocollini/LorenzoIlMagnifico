@@ -11,9 +11,7 @@ import java.util.*;
 
 public class ExcommunicationTiles extends Card implements Cloneable{
 
-    /**
-     * Default constructor
-     */
+
     public ExcommunicationTiles() {
         reduction = reductionParsing();
         covering = coverMarketParsing();
@@ -26,20 +24,49 @@ public class ExcommunicationTiles extends Card implements Cloneable{
 
     @Override
     public EffectStrategy activateEffect(int id) {
-        return null;
+        EffectStrategy excommunication = null;
+
+        for(ExcommunicationReduction effect : reduction){
+            if(effect.getId()==id){
+                excommunication = effect;
+            }
+        }
+        for(ExcommunicationLessResources effect : lessress){
+            if(effect.getId()==id){
+                excommunication = effect;
+            }
+        }
+        for(ExcommunicationEndVP effect : notVP){
+            if(effect.getId()==id){
+                excommunication = effect;
+            }
+        }
+        for(ExcommunicationLostVP effect : losingVP){
+            if(effect.getId()==id){
+                excommunication = effect;
+            }
+        }
+        if(covering.getId()==id)
+            excommunication = covering;
+        if(twoserv.getId()==id)
+            excommunication = twoserv;
+        if(skipping.getId()==id)
+            excommunication = skipping;
+
+        return excommunication;
     }
 
     private int id;
     private int periodo;
     private int effect;
     private List<ExcommunicationReduction> reduction;
-    private ExcommunicationCoverMarket covering;
-    private ExcommunicationServants twoserv;
-    private ExcommunicationSkipAction skipping;
+    private EffectStrategy covering;
+    private EffectStrategy twoserv;
+    private EffectStrategy skipping;
     private List<ExcommunicationLessResources> lessress;
     private List<ExcommunicationEndVP> notVP;
     private List<ExcommunicationLostVP> losingVP;
-    Player player;
+
 
 
     public void setEffect(int effect) {
@@ -52,10 +79,6 @@ public class ExcommunicationTiles extends Card implements Cloneable{
 
     public void setPeriod(int periodo) {
         this.periodo = periodo;
-    }
-
-    public void setPlayer(Player player) {//si fa un ciclo, il player si setta solo se si becca la scomunica e poi si
-        this.player = player;               // sovrascrive con gli altri player che devono essere scomunicati
     }
 
     public int getPeriod(){
@@ -74,13 +97,13 @@ public class ExcommunicationTiles extends Card implements Cloneable{
     public List<ExcommunicationReduction> reductionParsing(){
 
         int i;
-        ExcommunicationReduction effect = new ExcommunicationReduction();
+        EffectStrategy effect = new ExcommunicationReduction();
         List<ExcommunicationReduction> listeffect = new ArrayList<>();
         JsonArray arrayreduction;
         JsonObject jreduction;
 
         try{
-            File reductionfile = new File("C:/Users/Simone/Desktop/effetti/scomunicaboost.json");
+            File reductionfile = new File("src/main/resources/excommunications/scomunicaboost");
             FileReader readreduction = new FileReader(reductionfile.getAbsolutePath());
 
             arrayreduction = Json.parse(readreduction).asArray();
@@ -88,7 +111,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
                 jreduction = arrayreduction.get(i).asObject();
                 effect.setPeriod(jreduction.get("period").asInt());
                 effect.setId(jreduction.get("id").asInt());
-                effect.setType(jreduction.get("type").asString());
+                effect.setTypecard(jreduction.get("type").asString());
                 effect.setDice(jreduction.get("dice").asInt());
                 listeffect.add(i, (ExcommunicationReduction) effect.clone());
 
@@ -101,12 +124,12 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         return listeffect;
     }
 
-    public ExcommunicationCoverMarket coverMarketParsing(){
-        ExcommunicationCoverMarket covering = new ExcommunicationCoverMarket();
+    public EffectStrategy coverMarketParsing(){
+        EffectStrategy covering = new ExcommunicationCoverMarket();
         JsonObject jcovering;
 
         try{
-            File file = new File("C:/Users/Simone/Desktop/effetti/scomunicaCoverMarket.json");
+            File file = new File("src/main/resources/excommunications/scomunicaCoverMarket");
             FileReader readfile = new FileReader(file.getAbsolutePath());
             jcovering = Json.parse(readfile).asObject();
             covering.setPeriod(jcovering.get("period").asInt());
@@ -117,12 +140,12 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         return covering;
     }
 
-    public ExcommunicationServants twoServantsParsing(){
-        ExcommunicationServants twoserv = new ExcommunicationServants();
+    public EffectStrategy twoServantsParsing(){
+        EffectStrategy twoserv = new ExcommunicationServants();
         JsonObject jservant;
 
         try{
-            File fileserv = new File("C:/Users/Simone/Desktop/effetti/scomunicaTwoServants.json");
+            File fileserv = new File("src/main/resources/excommunications/scomunicaTwoServants");
             FileReader readserv = new FileReader(fileserv.getAbsolutePath());
             jservant = Json.parse(readserv).asObject();
             twoserv.setId(jservant.get("id").asInt());
@@ -133,12 +156,12 @@ public class ExcommunicationTiles extends Card implements Cloneable{
         return twoserv;
     }
 
-    public ExcommunicationSkipAction skipActionParsing(){
-        ExcommunicationSkipAction skip = new ExcommunicationSkipAction();
+    public EffectStrategy skipActionParsing(){
+        EffectStrategy skip = new ExcommunicationSkipAction();
         JsonObject jskip;
 
         try{
-            File fileskip = new File("C:/Users/Simone/Desktop/effetti/scomunicaSkipfirstAction.json");
+            File fileskip = new File("src/main/resources/excommunications/scomunicaSkipfirstAction");
             FileReader readskip = new FileReader(fileskip.getAbsolutePath());
             jskip = Json.parse(readskip).asObject();
             skip.setId(jskip.get("id").asInt());
@@ -150,14 +173,14 @@ public class ExcommunicationTiles extends Card implements Cloneable{
     }
 
     public List<ExcommunicationLessResources> lessResourcesParsing(){
-        ExcommunicationLessResources effectless = new ExcommunicationLessResources();
+        EffectStrategy effectless = new ExcommunicationLessResources();
         List<ExcommunicationLessResources> listeffectless = new ArrayList<>();
         JsonArray arrayless;
         JsonObject jless;
         int i;
 
         try{
-            File fileless = new File("C:/Users/Simone/Desktop/effetti/scomunicalessresources.json");
+            File fileless = new File("src/main/resources/excommunications/scomunicalessresources");
             FileReader readless = new FileReader(fileless.getAbsolutePath());
 
             arrayless = Json.parse(readless).asArray();
@@ -165,7 +188,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
                 jless = arrayless.get(i).asObject();
                 effectless.setId(jless.get("id").asInt());
                 effectless.setPeriod(jless.get("period").asInt());
-                effectless.setType(jless.get("type").asString());
+                effectless.setTypecard(jless.get("type").asString());
                 listeffectless.add(i, (ExcommunicationLessResources) effectless.clone());
             }
 
@@ -176,14 +199,14 @@ public class ExcommunicationTiles extends Card implements Cloneable{
     }
 
     public List<ExcommunicationEndVP> notVPparsing(){
-        ExcommunicationEndVP endvp = new ExcommunicationEndVP();
+        EffectStrategy endvp = new ExcommunicationEndVP();
         List<ExcommunicationEndVP> listendvp = new ArrayList<>();
         int i;
         JsonObject jendvp;
         JsonArray arrayendvp;
 
         try{
-            File filend = new File("C:/Users/Simone/Desktop/effetti/scomunicanoendVP.json");
+            File filend = new File("src/main/resources/excommunications/scomunicanoendVP");
             FileReader readend = new FileReader(filend.getAbsolutePath());
 
             arrayendvp = Json.parse(readend).asArray();
@@ -191,7 +214,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
                 jendvp = arrayendvp.get(i).asObject();
                 endvp.setId(jendvp.get("id").asInt());
                 endvp.setPeriod(jendvp.get("period").asInt());
-                endvp.setType(jendvp.get("type").asString());
+                endvp.setTypecard(jendvp.get("type").asString());
 
                 listendvp.add(i, (ExcommunicationEndVP) endvp.clone());
             }
@@ -204,13 +227,13 @@ public class ExcommunicationTiles extends Card implements Cloneable{
     }
 
     public List<ExcommunicationLostVP> lostVPparsing(){
-        ExcommunicationLostVP lostvp = new ExcommunicationLostVP();
+        EffectStrategy lostvp = new ExcommunicationLostVP();
         List<ExcommunicationLostVP> listlostvp = new ArrayList<>();
         JsonArray arraylost;
         JsonObject jlost;
         int i;
         try{
-            File filelost = new File("C:/Users/Simone/Desktop/effetti/scomunicaendVPlost.json");
+            File filelost = new File("src/main/resources/excommunications/scomunicaendVPlost");
             FileReader readlost = new FileReader(filelost.getAbsolutePath());
             arraylost = Json.parse(readlost).asArray();
             for(i=0;i<arraylost.size(); i++){
@@ -218,7 +241,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
                 lostvp.setId(jlost.get("id").asInt());
                 lostvp.setPeriod(jlost.get("period").asInt());
                 lostvp.setQuantity(jlost.get("quantity").asInt());
-                lostvp.setType(jlost.get("type").asString());
+                lostvp.setTypecard(jlost.get("type").asString());
                 listlostvp.add(i, (ExcommunicationLostVP) lostvp.clone());
             }
 

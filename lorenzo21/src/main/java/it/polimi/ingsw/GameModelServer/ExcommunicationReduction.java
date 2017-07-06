@@ -24,7 +24,7 @@ public class ExcommunicationReduction extends EffectStrategy implements Cloneabl
         this.period = period;
     }
 
-    public void setType(String type) {
+    public void setTypecard(String type) {
         this.type = type;
     }
 
@@ -33,7 +33,7 @@ public class ExcommunicationReduction extends EffectStrategy implements Cloneabl
         return id;
     }
 
-    public String getType() {
+    public String getTypeCard() {
         return type;
     }
 
@@ -43,6 +43,20 @@ public class ExcommunicationReduction extends EffectStrategy implements Cloneabl
 
     public int getDice() {
         return dice;
+    }
+
+    @Override
+    public FamilyMember apply(FamilyMember member,String type) {
+
+        if(this.type.equalsIgnoreCase("dices") && this.type.equals(type)){
+            if (!member.getColor().equalsIgnoreCase("Neutral")){
+                    member.setValue(member.getValue() - dice);
+            }
+        }else if(this.type.equals(type)){
+            member.setValue(member.getValue() - dice);
+        }
+
+        return member;
     }
 
     @Override

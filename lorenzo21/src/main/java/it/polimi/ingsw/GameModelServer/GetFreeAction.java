@@ -44,7 +44,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
     }
 
 
-    /*public Player apply(Player player) {
+    public Player apply(Player player) {
         FamilyMember ghostmember = new FamilyMember("ghost","ghost");
         ghostmember.setValue(dicepower);
         String tower = null;
@@ -57,10 +57,10 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
                 tower = Game.askTower();
             }
             else if (typecard.equalsIgnoreCase("territory"))
-                tower = "Territory";
+                tower = "territory";
             else if (typecard.equalsIgnoreCase("venture"))
-                tower = "Venture";
-            ghostmember.setValue( Game.controlboost(player , ghostmember).getValue());
+                tower = "ventures";
+            ghostmember.setValue( Game.controlboost(player , ghostmember,tower).getValue());
 
             floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
 
@@ -69,11 +69,11 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
                 System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
                 return player;
             }
-            ghostmember = Game.isFMok(ghostmember,floor,player,dicepower).getValue();
+            ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
             player = Game.addFMonTowerAction(player, ghostmember, floor, tower, free);
         }
 
         return player;
-    }*/
+    }
 
 }

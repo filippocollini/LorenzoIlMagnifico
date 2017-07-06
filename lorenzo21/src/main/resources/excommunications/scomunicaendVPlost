@@ -1,0 +1,5 @@
+[{"period":3,"id":34,"type":"VictoryPoints","quantity":5},
+  {"period":3,"id":35,"type":"MilitaryPoints","quantity":1},
+  {"period":3,"id":36,"type":"BuildingCost","quantity":1},
+  {"period":3,"id":37,"type":"GenericResources","quantity":1}
+]

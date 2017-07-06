@@ -18,15 +18,25 @@ public abstract class EffectStrategy implements Cloneable{
     }
 
     public Player apply(Player player){
-        return null;
+        return player;
     }
+
     public List<Risorsa> apply(List<Risorsa> cost){
         return cost;
     }
 
     public Player apply(Player player, String color){
-        return null;
+        return player;
     }
+
+    public FamilyMember apply(FamilyMember member,String type){
+        return member;
+    }
+
+    public List<Risorsa> apply(List<Risorsa> gained,Player player,String color){
+        return gained;
+    }
+
 
     @Override
     public Object clone()  {
@@ -75,5 +85,14 @@ public abstract class EffectStrategy implements Cloneable{
 
     public String getTypeCard() {
         return null;
+    }
+    public List<Risorsa> getTospend() {
+        return null;
+    }
+
+    public void setPeriod(int period) {
+    }
+
+    public void setQuantity(int quantity) {
     }
 }

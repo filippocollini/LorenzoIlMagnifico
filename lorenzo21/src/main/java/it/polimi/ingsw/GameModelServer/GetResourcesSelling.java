@@ -60,46 +60,78 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
 
     public Player apply(Player player, String color) {
         int oldvalue;
-        int newvalue;
         int i;
+        Player control = player;
+
+
         if(player.getMember(color).getValue() >= dicepower){
-            for(Risorsa resource : player.getPB().getresources()){ //Risorse
+
+            for(Risorsa resource : control.getPB().getresources()){ //Risorse
                 for(Risorsa single : tospend){  //risorse da spendere
                     if(single.getquantity()!=0 && single.gettipo().equals(resource.gettipo().concat("to"))) {
-                        oldvalue = player.getPB().getsingleresource(resource.gettipo()).getquantity();
-                        player.getPB().getsingleresource(resource.gettipo()).setQuantity(oldvalue - single.getquantity());
-                    }
-                }
-                for(Risorsa singlereward : reward){  //risorse da guadagnare
-                    if(singlereward.getquantity() != 0 && singlereward.gettipo().equals(resource.gettipo().concat("re"))){
-                        newvalue = player.getPB().getsingleresource(resource.gettipo()).getquantity();
-                        player.getPB().getsingleresource(resource.gettipo()).setQuantity(newvalue + singlereward.getquantity());
+                        oldvalue = control.getPB().getsingleresource(resource.gettipo()).getquantity();
+                        if(oldvalue-single.getquantity()>=0) {
+                            control.getPB().getsingleresource(resource.gettipo()).setQuantity(oldvalue - single.getquantity());
+                        }else{
+                            System.out.println("no more resources to spend"); //TODO
+                            return player;
+                        }
                     }
                 }
             }
-            for(Token token : player.board.getTokens(player.getColor())){ //Points
+
+            for(Token token : control.board.getTokens(player.getColor())){ //Points
                 for(Risorsa single : tospend){ //punti da spendere
                     if(single.getquantity() !=0 && single.gettipo().equals(token.getType().concat("to"))){
                         oldvalue = token.getPosition();
-                        for(i=0;i<player.board.getTokens(player.getColor()).length;i++){
-                            if(player.board.getTokens(player.getColor())[i].getType().equals(token.getType()))
-                            player.board.getTokens(player.getColor())[i].setPosition(oldvalue - single.getquantity());
+                        for(i=0;i<control.board.getTokens(control.getColor()).length;i++){
+                            if(control.board.getTokens(control.getColor())[i].getType().equals(token.getType())) {
+                                if (oldvalue - single.getquantity() >= 0) {
+                                    control.board.getTokens(control.getColor())[i].setPosition(oldvalue - single.getquantity());
+                                } else {
+                                    System.out.println("no more points to spend"); //TODO
+                                    return player;
+                                }
+                            }
                         }
                     }
                 }
-                for(Risorsa singlereward : reward){  //punti da guadagnare
-                    if(singlereward.getquantity() !=0 && singlereward.gettipo().equals(token.getType().concat("re"))){
-                        newvalue = token.getPosition();
-                        for(i=0;i<player.board.getTokens(player.getColor()).length;i++){
-                            if(player.board.getTokens(player.getColor())[i].getType().equals(token.getType()))
-                                player.board.getTokens(player.getColor())[i].setPosition(newvalue + singlereward.getquantity());
-                        }
-                    }
-                }
+
             }
+
+            player = control;
         }else
             System.out.println("non puoi");//TODO
         return player;
+    }
+
+    public List<Risorsa> apply(List<Risorsa> gained,Player player,String color){
+        List<Risorsa> palacechoice = new ArrayList<>();
+        int j = 0;
+
+        if(player.getMember(color).getValue() >= dicepower){
+
+            for(Risorsa res : reward){
+                if(res.gettipo().equalsIgnoreCase("PalaceFavorre"))
+                    palacechoice = Game.choosePalaceFavor(Game.getPalaceFavors(),res.getquantity());
+            }
+            for(Risorsa rex : reward){
+                for(Risorsa choice : palacechoice){
+                    if(rex.gettipo().equalsIgnoreCase(choice.gettipo().concat("re")))
+                        reward.get(j).setQuantity(rex.getquantity()+choice.getquantity());
+                }
+                j++;
+            }
+
+            for(Risorsa singlereward : reward){  //risorse da guadagnare
+                if(singlereward.getquantity() != 0) {
+                    gained.add(singlereward);
+                }
+            }
+
+        }else
+            System.out.println("non puoi");//TODO
+        return gained;
     }
 }
 

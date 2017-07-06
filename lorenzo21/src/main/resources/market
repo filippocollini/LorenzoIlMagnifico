@@ -1,0 +1,5 @@
+[{"type":"C","Coins":5},
+  {"type":"S","Servants":5},
+  {"type":"MPC","Coins":2,"MilitaryPoints":3},
+  {"type":"PF","PalaceFavor":2}
+]

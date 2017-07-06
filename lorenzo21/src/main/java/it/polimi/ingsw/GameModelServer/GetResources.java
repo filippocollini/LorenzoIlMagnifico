@@ -35,7 +35,7 @@ public class GetResources extends EffectStrategy implements Cloneable {
 
     @Override
     public Player apply(Player player) {
-        int i = 0;
+        /*int i = 0;   //al momento quello nel commento non aggiunge PF
         int j = 0;
         int oldvalue;
         for(Risorsa rex : player.getPB().getresources()) {
@@ -46,15 +46,19 @@ public class GetResources extends EffectStrategy implements Cloneable {
             }
             j++;
         }
-        for(Token token : player.board.getTokens(player.getColor())){
+        Token[] tokens = player.board.getTokens(player.getColor());
+        for(Token token : tokens){
             for(Risorsa reward : extendedresources){
                 if(reward.gettipo().equals(token.getType())){
-                    oldvalue = player.board.getTokens(player.getColor())[i].getPosition();
-                    player.board.getTokens(player.getColor())[i].setPosition(oldvalue + reward.getquantity());
+                    oldvalue = tokens[i].getPosition();
+                    tokens[i].setPosition(oldvalue + reward.getquantity());
                 }
             }
             i++;
         }
+        player.board.setTokens(tokens);
+        */
+        player = Game.getimmediateBonus(player,this.extendedresources,false);
 
         return player;
     }

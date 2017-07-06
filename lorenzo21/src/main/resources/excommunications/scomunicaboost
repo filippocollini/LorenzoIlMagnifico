@@ -1,0 +1,9 @@
+[
+  {"period":1,"id":15,"type":"harvest","dice":-3},
+  {"period":1,"id":16,"type":"production","dice":-3},
+  {"period":1,"id":17,"type":"dices","dice":-1},
+  {"period":2,"id":21,"type":"territory","dice":-4},
+  {"period":2,"id":22,"type":"buildings","dice":-4},
+  {"period":2,"id":23,"type":"characters","dice":-4},
+  {"period":2,"id":24,"type":"ventures","dice":-4}
+]

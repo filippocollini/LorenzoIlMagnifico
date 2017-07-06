@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
+import java.util.List;
+
 /**
  * Created by Simone on 18/06/2017.
  */
@@ -19,7 +21,7 @@ public class ExcommunicationLessResources extends EffectStrategy implements Clon
         this.period = period;
     }
 
-    public void setType(String type) {
+    public void setTypecard(String type) {
         this.type = type;
     }
 
@@ -32,8 +34,25 @@ public class ExcommunicationLessResources extends EffectStrategy implements Clon
         return period;
     }
 
-    public String getType() {
+    public String getTypeCard() {
         return type;
+    }
+
+    @Override
+    public List<Risorsa> apply(List<Risorsa> reward) {
+        int i = 0;
+
+        for(Risorsa singlereward : reward){
+            if(this.type.equalsIgnoreCase("WoodStones")){
+                if(singlereward.gettipo().equalsIgnoreCase("Woods") || singlereward.gettipo().equalsIgnoreCase("Stones")){
+                    reward.get(i).setQuantity(reward.get(i).getquantity()-1);
+                }
+            }else if(singlereward.gettipo().equals(this.type)){
+                reward.get(i).setQuantity(reward.get(i).getquantity()-1);
+            }
+        }
+
+        return reward;
     }
 
     @Override
