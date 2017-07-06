@@ -32,24 +32,24 @@ public class Board{
     private Tower charactersTower;
     private Tower venturesTower;
     private List<Token[]> tokens;
-    private Player[] players;
-    private List<BoardObserver> observers = new ArrayList<>();
+
+    private List<BoardObserver> observers;
 
 
-    private Board(Player[] players){
+    private Board(int nplayers){
         territoriesTower = creategreenTower();
         buildingsTower = createyellowTower();
         charactersTower = createblueTower();
         venturesTower = createvioletTower();
 
         faithPoints = setFaithPointsTrack();
-
-        market = createMarket(players.length);
+        observers = new ArrayList<>();
+        market = createMarket(nplayers);
         councilpalace = new ArrayList<>();
         harvest = new ArrayList<>();
         production = new ArrayList<>();
-        tokens = inizializationTokens(players);
-        this.players = players;
+        tokens = inizializationTokens(nplayers);
+
         dices = creatingDices();
 
         //WARNING!!! per bonus da caricare da file intendiamo anche i malus nei dadi degli spazi raccolto e produzione?
@@ -59,21 +59,24 @@ public class Board{
 
 
 
-    private List<Token[]> inizializationTokens(Player[] players) {
+    private List<Token[]> inizializationTokens(int nplayers) {
         int i;
         List<Token[]> tokens = new ArrayList<>();
-        for(i=0;i<players.length;i++) {
+        List<String> previouscolor = new ArrayList<>();
+        for(i=0;i<nplayers;i++) {
+            String color = Game.randomcolor(previouscolor);
+            previouscolor.add(color);
             Token[] token = new Token[4];
-            token[0] = new Token(players[i].getColor());
+            token[0] = new Token(color);
             token[0].setType("VictoryPoints");
             token[0].setPosition(0);
-            token[1] = new Token(players[i].getColor());
+            token[1] = new Token(color);
             token[1].setType("MilitaryPoints");
             token[1].setPosition(0);
-            token[2] = new Token(players[i].getColor());
+            token[2] = new Token(color);
             token[2].setType("FaithPoints");
             token[2].setPosition(0);
-            token[3] = new Token(players[i].getColor());
+            token[3] = new Token(color);
             token[3].setType("Order");
             tokens.add(i, token);
         }
@@ -82,17 +85,7 @@ public class Board{
 
     }
 
-    //TODO get player per poterli vedere da tutti
-    public PersonalBoard getPBPlayer(String color){
-        PersonalBoard colorpb = new PersonalBoard();
-        int i;
-        for(i=0;i<this.players.length;i++){
-            if(this.players[i].getColor().equals(color))
-                colorpb = this.players[i].getPB();
-        }
 
-        return colorpb;
-    }
 
     public CellAction createCellPalace(){
 
@@ -103,7 +96,7 @@ public class Board{
             Risorsa coin = new Risorsa();
             List<Risorsa> reward = new ArrayList<>();
             try {
-                File cellpalace = new File("src/main/resources/palace");
+                File cellpalace = new File("lorenzo21/src/main/resources/palace.json");
                 FileReader readpalace = new FileReader(cellpalace.getAbsolutePath());
                 jpalace = Json.parse(readpalace).asObject();
                 cell.setDice(jpalace.getInt("dice", 1));
@@ -162,7 +155,7 @@ public class Board{
 
         if(num==4) {
             try {
-                File marketfile = new File("src/main/resources/market");
+                File marketfile = new File("lorenzo21/src/main/resources/market.json");
                 FileReader readmarket = new FileReader(marketfile.getAbsolutePath());
 
                 arraystand = Json.parse(readmarket).asArray();
@@ -197,7 +190,7 @@ public class Board{
             return market;
         }else{
             try {
-                File smarketfile = new File("src/main/resources/smallMarket");
+                File smarketfile = new File("lorenzo21/src/main/resources/smallMarket.json");
                 FileReader readsmarket = new FileReader(smarketfile.getAbsolutePath());
 
                 arraystand = Json.parse(readsmarket).asArray();
@@ -377,7 +370,7 @@ public class Board{
         int i;
 
         try{
-            File faithfile = new File("src/main/resources/faithTrack");
+            File faithfile = new File("lorenzo21/src/main/resources/faithTrack.json");
             FileReader readfaith = new FileReader(faithfile.getAbsolutePath());
             arrayfaith = Json.parse(readfaith).asArray();
             for(i=0;i<arrayfaith.size();i++){
@@ -463,9 +456,9 @@ public class Board{
     public void modifyOrdineTurno(){}
 
 
-    public static Board getInstance(Player[] players) {
+    public static Board getInstance(int nplayers) {
             if (instance == null)
-                instance = new Board(players);
+                instance = new Board(nplayers);
         return instance;
     }
 

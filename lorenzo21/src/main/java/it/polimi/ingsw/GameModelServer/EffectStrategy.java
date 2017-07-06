@@ -86,7 +86,12 @@ public abstract class EffectStrategy implements Cloneable{
     public String getTypeCard() {
         return null;
     }
+
     public List<Risorsa> getTospend() {
+        return null;
+    }
+
+    public List<Risorsa> getResources(){
         return null;
     }
 

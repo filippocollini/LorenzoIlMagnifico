@@ -21,7 +21,7 @@ public class GetResources extends EffectStrategy implements Cloneable {
         return id;
     }
 
-    public List<Risorsa> getResource(){
+    public List<Risorsa> getResources(){
         return extendedresources;
     }
 

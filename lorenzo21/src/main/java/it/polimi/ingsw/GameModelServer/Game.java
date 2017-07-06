@@ -38,11 +38,13 @@ public class Game implements Serializable {
 
 
     public Game(HashMap<String, AbstractPlayer> abplayers, Stanza room) {
+        this.board = Board.getInstance(room.nPlayers());
+
         this.players = creatingPlayers(abplayers,room.nPlayers());
         turn = 1;
         bonustiles = new ArrayList<>();
         this.stato = stato;
-        this.board = Board.getInstance(players);
+
         greendeck = creatingGreenDeck(territoryParsing());
         yellowdeck = creatingYellowDeck(buildingParsing());
         bluedeck = creatingBlueDeck(characterParsing());
@@ -59,20 +61,22 @@ public class Game implements Serializable {
         List<String> previouscolors = new ArrayList<>();
         int i = 0;
         for(Map.Entry<String,AbstractPlayer> entry : abplayers.entrySet()){
-            players[i] = new Player(entry.getKey(),randomcolor(previouscolors),board);
+            String color = randomcolor(previouscolors);
+            previouscolors.add(color);
+            players[i] = new Player(entry.getKey(),color,board);
             i++;
         }
         return players;
     }
 
-    private String randomcolor(List<String> previouscolor){
+    public static String randomcolor(List<String> previouscolor){
 
         String color;
         String[] colors = {"blue","green","yellow","red"};
         int index = new Random().nextInt(colors.length);
         color = colors[index];
         if(previouscolor.size() == 0) {
-            previouscolor.add(color);
+
             return color;
         }else {
             for (String usedcolor : previouscolor) {
@@ -80,7 +84,7 @@ public class Game implements Serializable {
                     return randomcolor(previouscolor);
                 }
             }
-            previouscolor.add(color);
+
         }
         return color;
 
@@ -160,7 +164,7 @@ public class Game implements Serializable {
         List<Risorsa> favors = new ArrayList<>();
 
         try{
-            File file = new File("src/main/resources/palacefavorList");
+            File file = new File("lorenzo21/src/main/resources/palacefavorList.json");
             FileReader reader = new FileReader(file.getAbsolutePath());
             jpalace = Json.parse(reader).asObject();
 
@@ -203,7 +207,7 @@ public class Game implements Serializable {
 
 
         try {
-            File fileterritory = new File("src/main/resources/cards/territory");
+            File fileterritory = new File("lorenzo21/src/main/resources/cards/territory.json");
             FileReader readingterritory = new FileReader(fileterritory.getAbsolutePath());
 
             jarraycard = Json.parse(readingterritory).asArray();
@@ -273,7 +277,7 @@ public class Game implements Serializable {
 
 
         try {
-            File filebuilding = new File("src/main/resources/cards/building");
+            File filebuilding = new File("lorenzo21/src/main/resources/cards/building.json");
             FileReader readingbuilding = new FileReader(filebuilding.getAbsolutePath());
 
             jarraycard = Json.parse(readingbuilding).asArray();
@@ -360,7 +364,7 @@ public class Game implements Serializable {
 
 
         try {
-            File filecharacter = new File("src/main/resources/cards/character");
+            File filecharacter = new File("lorenzo21/src/main/resources/cards/character.json");
             FileReader readingcharacter = new FileReader(filecharacter.getAbsolutePath());
 
             jarraycard = Json.parse(readingcharacter).asArray();
@@ -440,7 +444,7 @@ public class Game implements Serializable {
 
 
         try {
-            File fileventure = new File("src/main/resources/cards/venture");
+            File fileventure = new File("lorenzo21/src/main/resources/cards/venture.json");
             FileReader readingventure = new FileReader(fileventure.getAbsolutePath());
 
             jarraycard = Json.parse(readingventure).asArray();
@@ -979,6 +983,9 @@ public class Game implements Serializable {
                         }
 
                     }
+                    /*
+                     */
+
                 }
                 //toglie la carta dalla board
                 player.board.getTower(tower).getFloors().get(i).setCarta(null);
@@ -1385,4 +1392,16 @@ public class Game implements Serializable {
     public static List<Risorsa> getPalaceFavors() {
         return palaceFavors;
     }
+
+    public Player herethePlayer(String username){
+        int i = 0;
+        for(Player player : players){
+            if(player.getUsername().equalsIgnoreCase(username)){
+                return players[i];
+            }
+            i++;
+        }
+        return null;
+    }
+
 }

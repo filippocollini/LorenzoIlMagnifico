@@ -49,7 +49,7 @@ public class PersonalBoard {
         int i;
 
         try{
-            File filegreenPb = new File("src/main/resources/greenPB");
+            File filegreenPb = new File("lorenzo21/src/main/resources/greenPB.json");
             FileReader read = new FileReader(filegreenPb.getAbsolutePath());
 
             arraycell = Json.parse(read).asArray();
@@ -79,7 +79,7 @@ public class PersonalBoard {
         int i;
 
         try{
-            File filebluePb = new File("src/main/resources/bluePb");
+            File filebluePb = new File("lorenzo21/src/main/resources/bluePb.json");
             FileReader read = new FileReader(filebluePb.getAbsolutePath());
 
             array = Json.parse(read).asArray();

@@ -7,12 +7,12 @@ import java.util.*;
  */
 public class LeaderCard extends Card {
 
-    String name;
-    List<Risorsa> requisiti;
+    protected String name;
+    protected List<Risorsa> requires;
 
 
     public LeaderCard() {
-        requisiti = new ArrayList<>();
+        requires = new ArrayList<>();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class LeaderCard extends Card {
     }
 
     public void setRequisiti(List<Risorsa> requisiti){
-        this.requisiti = requisiti;
+        this.requires = requisiti;
     }
 
 
