@@ -104,6 +104,15 @@ public class Player extends BoardObserver implements Serializable{
     @Override
     public void update() {
         this.token = board.getTokens(this.color);
+
+        int i = 0;
+        for(FamilyMember member : members){
+            for(Dices dice : board.getDices()){
+                if(member.getColor().equalsIgnoreCase(dice.getColor())){
+                    this.members.get(i).setValue(dice.getValue());
+                }
+            }
+        }
     }
 
 

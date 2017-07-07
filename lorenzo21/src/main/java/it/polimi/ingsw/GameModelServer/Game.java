@@ -71,6 +71,16 @@ public class Game implements Serializable {
         return players;
     }
 
+    public List<Dices> rollDices(List<Dices> dices){
+        int i = 0;
+        for(Dices dice : dices){
+            Random random = new Random();
+            dices.get(i).setValue(random.nextInt(6)+1);
+        }
+
+        return dices;
+    }
+
     public static String randomcolor(List<String> previouscolor){
 
         String color;

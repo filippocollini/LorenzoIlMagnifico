@@ -52,8 +52,6 @@ public class Board{
 
         dices = creatingDices();
 
-        //WARNING!!! per bonus da caricare da file intendiamo anche i malus nei dadi degli spazi raccolto e produzione?
-        //metto tutti i metodi così si creano non appena si crea la board!!!
 
     }
 
@@ -430,6 +428,8 @@ public class Board{
     }
 
 
+
+
     public Token[] getTokens(String colorplayer) {
         int i;
         Token[] token = new Token[4];
@@ -451,6 +451,12 @@ public class Board{
         }
         notifyAllObservers();
 
+    }
+
+    public void setDices(List<Dices> dices){
+        this.dices = dices;
+
+        notifyAllObservers();
     }
 
     public void modifyOrdineTurno(){}
