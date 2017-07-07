@@ -6,6 +6,7 @@ package it.polimi.ingsw.GameModelServer;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.Stanza;
 
@@ -15,11 +16,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class Game implements Serializable {
+
+    private static final Logger LOG = Logger.getLogger(Game.class.getName());
+
 
     private Player[] players;
     private Board board;
@@ -29,20 +35,20 @@ public class Game implements Serializable {
     public static final String SAMETOWER="sametower";
     private int turn;
     private List<BonusTile> bonustilesnormal;
-    private List<BonusTile> bonustileleader;
+    private transient List<BonusTile> bonustileleader;
     private GameStatus stato;
-    private List<TerritoryDeck> greendeck;
-    private List<BuildingDeck> yellowdeck;
-    private List<CharacterDeck> bluedeck;
-    private List<VentureDeck> violetdeck;
+    private transient List<TerritoryDeck> greendeck;
+    private transient List<BuildingDeck> yellowdeck;
+    private transient List<CharacterDeck> bluedeck;
+    private transient List<VentureDeck> violetdeck;
     private static List<Risorsa> palaceFavors;
-    private List<ExcommunicationDeck> excommunicationdeck;
+    private transient List<ExcommunicationDeck> excommunicationdeck;
     private List<Player> order;
-    private List<LeaderCard> leaderdeck;
+    private transient List<LeaderCard> leaderdeck;
 
 
 
-    public Game(HashMap<String, AbstractPlayer> abplayers, Stanza room) {
+    public Game(HashMap<String, AbstractPlayer> abplayers, Stanza room) throws FileMalformedException {
         this.board = Board.getInstance(room.nPlayers());
 
         this.players = creatingPlayers(abplayers,room.nPlayers());
@@ -270,7 +276,13 @@ public class Game implements Serializable {
         JsonArray jarrayper;
 
         int i,j,k;
-        DevelopementCard singlecard = new TerritoryCard();
+        DevelopementCard singlecard = null;
+        try {
+            singlecard = new TerritoryCard();
+        } catch (FileMalformedException e) {
+            LOG.log(Level.CONFIG, "Cannot parse territory cards' file", e);
+
+        }
         List<TerritoryCard> cardList = new ArrayList<>();
 
 
@@ -336,7 +348,12 @@ public class Game implements Serializable {
         JsonArray jarrayper;
 
         int i,j,k;
-        DevelopementCard singlecard = new BuildingCard();
+        DevelopementCard singlecard = null;
+        try {
+            singlecard = new BuildingCard();
+        } catch (FileMalformedException e) {
+            LOG.log(Level.CONFIG, "Cannot parse building cards' file", e);
+        }
         List<BuildingCard> cardList = new ArrayList<>();
         Risorsa coin = new Risorsa();
         Risorsa wood = new Risorsa();
@@ -416,7 +433,7 @@ public class Game implements Serializable {
         return cardList;
     }
 
-    private List<CharacterCard> characterParsing() {
+    private List<CharacterCard> characterParsing() throws FileMalformedException {
 
         JsonArray jarraycard;
         JsonObject jcard;
@@ -488,8 +505,8 @@ public class Game implements Serializable {
 
 
         } catch (IOException e) {
-            e.printStackTrace(); // TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return cardList;
     }
 
@@ -501,7 +518,12 @@ public class Game implements Serializable {
         JsonArray jarrayper;
 
         int i,j,k;
-        DevelopementCard singlecard = new VentureCard();
+        DevelopementCard singlecard = null;
+        try {
+            singlecard = new VentureCard();
+        } catch (FileMalformedException e) {
+            LOG.log(Level.CONFIG, "Cannot parse venture cards' file", e);
+        }
         List<VentureCard> cardList = new ArrayList<>();
         Risorsa coin = new Risorsa();
         Risorsa wood = new Risorsa();
@@ -591,7 +613,12 @@ public class Game implements Serializable {
 
     private List<ExcommunicationTiles> creatingExcommunicationTiles(){
         List<ExcommunicationTiles> tilesList = new ArrayList<>();
-        ExcommunicationTiles tile = new ExcommunicationTiles();
+        ExcommunicationTiles tile = null;
+        try {
+            tile = new ExcommunicationTiles();
+        } catch (FileMalformedException e) {
+            LOG.log(Level.CONFIG, "Cannot parse the excommunication tiles' file", e);
+        }
         int i;
 
         for(i=0; i<21;i++) {
@@ -712,7 +739,7 @@ public class Game implements Serializable {
                                 method = effect.getClass().getMethod("apply", Player.class,String.class);
                                 player = (Player) method.invoke(effect,player,color);
                             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                LOG.log(Level.SEVERE, "Method not found", e);
                             }
 
                         }
@@ -806,7 +833,7 @@ public class Game implements Serializable {
                                     gained = (List<Risorsa>) method2.invoke(effect, gained, player, color);
                                 }
                             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                LOG.log(Level.SEVERE, "Method not found", e);
                             }
 
                         }
@@ -944,7 +971,7 @@ public class Game implements Serializable {
                         method = effect.getClass().getMethod("apply",  FamilyMember.class,String.class);
                         member = (FamilyMember) method.invoke(effect, member,type);
                     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                        e.printStackTrace();//TODO
+                        LOG.log(Level.SEVERE, "Method not found", e);
                     }
                 }
             }
@@ -957,7 +984,6 @@ public class Game implements Serializable {
        Tower towerchosen;
        int dice ;
        int size;
-       boolean mps = false;
        int oldvalue;
 
        towerchosen = player.board.getTower(tower);
@@ -989,7 +1015,7 @@ public class Game implements Serializable {
         player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
 
         //poi faccio l'azione applicando lo sconto
-        player = addFMonTowerAction(player, player.getMember(member),dice, tower,false);
+        addFMonTowerAction(player, player.getMember(member),dice, tower,false);
 
     return SUCCESS;
    }
@@ -1043,7 +1069,7 @@ public class Game implements Serializable {
                                 player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i)
                                         .getCard().activateEffect(id), player, member.getColor());
                             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                                e.printStackTrace();//TODO
+                                LOG.log(Level.SEVERE, "Method not found", e);
                             }
                         } else { //metodi che richiedono il solo player
                             if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
@@ -1056,7 +1082,7 @@ public class Game implements Serializable {
                                         .getClass().getMethod("apply", Player.class);
                                 player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id), player);
                             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                                e.printStackTrace();//TODO
+                                LOG.log(Level.SEVERE, "Method not found", e);
                             }
 
                         }
@@ -1170,7 +1196,7 @@ public class Game implements Serializable {
 
     public static DevelopementCard applydiscount(Player player, DevelopementCard card, boolean free) {
 
-        List<Risorsa> listcost = null;
+        List<Risorsa> listcost;
         DevelopementCard disccard = card;
         int i;
         if (card.getCardtype().equals("territory"))
@@ -1187,7 +1213,7 @@ public class Game implements Serializable {
                             Method method = effect.getClass().getMethod("apply", List.class);
                             listcost = (List<Risorsa>) method.invoke(effect, listcost);
                         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
+                            LOG.log(Level.SEVERE, "Method not found", e);
                         }
                     }
                 }
@@ -1204,7 +1230,7 @@ public class Game implements Serializable {
                                Method method = effect.getClass().getMethod("apply", List.class);
                                listcost = (List<Risorsa>) method.invoke(effect, listcost);
                            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                               e.printStackTrace();
+                               LOG.log(Level.SEVERE, "Method not found", e);
 
                            }
                        }
@@ -1428,7 +1454,7 @@ public class Game implements Serializable {
                         method = effect.getClass().getMethod("apply",List.class);
                         reward = (List<Risorsa>) method.invoke(effect,reward);
                     } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+                        LOG.log(Level.SEVERE, "Method not found", e);
                     }
                 }
             }
@@ -1548,7 +1574,7 @@ public class Game implements Serializable {
 
     }
 
-    public List<BonusTile> bonusTilesParsing(String gametype){
+    public List<BonusTile> bonusTilesParsing(String gametype) throws FileMalformedException {
         List<BonusTile> listtiles = new ArrayList<>();
         JsonArray arraytile;
         JsonObject jtile;
@@ -1611,7 +1637,8 @@ public class Game implements Serializable {
 
 
         }catch (IOException e){
-            e.printStackTrace(); //TODO
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");
         }
 
 
@@ -1620,7 +1647,6 @@ public class Game implements Serializable {
 
     public Player chooseBonusTile(Player player , String gametype){
         int choose;
-        int i = 0;
         //show bonustile
         if(gametype.equalsIgnoreCase("normal")) {
             System.out.println("Which bonus tile to you want to use?" +

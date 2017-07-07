@@ -3,6 +3,9 @@ package it.polimi.ingsw.ClientView;
 import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.ClientController.RMIClient;
 import it.polimi.ingsw.ClientController.SocketClient;
+import it.polimi.ingsw.Exceptions.ClientException;
+import it.polimi.ingsw.Exceptions.NetworkException;
+import it.polimi.ingsw.GameModelServer.DevelopementCard;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.*;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
@@ -11,11 +14,15 @@ import java.io.IOException;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class CommandLineUI extends AbstactUI {
+
+    private static final Logger LOG = Logger.getLogger(CommandLineUI.class.getName());
 
     private static final int SOCKETPORT= 7771;
     private static final int RMIPORT= 7772;
@@ -30,8 +37,7 @@ public class CommandLineUI extends AbstactUI {
     public CommandLineUI() {
     }
 
-    public void start() {
-        Server server = new Server();
+    public void start() throws ClientException {
 
         String connection;
 
@@ -48,20 +54,24 @@ public class CommandLineUI extends AbstactUI {
             try {
                 client = new RMIClient(HOST, RMIPORT, this);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
             }
         }else if(connection.matches("socket")){
             try {
                 Socket socket = new Socket(HOST, SOCKETPORT);
                 client = new SocketClient(new SocketPlayer(socket), HOST, SOCKETPORT);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
             }
         }
 
         client.connect();
 
-        this.client = client;
+        if (client != null) {
+            this.client = client;
+        }else
+            throw new ClientException("Client is not connected");
+
 
         new RequestHandler().run();
 
@@ -104,7 +114,7 @@ public class CommandLineUI extends AbstactUI {
                     try {
                         client.handle(request, state);
                     } catch (RemoteException e) {
-                        e.printStackTrace();
+                        LOG.log(Level.SEVERE, "Cannot reach the server", e);
                     }
                 }
             }

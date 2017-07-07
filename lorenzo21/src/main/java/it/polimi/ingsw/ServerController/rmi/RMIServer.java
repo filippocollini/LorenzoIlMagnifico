@@ -96,7 +96,7 @@ public class RMIServer extends AbstractServer implements Callback{
     }
 
     @Override
-    public void sendLong(long val) throws RemoteException, Exception {
+    public void sendLong(long val) throws RemoteException {
 
     }
 

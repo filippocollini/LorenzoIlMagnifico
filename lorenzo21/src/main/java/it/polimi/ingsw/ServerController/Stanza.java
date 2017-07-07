@@ -1,15 +1,22 @@
 package it.polimi.ingsw.ServerController;
 
+import it.polimi.ingsw.Exceptions.FileMalformedException;
+import it.polimi.ingsw.Exceptions.NetworkException;
+import it.polimi.ingsw.Exceptions.TurnException;
 import it.polimi.ingsw.GameModelServer.Game;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class Stanza implements Serializable {
+
+    private static final Logger LOG = Logger.getLogger(Stanza.class.getName());
 
     /**
      * Default constructor
@@ -50,9 +57,9 @@ public class Stanza implements Serializable {
 
     public boolean matchStarted;
 
-    private TurnHandler turnHandler;
+    private transient TurnHandler turnHandler;
 
-    private PlayerTurn turn;
+    private transient PlayerTurn turn;
 
     private boolean endTurn=false;
 
@@ -117,7 +124,11 @@ public class Stanza implements Serializable {
             configuration();
             System.out.println("creato tutto");
             //dispatchGameToPlayers();
-            dispatchProva();
+            try {
+                dispatchProva();
+            } catch (NetworkException e) {
+                LOG.log(Level.SEVERE, "Cannot reach the client", e);
+            }
             //timer.schedule(new TurnHandler(), 10*1000L);
             //turnHandler.run();
             setStack();
@@ -129,13 +140,17 @@ public class Stanza implements Serializable {
                     System.out.println("Turno: "+(j+1));
                     AbstractPlayer p = (AbstractPlayer) stack.pop();
                     System.out.println("turno iniziatooooooooooo");
-                    startPlayerTurn(p);
+                    try {
+                        startPlayerTurn(p);
+                    } catch (NetworkException e) {
+                        LOG.log(Level.SEVERE, "Cannot start player's turn", e);
+                    }
                     try {
                         synchronized (Stanza.this){
                             Stanza.this.wait();
                         }
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
                     }
                     if(stack.isEmpty()){
                         setStack();
@@ -181,7 +196,7 @@ public class Stanza implements Serializable {
         game.getBoard().setDices(game.rollDices(game.getBoard().getDices()));
     }
 
-    private void startPlayerTurn(AbstractPlayer p){
+    private void startPlayerTurn(AbstractPlayer p) throws NetworkException {
         this.turn = new PlayerTurn(p, this);
     }
 
@@ -207,7 +222,12 @@ public class Stanza implements Serializable {
     }
 
     private void configuration(){
-        this.game=new Game(players, this);
+        try {
+            this.game=new Game(players, this);
+        } catch (FileMalformedException e) {
+            LOG.log(Level.CONFIG, "Cannot parse some files", e);
+
+        }
     }
 
     private void dispatchGameToPlayers(){
@@ -220,12 +240,13 @@ public class Stanza implements Serializable {
         }
     }
 
-    private void dispatchProva(){
+    private void dispatchProva() throws NetworkException {
         for (AbstractPlayer p : players.values()){
             try {
                 p.dispatchEsempio();
             } catch (RemoteException e) {
-                e.printStackTrace();
+                LOG.log(Level.SEVERE, "Cannot reach the client", e);
+                throw new NetworkException("Cannot reach the server");
             }
         }
     }
@@ -247,7 +268,6 @@ public class Stanza implements Serializable {
         if (turn!=null && turn.getPlayer()==abstractPlayer){
             control = game.addFMonMarket(game.herethePlayer(usernames.get(abstractPlayer)), member, cell);
         }
-        String request = "me lo ritorna il metodo";
         if (control.equals(Game.SUCCESS)){
             notifyPlayerMadeAMove();
             notifyActionMade();
@@ -285,7 +305,7 @@ public class Stanza implements Serializable {
         try {
             turn.getPlayer().notifyActionMade();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }
         //notifico che ha fatto l'azione, poi nella cli entrerà nello stato in cui potrà solo vedere la board
         //oppure finire il turno
@@ -297,7 +317,7 @@ public class Stanza implements Serializable {
         try {
             turn.getPlayer().notifyEndTurn();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }
     }
 

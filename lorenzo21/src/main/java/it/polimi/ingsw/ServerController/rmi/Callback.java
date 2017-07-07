@@ -18,6 +18,6 @@ public interface Callback extends Remote{
     public void marketMove(String uuid, String member, String cell) throws RemoteException;
     public void towerMove(String uuid, String member, String tower, int floor) throws RemoteException;
     public void endMove(String uuid) throws RemoteException;
-    public void sendLong(long val) throws RemoteException, Exception;
+    public void sendLong(long val) throws RemoteException;
 
 }

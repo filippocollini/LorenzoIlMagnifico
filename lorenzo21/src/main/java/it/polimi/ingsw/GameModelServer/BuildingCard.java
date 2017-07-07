@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
+import it.polimi.ingsw.Exceptions.FileMalformedException;
+
 import java.util.*;
 
 /**
@@ -26,7 +28,7 @@ public class BuildingCard extends DevelopementCard {
         this.choice = choice;
     }
 
-    public BuildingCard(){
+    public BuildingCard() throws FileMalformedException {
         super();
         cost1 = new ArrayList<>();
     }

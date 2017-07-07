@@ -1,15 +1,22 @@
 package it.polimi.ingsw.GameModelServer;
 
+import it.polimi.ingsw.Exceptions.FileMalformedException;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by Simone on 20/06/2017.
  */
 public class CellPB implements Cloneable{
-        private int index;
-        private int mpNecessary;
-        private boolean unlockedcell;
-        private DevelopementCard card;
-        private int victoryPoints;
 
+    private static final Logger LOG = Logger.getLogger(CellPB.class.getName());
+
+    private int index;
+    private int mpNecessary;
+    private boolean unlockedcell;
+    private DevelopementCard card;
+    private int victoryPoints;
 
     public CellPB (){
 
@@ -28,7 +35,11 @@ public class CellPB implements Cloneable{
     }
 
     public void setCard(DevelopementCard card) {
-        this.card = new DevelopementCard();
+        try {
+            this.card = new DevelopementCard();
+        } catch (FileMalformedException e) {
+            LOG.log(Level.CONFIG, "Cannot parse the development card's file", e);
+        }
         this.card = card;
     }
 

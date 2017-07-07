@@ -18,7 +18,7 @@ public class Player extends BoardObserver implements Serializable{
     private List<LeaderCard> carteLeader;
     private BonusTile tesseraBonus;
     private Token[] token;
-    private BonusTile bonustile;
+    private transient BonusTile bonustile;
 
 
     public Player(String username, String color, Board board/*,  BonusTile tesseraBonus*/) {

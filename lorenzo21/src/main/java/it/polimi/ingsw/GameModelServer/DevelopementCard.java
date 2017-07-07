@@ -3,16 +3,20 @@ package it.polimi.ingsw.GameModelServer;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import it.polimi.ingsw.Exceptions.FileMalformedException;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class DevelopementCard extends Card implements Cloneable{
 
+    private static final Logger LOG = Logger.getLogger(DevelopementCard.class.getName());
 
     protected String name;
     protected int number;
@@ -35,7 +39,7 @@ public class DevelopementCard extends Card implements Cloneable{
 
     protected List<GetBoostandDiscount> discountandboost;
 
-    public DevelopementCard() {
+    public DevelopementCard() throws FileMalformedException {
         immediateeffect = new ArrayList<>();
         permanenteffect = new ArrayList<>();
 
@@ -212,7 +216,7 @@ public class DevelopementCard extends Card implements Cloneable{
     }
 
     //parsing 'getfreeaction' effects
-    public List<GetFreeAction> freeactionparse(){
+    public List<GetFreeAction> freeactionparse() throws FileMalformedException {
         int i;
         List <GetFreeAction> freeActionlist = new ArrayList<>();
         EffectStrategy singleeffect = new GetFreeAction();
@@ -233,13 +237,14 @@ public class DevelopementCard extends Card implements Cloneable{
 
             }
         }catch(IOException e){
-            e.printStackTrace(); // TODO
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");
         }
         return freeActionlist;
     }
 
     //parsing 'getboostanddiscount' effects
-    public List<GetBoostandDiscount> boostdiscountparse(){
+    public List<GetBoostandDiscount> boostdiscountparse() throws FileMalformedException {
 
         int i;
         List<GetBoostandDiscount> discountboostlist = new ArrayList<>();
@@ -284,15 +289,15 @@ public class DevelopementCard extends Card implements Cloneable{
 
             }
         }catch(IOException e){
-            e.printStackTrace(); // TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
 
         return discountboostlist;
     }
 
     //parsing 'getfreeanddiscount' effects
-    public List<GetFreeandDiscount> freediscountparse(){
+    public List<GetFreeandDiscount> freediscountparse() throws FileMalformedException {
         int i;
         List<GetFreeandDiscount> discountfreelist = new ArrayList<>();
         EffectStrategy singlediscountfree = new GetFreeandDiscount();
@@ -336,7 +341,8 @@ public class DevelopementCard extends Card implements Cloneable{
 
             }
         }catch(IOException e){
-            e.printStackTrace(); // TODO
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");
         }
 
 
@@ -344,7 +350,7 @@ public class DevelopementCard extends Card implements Cloneable{
     }
 
     //'getResourcesSelling' effects parsing
-    public List<GetResourcesSelling> sellingparse(){
+    public List<GetResourcesSelling> sellingparse() throws FileMalformedException {
         int i;
         EffectStrategy singleselling = new GetResourcesSelling();
         List<GetResourcesSelling> sellinglist = new ArrayList<>();
@@ -425,13 +431,13 @@ public class DevelopementCard extends Card implements Cloneable{
                 sellinglist.add(i, (GetResourcesSelling) singleselling.clone());
             }
         }catch(IOException e) {
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return sellinglist;
     }
 
     //'getResourcesIf' effect parsing
-    public List<GetResourcesIf> ifparsing(){
+    public List<GetResourcesIf> ifparsing() throws FileMalformedException {
 
         int i;
         List<GetResourcesIf> iflist = new ArrayList<>();
@@ -491,14 +497,14 @@ public class DevelopementCard extends Card implements Cloneable{
             }
 
         }catch(IOException e){
-            e.printStackTrace();
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
         return iflist;
     }
 
     //'getReources' effects parsing
-    public List<GetResources> getResourcesparsing(){
+    public List<GetResources> getResourcesparsing() throws FileMalformedException {
         int i;
         EffectStrategy res = new GetResources();
         List<GetResources> reslist = new ArrayList<>();
@@ -555,13 +561,13 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return reslist;
     }
 
     //'GetBoostdice' effects parsing
-    public List<GetBoostDice> getboostparsing(){
+    public List<GetBoostDice> getboostparsing() throws FileMalformedException {
         int i;
         EffectStrategy boost = new GetBoostDice();
         List<GetBoostDice> boostlist = new ArrayList<>();
@@ -585,14 +591,14 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
         return boostlist;
     }
 
     //'GetForEach' effect parsing
-    public List<GetForEach> forEachparsing(){
+    public List<GetForEach> forEachparsing() throws FileMalformedException {
 
         int i,j;
         EffectStrategy effect = new GetForEach();
@@ -658,13 +664,13 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
         }catch (IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return effectlist;
     }
 
     //'GetEndGameVP' effects parsing
-    public List<GetVPEnd> getVPparsing() {
+    public List<GetVPEnd> getVPparsing() throws FileMalformedException {
 
         int i;
         EffectStrategy endeffect = new GetVPEnd();
@@ -686,8 +692,8 @@ public class DevelopementCard extends Card implements Cloneable{
             }
 
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
         return listendeffect;
     }
@@ -703,7 +709,7 @@ public class DevelopementCard extends Card implements Cloneable{
             e.printStackTrace(); //TODO return to server
             return null;
         }
-    }
+    }//TODO lo togliamo sto metodo?
 
 
 }

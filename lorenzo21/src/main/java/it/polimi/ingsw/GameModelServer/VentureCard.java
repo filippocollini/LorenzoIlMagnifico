@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
+import it.polimi.ingsw.Exceptions.FileMalformedException;
+
 import java.util.*;
 
 /**
@@ -7,7 +9,7 @@ import java.util.*;
  */
 public class VentureCard extends DevelopementCard {
 
-   public VentureCard(){
+   public VentureCard() throws FileMalformedException {
        super();
        cost1 = new ArrayList<>();
    }

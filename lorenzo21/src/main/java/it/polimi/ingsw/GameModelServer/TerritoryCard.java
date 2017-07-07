@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
+import it.polimi.ingsw.Exceptions.FileMalformedException;
+
 import java.util.*;
 
 /**
@@ -8,7 +10,7 @@ import java.util.*;
 public class TerritoryCard extends DevelopementCard {
 
 
-    public TerritoryCard() {
+    public TerritoryCard() throws FileMalformedException {
         super();
     }
     @Override

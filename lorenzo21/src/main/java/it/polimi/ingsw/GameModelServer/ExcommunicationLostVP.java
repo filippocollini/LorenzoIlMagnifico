@@ -39,7 +39,7 @@ public class ExcommunicationLostVP extends EffectStrategy implements Cloneable {
 
     @Override
     public Player apply(Player player) {
-        int malus = 0; //calcolo dei punti vittoria da perdere
+        int malus; //calcolo dei punti vittoria da perdere
         int coeff = 0; //quante risorse o punti ha il giocatore
         int i = 0;
 

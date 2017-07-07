@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.ClientController.AbstractClient;
+import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
 
@@ -32,6 +33,7 @@ public class GameState implements State, GeneralMoveState {
             System.out.println("trovato l'evento");
         else
             System.out.println("evento non trovato");
+
         if(event.isLegal(client, uuid))//anche qua passo il client?
             event.eventHappened(client, uuid);
     }

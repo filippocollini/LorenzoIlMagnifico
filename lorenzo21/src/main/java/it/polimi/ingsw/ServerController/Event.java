@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.ClientController.AbstractClient;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -10,6 +11,7 @@ import java.rmi.RemoteException;
  */
 public interface Event extends Serializable {
 
+    @NotNull
     public boolean isLegal(AbstractClient client, String uuid);
     public void eventHappened(AbstractClient client, String uuid) throws RemoteException;
 }

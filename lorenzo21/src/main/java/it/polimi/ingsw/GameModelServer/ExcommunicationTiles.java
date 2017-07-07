@@ -3,16 +3,21 @@ package it.polimi.ingsw.GameModelServer;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import it.polimi.ingsw.Exceptions.FileMalformedException;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExcommunicationTiles extends Card implements Cloneable{
 
+    private static final Logger LOG = Logger.getLogger(ExcommunicationTiles.class.getName());
 
-    public ExcommunicationTiles() {
+
+    public ExcommunicationTiles() throws FileMalformedException {
         reduction = reductionParsing();
         covering = coverMarketParsing();
         twoserv = twoServantsParsing();
@@ -94,7 +99,7 @@ public class ExcommunicationTiles extends Card implements Cloneable{
     }
 
     //EXCOMMUNICATION PARSING
-    public List<ExcommunicationReduction> reductionParsing(){
+    public List<ExcommunicationReduction> reductionParsing() throws FileMalformedException {
 
         int i;
         EffectStrategy effect = new ExcommunicationReduction();
@@ -118,13 +123,14 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             }
 
         }catch(IOException e){
-            e.printStackTrace();
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");
         }
 
         return listeffect;
     }
 
-    public EffectStrategy coverMarketParsing(){
+    public EffectStrategy coverMarketParsing() throws FileMalformedException {
         EffectStrategy covering = new ExcommunicationCoverMarket();
         JsonObject jcovering;
 
@@ -135,12 +141,12 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             covering.setPeriod(jcovering.get("period").asInt());
             covering.setId(jcovering.get("id").asInt());
         }catch (IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return covering;
     }
 
-    public EffectStrategy twoServantsParsing(){
+    public EffectStrategy twoServantsParsing() throws FileMalformedException {
         EffectStrategy twoserv = new ExcommunicationServants();
         JsonObject jservant;
 
@@ -151,12 +157,12 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             twoserv.setId(jservant.get("id").asInt());
             twoserv.setPeriod(jservant.get("period").asInt());
         }catch (IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return twoserv;
     }
 
-    public EffectStrategy skipActionParsing(){
+    public EffectStrategy skipActionParsing() throws FileMalformedException {
         EffectStrategy skip = new ExcommunicationSkipAction();
         JsonObject jskip;
 
@@ -167,12 +173,12 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             skip.setId(jskip.get("id").asInt());
             skip.setPeriod(jskip.get("period").asInt());
         }catch (IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return skip;
     }
 
-    public List<ExcommunicationLessResources> lessResourcesParsing(){
+    public List<ExcommunicationLessResources> lessResourcesParsing() throws FileMalformedException {
         EffectStrategy effectless = new ExcommunicationLessResources();
         List<ExcommunicationLessResources> listeffectless = new ArrayList<>();
         JsonArray arrayless;
@@ -193,12 +199,13 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             }
 
         }catch(IOException e){
-            e.printStackTrace(); //TODO
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");
         }
         return listeffectless;
     }
 
-    public List<ExcommunicationEndVP> notVPparsing(){
+    public List<ExcommunicationEndVP> notVPparsing() throws FileMalformedException {
         EffectStrategy endvp = new ExcommunicationEndVP();
         List<ExcommunicationEndVP> listendvp = new ArrayList<>();
         int i;
@@ -220,13 +227,13 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             }
 
         }catch (IOException e){
-            e.printStackTrace();//TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
         return listendvp;
     }
 
-    public List<ExcommunicationLostVP> lostVPparsing(){
+    public List<ExcommunicationLostVP> lostVPparsing() throws FileMalformedException {
         EffectStrategy lostvp = new ExcommunicationLostVP();
         List<ExcommunicationLostVP> listlostvp = new ArrayList<>();
         JsonArray arraylost;
@@ -246,8 +253,8 @@ public class ExcommunicationTiles extends Card implements Cloneable{
             }
 
         }catch(IOException e){
-            e.printStackTrace();//TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
 
         return listlostvp;
