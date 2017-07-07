@@ -1,0 +1,4 @@
+[{"type1":"production","Servants1":1,"Coins1":2,"type2":"harvest","Woods2":1,"Stones2":1,"MilitaryPoints2":1},
+  {"type1":"production","MilitaryPoints1":2,"Coins1":1,"type2":"harvest","Woods2":1,"Stones2":1,"Servants2":1},
+  {"type1":"production","Servants1":1,"MilitaryPoints1":2,"type2":"harvest","Woods2":1,"Stones2":1,"Coins2":1},
+  {"type1":"production","Servants1":2,"Coins1":1,"type2":"harvest","Woods2":1,"Stones2":1,"MilitaryPoints2":1}]

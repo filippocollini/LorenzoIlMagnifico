@@ -18,7 +18,7 @@ public class Player extends BoardObserver implements Serializable{
     private List<LeaderCard> carteLeader;
     private BonusTile tesseraBonus;
     private Token[] token;
-
+    private BonusTile bonustile;
 
 
     public Player(String username, String color, Board board/*,  BonusTile tesseraBonus*/) {
@@ -31,6 +31,7 @@ public class Player extends BoardObserver implements Serializable{
         this.tesseraBonus = tesseraBonus;
         this.board = board;
         this.board.addObserver(this);
+        bonustile = new BonusTile();
     }
 
     public FamilyMember getMember(String color) {
@@ -42,6 +43,10 @@ public class Player extends BoardObserver implements Serializable{
             i++;
         }
         return null; //TODO familiare già utilizzato
+    }
+
+    public void setBonustile(BonusTile bonustile) {
+        this.bonustile = bonustile;
     }
 
     public List<FamilyMember> getMembers() {

@@ -11,9 +11,7 @@ public class Effect {
      * Default constructor
      */
     public Effect() {
-
-
-
+        strategy = new ArrayList<>();
     }
 
 

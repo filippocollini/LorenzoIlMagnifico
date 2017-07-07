@@ -28,7 +28,8 @@ public class Game implements Serializable {
     public static final String EXCOMM="excomm";
     public static final String SAMETOWER="sametower";
     private int turn;
-    private List<BonusTile> bonustiles;
+    private List<BonusTile> bonustilesnormal;
+    private List<BonusTile> bonustileleader;
     private GameStatus stato;
     private List<TerritoryDeck> greendeck;
     private List<BuildingDeck> yellowdeck;
@@ -37,6 +38,7 @@ public class Game implements Serializable {
     private static List<Risorsa> palaceFavors;
     private List<ExcommunicationDeck> excommunicationdeck;
     private List<Player> order;
+    private List<LeaderCard> leaderdeck;
 
 
 
@@ -45,7 +47,8 @@ public class Game implements Serializable {
 
         this.players = creatingPlayers(abplayers,room.nPlayers());
         turn = 1;
-        bonustiles = new ArrayList<>();
+        bonustilesnormal = new ArrayList<>();
+        bonustileleader = new ArrayList<>();
         this.stato = stato;
 
         greendeck = creatingGreenDeck(territoryParsing());
@@ -55,6 +58,7 @@ public class Game implements Serializable {
         palaceFavors = palaceFavorparsing();
         excommunicationdeck = creatingExcommunicationDeck(creatingExcommunicationTiles());
         order = setOrderFirstTurn();
+        leaderdeck = creatingLeaderDeck();
     }
 
     //setting initial game
@@ -82,6 +86,36 @@ public class Game implements Serializable {
         }
 
         return dices;
+    }
+
+    //TODO da mettere nel settaggio iniziale del gioco FULIPPOOOOOO!!!
+    public void settinginitialResources(){
+        int i = 0;
+        int index = 0;
+        Risorsa wood = new Risorsa();
+        Risorsa stone = new Risorsa();
+        Risorsa servant = new Risorsa();
+        Risorsa coin = new Risorsa();
+        for(Player player : players){
+            wood.setTipo("Woods");
+            wood.setQuantity(2);
+            players[i].getPB().getresources().add((Risorsa) wood.clone());
+            stone.setTipo("Stones");
+            stone.setQuantity(2);
+            players[i].getPB().getresources().add((Risorsa) stone.clone());
+            servant.setTipo("Servants");
+            servant.setQuantity(3);
+            players[i].getPB().getresources().add((Risorsa) servant.clone());
+            for(Player ord : order){
+                if(ord.getUsername().equalsIgnoreCase(player.getUsername())){
+                    coin.setTipo("Coins");
+                    coin.setQuantity(5+index);
+                    players[i].getPB().getresources().add((Risorsa) coin.clone());
+                }
+                index++;
+            }
+            i++;
+        }
     }
 
     public static String randomcolor(List<String> previouscolor){
@@ -981,7 +1015,7 @@ public class Game implements Serializable {
 
                 //effetti permanenti
                 for(int id : player.board.getTower(tower).getFloors().get(i).getCard().getPermanenteffect())
-                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)==null){//TODO
+                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)!=null){//TODO
                         System.out.println(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
                         player.getEffects().getStrategy()
                                 .add(player.board
@@ -1420,8 +1454,12 @@ public class Game implements Serializable {
         return players;
     }
 
-    public List<BonusTile> getbonustiles(){
-        return bonustiles;
+    public List<BonusTile> getbonustilesnormal(){
+        return bonustilesnormal;
+    }
+
+    public List<BonusTile> getBonustileleader() {
+        return bonustileleader;
     }
 
     public PersonalBoard getPersonalBoard(Player player){
@@ -1462,5 +1500,175 @@ public class Game implements Serializable {
         }
         return null;
     }
+
+    public List<LeaderCard> creatingLeaderDeck(){
+        List<LeaderCard> cardList = new ArrayList<>();
+        LeaderCard fs = new FrancescoSforza();
+        LeaderCard la = new LudovicoAriosto();
+        LeaderCard fb = new FilippoBrunelleschi();
+        LeaderCard sm = new SigismondoMalatesta();
+        LeaderCard gs = new GirolamoSavonarola();
+        LeaderCard mb = new MichelangeloBuonarroti();
+        LeaderCard gbn = new GiovannidalleBandeNere();
+        LeaderCard ldv = new LeonardodaVinci();
+        LeaderCard sb = new SandroBotticelli();
+        LeaderCard lim = new LudovicoilMoro();
+        LeaderCard lb = new LucreziaBorgia();
+        LeaderCard fdm = new FedericodaMontefeltro();
+        LeaderCard boss = new LorenzodeMedici();
+        LeaderCard sq = new SistoIV();
+        LeaderCard cb = new CesareBorgia();
+        LeaderCard sr = new SantaRita();
+        LeaderCard cdm = new CosimodeMedici();
+        LeaderCard bc = new BartolomeoColleoni();
+        LeaderCard ltg = new LudovicoIIIGonzaga();
+        LeaderCard pdm = new PicodellaMirandola();
+        cardList.add(fs);
+        cardList.add(la);
+        cardList.add(fb);
+        cardList.add(sm);
+        cardList.add(gbn);
+        cardList.add(gs);
+        cardList.add(mb);
+        cardList.add(ldv);
+        cardList.add(sb);
+        cardList.add(lim);
+        cardList.add(lb);
+        cardList.add(fdm);
+        cardList.add(boss);
+        cardList.add(sq);
+        cardList.add(cb);
+        cardList.add(sr);
+        cardList.add(cdm);
+        cardList.add(bc);
+        cardList.add(ltg);
+        cardList.add(pdm);
+
+        return cardList;
+
+    }
+
+    public List<BonusTile> bonusTilesParsing(String gametype){
+        List<BonusTile> listtiles = new ArrayList<>();
+        JsonArray arraytile;
+        JsonObject jtile;
+        int i;
+        BonusTile singletile = new BonusTile();
+        try{
+            if(gametype.equalsIgnoreCase("normal")) {
+                File file = new File("src/main/resources/bonustiles/normaltiles.json");
+                FileReader read = new FileReader(file.getAbsolutePath());
+                arraytile = Json.parse(read).asArray();
+            }else {
+                File file = new File("src/main/resources/bonustiles/leadertiles.json");
+                FileReader read = new FileReader(file.getAbsolutePath());
+                arraytile = Json.parse(read).asArray();
+            }
+            for(i = 0; i<arraytile.size();i++){
+
+                Risorsa bonus  = new Risorsa();
+                List<Risorsa> listbonus = new ArrayList<>();
+                List<Risorsa> listbonus2 = new ArrayList<>();
+
+                jtile = arraytile.get(i).asObject();
+
+                //Parsing production bonus
+                singletile.setType1(jtile.get("type1").asString());
+                bonus.setTipo("MilitaryPoints");
+                bonus.setQuantity(jtile.getInt("MilitaryPoints1",0));
+                listbonus.add((Risorsa) bonus.clone());
+                bonus.setTipo("Servants");
+                bonus.setQuantity(jtile.getInt("Servants1",0));
+                listbonus.add((Risorsa) bonus.clone());
+                bonus.setTipo("Coins");
+                bonus.setQuantity(jtile.getInt("Coins1",0));
+                listbonus.add((Risorsa) bonus.clone());
+                singletile.setBonus1(listbonus);
+
+
+                //Parsing harvest bonus
+                singletile.setType2(jtile.get("type2").asString());
+                bonus.setTipo("MilitaryPoints");
+                bonus.setQuantity(jtile.getInt("MilitaryPoints2",0));
+                listbonus2.add((Risorsa) bonus.clone());
+                bonus.setTipo("Servants");
+                bonus.setQuantity(jtile.getInt("Servants2",0));
+                listbonus2.add((Risorsa) bonus.clone());
+                bonus.setTipo("Coins");
+                bonus.setQuantity(jtile.getInt("Coins2",0));
+                listbonus2.add((Risorsa) bonus.clone());
+                bonus.setTipo("Woods");
+                bonus.setQuantity(jtile.getInt("Woods2",0));
+                listbonus2.add((Risorsa) bonus.clone());
+                bonus.setTipo("Stones");
+                bonus.setQuantity(jtile.getInt("Stones2",0));
+                listbonus2.add((Risorsa) bonus.clone());
+                singletile.setBonus2(listbonus2);
+
+                listtiles.add((BonusTile) singletile.clone());
+
+                }
+
+
+        }catch (IOException e){
+            e.printStackTrace(); //TODO
+        }
+
+
+        return listtiles;
+    }
+
+    public Player chooseBonusTile(Player player , String gametype){
+        int choose;
+        int i = 0;
+        //show bonustile
+        if(gametype.equalsIgnoreCase("normal")) {
+            System.out.println("Which bonus tile to you want to use?" +
+                    "1-{production,MilitaryPoints:1,Coins:2 && harvest,Woods:1,Stones:1,Servants:1}\n" +
+                    "2-{production,MilitaryPoints:1,Coins:2 && harvest,Woods:1,Stones:1,Servants:1}\n" +
+                    "3-{production,MilitaryPoints:1,Coins:2 && harvest,Woods:1,Stones:1,Servants:1}\n" +
+                    "4-{production,MilitaryPoints:1,Coins:2 && harvest,Woods:1,Stones:1,Servants:1}");
+        }else{
+            System.out.println("Which bonus tile to you want to use?" +
+                    "1-{production,Servants:1,Coins:2 && harvest,Woods:1,Stones:1,MilitaryPoints:1}\n" +
+                    "2-{production,MilitaryPoints:2,Coins:1 && harvest,Woods:1,Stones:1,Servants:1}\n" +
+                    "3-{production,Servants:1,MilitaryPoints:2 && harvest,Woods:1,Stones:1,Coins:1}\n" +
+                    "4-{production,Servants:2,Coins:1 && harvest,Woods:1,Stones:1,MilitaryPoints2:1}");
+        }
+        Scanner scan = new Scanner(System.in);
+        choose = scan.nextInt();
+        if(gametype.equalsIgnoreCase("normal")) {
+            while(bonustilesnormal.get(choose-1).isChosen()){
+                System.out.println("error. bonus tile chosen");
+                Scanner scans = new Scanner(System.in);
+                choose = scans.nextInt();
+            }
+            for (BonusTile bt : bonustilesnormal){
+                bonustilesnormal.get(choose-1).setChosen(true);
+                player.setBonustile(bonustilesnormal.get(choose-1));
+            }
+        }else{
+            while(bonustileleader.get(choose-1).isChosen()){
+                System.out.println("error. bonus tile chosen");
+                Scanner scans = new Scanner(System.in);
+                choose = scans.nextInt();
+            }
+            for (BonusTile bt : bonustileleader){
+                bonustileleader.get(choose-1).setChosen(true);
+                player.setBonustile(bonustileleader.get(choose-1));
+            }
+
+        }
+        return player;
+
+    }
+
+    /*public void draftbonustiles(){
+        int i;
+
+        for(i = players.length-1; i==0;i--){
+
+        }
+    }*/
 
 }
