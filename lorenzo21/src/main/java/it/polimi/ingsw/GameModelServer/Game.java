@@ -798,13 +798,14 @@ public class Game implements Serializable {
     }
 
     public String addFMonMarket(Player player, String member, String request){
-        if (player.getEffects().getStrategy()!=null){
-            for(EffectStrategy effect : player.getEffects().getStrategy()){
-                if(effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationCoverMarket")){
+        if (player.getEffects().getStrategy()!=null) {
+            for (EffectStrategy effect : player.getEffects().getStrategy()) {
+                if (effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationCoverMarket")) {
                     System.out.println("YOU'VE BEEN EXCOMMUNICATED! Go away from Magnifico's Market");
                     return EXCOMM;
                 }
             }
+        }
             if(player.getMember(member).getValue()>1) {
                 for (CellAction cell : board.getMarket()) {
                     if (cell.getType().equalsIgnoreCase(request)){
@@ -815,7 +816,7 @@ public class Game implements Serializable {
 
             }else
                 System.out.println("non puoi fare l'azione"); //TODO
-        }
+
         return FAIL;
     }
 
