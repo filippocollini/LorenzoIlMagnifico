@@ -36,7 +36,7 @@ public class Player extends BoardObserver implements Serializable{
     public FamilyMember getMember(String color) {
         int i = 0;
         for(FamilyMember member : members) {
-            if (member.getColor() == color)
+            if (member.getColor().equalsIgnoreCase(color))
                 return members.get(i);
             else
             i++;
@@ -104,14 +104,16 @@ public class Player extends BoardObserver implements Serializable{
     @Override
     public void update() {
         this.token = board.getTokens(this.color);
-
+        System.out.println("ciao");
         int i = 0;
         for(FamilyMember member : members){
             for(Dices dice : board.getDices()){
                 if(member.getColor().equalsIgnoreCase(dice.getColor())){
                     this.members.get(i).setValue(dice.getValue());
+                    System.out.println("n: "+members.get(i).getValue());
                 }
             }
+            i++;
         }
     }
 

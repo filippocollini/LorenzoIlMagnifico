@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ClientView.CommandLineUI;
-import it.polimi.ingsw.GameModelServer.Game;
+import it.polimi.ingsw.GameModelServer.*;
 import it.polimi.ingsw.ServerController.State;
 import it.polimi.ingsw.ServerController.rmi.Callback;
 
@@ -138,6 +138,13 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         server.marketMove(uuid, member, cell);
     }
 
+    public void towerMove(String uuid) throws RemoteException {
+        String member = askMember();
+        String tower = askTower();
+        int floor = askFloor();
+        server.towerMove(uuid, member, tower, floor);
+    }
+
     public String askMember() {
         String choice;
         System.out.println("Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
@@ -149,6 +156,35 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
             choice = scans.nextLine();
         }
         return choice;
+    }
+
+    public String askTower(){
+        String type;
+        System.out.println("Which tower do you want to occupy? territory - buildings - ventures - characters");
+        Scanner scanner = new Scanner(System.in);
+        type = scanner.nextLine();
+        while(!(type.equalsIgnoreCase("territory") || type.equalsIgnoreCase("characters")
+                || type.equalsIgnoreCase("ventures") || type.equalsIgnoreCase("buildings"))){
+            System.out.println("Error on input : Which tower do you want to occupy? territory - buildings - ventures - characters");
+            Scanner scanning = new Scanner(System.in);
+            type = scanning.nextLine();
+        }
+        return type;
+    }
+
+    public int askFloor(){
+        boolean correct = true;
+        int floor = 0;
+        System.out.println("Where do you want to put your FM? 1 - 3 - 5 - 7");
+        while(correct) {
+            Scanner scandice = new Scanner(System.in);
+            floor = scandice.nextInt();
+            if(!(floor == 1 || floor == 3 || floor == 5 || floor == 7)) {
+                System.out.println("Error on input: Where do you want to put your FM? 1 - 3 - 5 - 7");
+            }else
+                correct=false;
+        }
+        return floor;
     }
 
     public String askCellMarket(){
@@ -166,6 +202,12 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         }
         return choice;
     }
+
+    public void palaceMove(String uuid) throws RemoteException{
+
+    }
+
+
 
     public void endMove(String uuid) throws RemoteException {
         server.endMove(uuid);

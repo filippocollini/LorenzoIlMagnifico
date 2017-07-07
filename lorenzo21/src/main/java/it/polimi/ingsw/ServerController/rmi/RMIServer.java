@@ -75,6 +75,18 @@ public class RMIServer extends AbstractServer implements Callback{
     }
 
     @Override
+    public void towerMove(String uuid, String member, String tower, int floor) throws RemoteException {
+        AbstractPlayer player = map.get(uuid);
+        //System.out.println(player);
+
+        Stanza room = player.getRoom();
+        //System.out.println(room);
+
+        room.towerEvent(player, member, tower, floor);
+    }
+
+
+    @Override
     public void endMove(String uuid) throws RemoteException {
         AbstractPlayer player = map.get(uuid);
 

@@ -42,5 +42,7 @@ public abstract class AbstractClient  {
 
     public abstract void marketMove(String uuid) throws RemoteException;
 
+    public abstract void towerMove(String uuid) throws RemoteException;
+
     public abstract void endMove(String uuid) throws RemoteException;
 }

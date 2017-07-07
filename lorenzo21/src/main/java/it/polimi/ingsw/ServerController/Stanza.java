@@ -124,6 +124,8 @@ public class Stanza implements Serializable {
             for(int i=0;i<3;i++){
                 System.out.println("Era: "+(i+1));
                 for(int j=0;j<2;j++){
+                    setBoard();
+                    game.fillTowers(j+1);
                     System.out.println("Turno: "+(j+1));
                     AbstractPlayer p = (AbstractPlayer) stack.pop();
                     System.out.println("turno iniziatooooooooooo");
@@ -173,6 +175,10 @@ public class Stanza implements Serializable {
         }
 
 
+    }
+
+    private void setBoard(){
+        game.getBoard().setDices(game.rollDices(game.getBoard().getDices()));
     }
 
     private void startPlayerTurn(AbstractPlayer p){
@@ -237,12 +243,29 @@ public class Stanza implements Serializable {
     }
 
     public void marketEvent(AbstractPlayer abstractPlayer, String member, String cell){
+        String control="";
         if (turn!=null && turn.getPlayer()==abstractPlayer){
-            game.addFMonMarket(game.herethePlayer(usernames.get(abstractPlayer)), member, cell);
+            control = game.addFMonMarket(game.herethePlayer(usernames.get(abstractPlayer)), member, cell);
         }
         String request = "me lo ritorna il metodo";
-        notifyPlayerMadeAMove();
-        notifyActionMade();
+        if (control.equals(Game.SUCCESS)){
+            notifyPlayerMadeAMove();
+            notifyActionMade();
+        }else
+            notifyError();
+
+    }
+
+    public void towerEvent(AbstractPlayer abstractPlayer, String member, String tower, int floor){
+        String control="";
+        if (turn!=null && turn.getPlayer()==abstractPlayer){
+            control = game.addFMonTowerControl(game.herethePlayer(usernames.get(abstractPlayer)), member, tower, floor);
+        }
+        if (control.equals(Game.SUCCESS)){
+            notifyPlayerMadeAMove();
+            notifyActionMade();
+        }else
+            notifyError();
     }
 
     public void endEvent(AbstractPlayer abstractPlayer){
@@ -276,6 +299,10 @@ public class Stanza implements Serializable {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public void notifyError(){
+        //TODO
     }
 
 }

@@ -19,9 +19,8 @@ public class DevelopementCard extends Card implements Cloneable{
     protected int period;
     protected String cardtype;
     protected boolean permchoice;
-
-    private List<Risorsa> listcost;
-    private boolean costchoice;
+    protected List<Risorsa> listcost;
+    protected boolean costchoice;
     protected List<Integer> immediateeffect;
     protected List<Integer> permanenteffect;
     protected List<GetResources> getres;
@@ -94,6 +93,7 @@ public class DevelopementCard extends Card implements Cloneable{
                 righteffect = effect;
         }
         return righteffect;
+
     }
 
 

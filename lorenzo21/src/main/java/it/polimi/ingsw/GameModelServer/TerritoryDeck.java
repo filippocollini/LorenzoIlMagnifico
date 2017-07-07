@@ -39,20 +39,20 @@ public class TerritoryDeck extends Deck {
 
 
     public TerritoryCard drawfirstCard() {
-            TerritoryCard card;
-            TerritoryCard next;
-            int i=0;
-            Iterator iter = deck.iterator();
-            card = deck.get(0);
+        TerritoryCard card;
+        TerritoryCard next;
+        int i=0;
+        card = this.deck.get(0);
+        Iterator iter = deck.iterator();
+        System.out.println(deck.size());
 
-            while(iter.hasNext()){
-                next = deck.get(i+1);
-                deck.set(i,next);
-                i++;
+        while(iter.hasNext()){
+            next = (TerritoryCard) iter.next();
+            deck.set(i,next);
+            i++;
+        }
+        deck.remove(deck.size()-1);
 
-            }
-            iter.remove();
-
-            return card;
+        return card;
     }
 }

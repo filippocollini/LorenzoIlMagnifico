@@ -388,11 +388,11 @@ public class Board{
 
     public Tower getTower(String type){
         Tower tower;
-        if(type.equals("Territory"))
+        if(type.equals("territory"))
             tower = territoriesTower;
-        else if(type.equals("Character"))
+        else if(type.equals("characters"))
             tower = charactersTower;
-        else if(type.equals("Venture"))
+        else if(type.equals("ventures"))
             tower = venturesTower;
         else
             tower = buildingsTower;
@@ -455,6 +455,9 @@ public class Board{
 
     public void setDices(List<Dices> dices){
         this.dices = dices;
+        System.out.println(dices.get(0).getValue());
+        System.out.println(dices.get(1).getValue());
+        System.out.println(dices.get(2).getValue());
 
         notifyAllObservers();
     }

@@ -44,12 +44,12 @@ public class CharacterDeck extends Deck {
         card = deck.get(0);
 
         while(iter.hasNext()){
-            next = deck.get(i+1);
+            next = (CharacterCard) iter.next();
             deck.set(i,next);
             i++;
 
         }
-        iter.remove();
+        deck.remove(deck.size()-1);
 
         return card;
     }

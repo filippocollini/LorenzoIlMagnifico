@@ -106,6 +106,11 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
+    public void towerMove(String uuid) throws RemoteException {
+
+    }
+
+    @Override
     public void endMove(String uuid) throws RemoteException {
 
     }

@@ -23,9 +23,10 @@ public class Game implements Serializable {
 
     private Player[] players;
     private Board board;
-    private static final String SUCCESS="success";
-    private static final String FAIL="fail";
-    private static final String EXCOMM="excomm";
+    public static final String SUCCESS="success";
+    public static final String FAIL="fail";
+    public static final String EXCOMM="excomm";
+    public static final String SAMETOWER="sametower";
     private int turn;
     private List<BonusTile> bonustiles;
     private GameStatus stato;
@@ -76,6 +77,8 @@ public class Game implements Serializable {
         for(Dices dice : dices){
             Random random = new Random();
             dices.get(i).setValue(random.nextInt(6)+1);
+            System.out.println(dices.get(i).getValue());
+            i++;
         }
 
         return dices;
@@ -102,38 +105,57 @@ public class Game implements Serializable {
 
     }
 
-    public void fillGreenTower(int turn){
+    public void fillTowers(int turn){
+        fillGreenTower(turn);
+        fillBlueTower(turn);
+        fillYellowTower(turn);
+        fillVioletTower(turn);
+    }
+
+    private void fillGreenTower(int turn){
         int i = 0;
-        Iterator iter = board.getTower("Territory").getFloors().iterator();
+        Iterator iter = board.getTower("territory").getFloors().iterator();
+        System.out.println(board.getTower("territory").getFloors().size());
         while(iter.hasNext()){
-            board.getTower("Territory").getFloors().get(i).setCarta(greendeck.get(turn-1).drawfirstCard());
+            CellTower cell = (CellTower) iter.next();
+            cell.setCarta(greendeck.get(turn-1).drawfirstCard());
+            board.getTower("territory").getFloors().get(i).setCarta(cell.getCard());
             i++;
         }
     }
 
-    public void fillYellowTower(int turn){
+    private void fillYellowTower(int turn){
         int i = 0;
-        Iterator iter = board.getTower("Building").getFloors().iterator();
+        Iterator iter = board.getTower("buildings").getFloors().iterator();
         while(iter.hasNext()){
-            board.getTower("Building").getFloors().get(i).setCarta(yellowdeck.get(turn-1).drawfirstCard());
+            CellTower cell = (CellTower) iter.next();
+            cell.setCarta(yellowdeck.get(turn-1).
+                    drawfirstCard());
+            board.getTower("buildings").getFloors().get(i).setCarta(cell.getCard());
             i++;
         }
     }
 
-    public void fillBlueTower(int turn){
+    private void fillBlueTower(int turn){
         int i = 0;
-        Iterator iter = board.getTower("Character").getFloors().iterator();
+        Iterator iter = board.getTower("characters").getFloors().iterator();
         while(iter.hasNext()){
-            board.getTower("Character").getFloors().get(i).setCarta(bluedeck.get(turn-1).drawfirstCard());
+            CellTower cell = (CellTower) iter.next();
+            cell.setCarta(bluedeck.get(turn-1).
+                    drawfirstCard());
+            board.getTower("characters").getFloors().get(i).setCarta(cell.getCard());
             i++;
         }
     }
 
-    public void fillVioletTower(int turn){
+    private void fillVioletTower(int turn){
         int i = 0;
-        Iterator iter = board.getTower("Venture").getFloors().iterator();
+        Iterator iter = board.getTower("ventures").getFloors().iterator();
         while(iter.hasNext()){
-            board.getTower("Venture").getFloors().get(i).setCarta(violetdeck.get(turn-1).drawfirstCard());
+            CellTower cell = (CellTower) iter.next();
+            cell.setCarta(violetdeck.get(turn-1).
+                    drawfirstCard());
+            board.getTower("ventures").getFloors().get(i).setCarta(cell.getCard());
             i++;
         }
     }
@@ -878,63 +900,64 @@ public class Game implements Serializable {
     }
 
     public static FamilyMember controlboost(Player player, FamilyMember member, String type){
-        for(EffectStrategy effect : player.getEffects().getStrategy()){
-            if(effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostandDiscount")
-                    || effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostDice")
-                    || effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationReduction")) {
-                Method method;
-                try {
-                    method = effect.getClass().getMethod("apply",  FamilyMember.class,String.class);
-                    member = (FamilyMember) method.invoke(effect, member,type);
-                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();//TODO
+        if (player.getEffects().getStrategy()!=null) {
+            for(EffectStrategy effect : player.getEffects().getStrategy()){
+                if(effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostandDiscount")
+                        || effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostDice")
+                        || effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationReduction")) {
+                    Method method;
+                    try {
+                        method = effect.getClass().getMethod("apply",  FamilyMember.class,String.class);
+                        member = (FamilyMember) method.invoke(effect, member,type);
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();//TODO
+                    }
                 }
             }
         }
+
         return member;
     }
 
-    public Player addFMonTowerControl(Player player){
-       String choice;
-       String type;
+    public String addFMonTowerControl(Player player, String member, String tower, int floor){
        Tower towerchosen;
        int dice ;
        int size;
        boolean mps = false;
        int oldvalue;
 
-       choice = askMember();
-       type = askTower();
-       towerchosen = player.board.getTower(type);
-       if(choice.equals("Neutral")) {
+       towerchosen = player.board.getTower(tower);
+       if(member.equals("Neutral")) {
        } else{
            for (CellTower cell : towerchosen.getFloors()) {
-               if (cell.getFmOnIt().getColorplayer().equals(player.getColor()) && !(cell.getFmOnIt().getColor().equals("Neutral"))) {
-                   System.out.println("You've a FM here yet! choose another action"); //TODO al client 'do another action'
-                   return player;
+               if (cell.getFmOnIt()!=null){
+                   if (cell.getFmOnIt().getColorplayer().equals(player.getColor()) && !(cell.getFmOnIt().getColor().equals("Neutral"))) {
+                       System.out.println("You've a FM here yet! choose another action"); //TODO al client 'do another action'
+                       return SAMETOWER;
+                   }
                }
            }
        }
-       oldvalue = player.getMember(choice).getValue();
+       oldvalue = player.getMember(member).getValue();
        //controlla se può boostare il familymember e lo fa //il type è il tipo della torre
-       player.getMember(choice).setValue( controlboost(player , player.getMember(choice),type).getValue());
+       player.getMember(member).setValue( controlboost(player , player.getMember(member),tower).getValue());
 
-       dice = askFloor(player.getMember(choice),towerchosen,player);
+       dice = floor;
         //prima controllo se può comprare la carta altrimenti ritorno
 
             if (!controlpurchase(player,towerchosen.getFloors().get(dice).getCard(),false)) {
-                player.getMember(choice).setValue(oldvalue);
+                player.getMember(member).setValue(oldvalue);
                 System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
-                return player;
+                return FAIL;
             }
 
         //poi vedo se il suo fm basta o si deve potenziare
-        player.getMember(choice).setValue(isFMok(player.getMember(choice),dice,player,oldvalue).getValue());
+        player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
 
         //poi faccio l'azione applicando lo sconto
-        player = addFMonTowerAction(player, player.getMember(choice),dice, type,false);
+        player = addFMonTowerAction(player, player.getMember(member),dice, tower,false);
 
-    return player;
+    return SUCCESS;
    }
 
     public static Player addFMonTowerAction(Player player, FamilyMember member, int floor, String tower, boolean free){
@@ -954,12 +977,20 @@ public class Game implements Serializable {
                 player = getimmediateBonus(player,player.board.getTower(tower).getFloors().get(i).getResourceBonus(),false);
                 player.board.getTower(tower).getFloors().get(i).setfMIsPresent(true);
                 player.board.getTower(tower).getFloors().get(i).setFmOnIt(member);
-
+                //TODO 3 monete
 
                 //effetti permanenti
                 for(int id : player.board.getTower(tower).getFloors().get(i).getCard().getPermanenteffect())
-                    player.getEffects().getStrategy()
-                            .add(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
+                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)==null){//TODO
+                        System.out.println(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
+                        player.getEffects().getStrategy()
+                                .add(player.board
+                                        .getTower(tower)
+                                .getFloors()
+                                .get(i)
+                                .getCard()
+                                .activateEffect(id));
+                    }
 
                 //mette la carta sulla pb
                 player.getPB().addCard(player.board.getTower(tower).getFloors().get(i).getCard());
@@ -968,30 +999,33 @@ public class Game implements Serializable {
                 //effetti immediati per ultimi così fa partire l'eventuale nuova azione gratis
                 for(int id : player.board.getTower(tower).getFloors().get(i).getCard().getImmediateeffect()) {
                     //metodo getforeach che passa anche string
-                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
-                            .getClass().getSimpleName().equalsIgnoreCase("GetForEach")) {
-                        try {
-                            method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
-                                    .getClass().getMethod("apply", Player.class, String.class);
-                            player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i)
-                                    .getCard().activateEffect(id), player, member.getColor());
-                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                            e.printStackTrace();//TODO
-                        }
-                    } else { //metodi che richiedono il solo player
+                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)!=null) {
+                        System.out.println(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
                         if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
-                                .getClass().getSimpleName().equalsIgnoreCase("GetFreeandDiscount")) {
-                            player.getEffects().getStrategy()
-                                    .add(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
-                        }
-                        try {
-                            method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
-                                    .getClass().getMethod("apply", Player.class);
-                            player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id), player);
-                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                            e.printStackTrace();//TODO
-                        }
+                                .getClass().getSimpleName().equalsIgnoreCase("GetForEach")) {
+                            try {
+                                method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
+                                        .getClass().getMethod("apply", Player.class, String.class);
+                                player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i)
+                                        .getCard().activateEffect(id), player, member.getColor());
+                            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                                e.printStackTrace();//TODO
+                            }
+                        } else { //metodi che richiedono il solo player
+                            if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
+                                    .getClass().getSimpleName().equalsIgnoreCase("GetFreeandDiscount")) {
+                                player.getEffects().getStrategy()
+                                        .add(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
+                            }
+                            try {
+                                method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
+                                        .getClass().getMethod("apply", Player.class);
+                                player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id), player);
+                            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                                e.printStackTrace();//TODO
+                            }
 
+                        }
                     }
                     /*
                      */
@@ -1008,6 +1042,7 @@ public class Game implements Serializable {
 
     public static FamilyMember isFMok(FamilyMember member, int floor, Player player, int oldvalue){
        if (member.getValue() < floor) {
+           System.out.println(member.getValue());
            System.out.println("Your FM Power is too low!");
 
 
@@ -1104,38 +1139,47 @@ public class Game implements Serializable {
         List<Risorsa> listcost = null;
         DevelopementCard disccard = card;
         int i;
-        listcost = card.getCost1();
+        if (card.getCardtype().equals("territory"))
+            return card;
+        else
+            listcost = card.getCost1();
 
        //controlla se può scontare
-       for(EffectStrategy effect : player.getEffects().getStrategy()) {
-           if (effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostandDiscount")) {
-               if(effect.getTypeCard().equals(card.getCardtype())) {
-                   try {
-                       Method method = effect.getClass().getMethod("apply", List.class);
-                       listcost = (List<Risorsa>) method.invoke(effect, listcost);
-                   } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                       e.printStackTrace();
-                   }
-               }
-           }
-       }
+        if (player.getEffects().getStrategy()!=null) {
+            for(EffectStrategy effect : player.getEffects().getStrategy()) {
+                if (effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostandDiscount")) {
+                    if(effect.getTypeCard().equals(card.getCardtype())) {
+                        try {
+                            Method method = effect.getClass().getMethod("apply", List.class);
+                            listcost = (List<Risorsa>) method.invoke(effect, listcost);
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
        if(free) {
            //controlla se GetFreeandDiscount
-           for (EffectStrategy effect : player.getEffects().getStrategy()) {
-               if (effect.getClass().getSimpleName().equalsIgnoreCase("GetFreeandDiscount")) {
-                   if(effect.getTypeCard().equals(card.getCardtype())) {
-                       try {
-                           Method method = effect.getClass().getMethod("apply", List.class);
-                           listcost = (List<Risorsa>) method.invoke(effect, listcost);
-                       } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                           e.printStackTrace();
+           if (player.getEffects().getStrategy()!=null) {
+               for (EffectStrategy effect : player.getEffects().getStrategy()) {
+                   if (effect.getClass().getSimpleName().equalsIgnoreCase("GetFreeandDiscount")) {
+                       if(effect.getTypeCard().equals(card.getCardtype())) {
+                           try {
+                               Method method = effect.getClass().getMethod("apply", List.class);
+                               listcost = (List<Risorsa>) method.invoke(effect, listcost);
+                           } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                               e.printStackTrace();
 
+                           }
                        }
+
+
                    }
-
-
                }
            }
+
        }
        //modifica il costo della carta
 
@@ -1160,6 +1204,9 @@ public class Game implements Serializable {
         int size = 0;
         int i = 0;
         DevelopementCard newcard = applydiscount(player, card, free);
+        if(newcard.getCardtype().equals("territory")){
+           return true;
+        }
         while (newcard.getCost1().get(i).getquantity() != 0 &&
                 !(newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPnecessary") ||
                         (newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPtospend")))) {
@@ -1339,14 +1386,16 @@ public class Game implements Serializable {
         if(negative){
             return reward;
         }
-        for(EffectStrategy effect : player.getEffects().getStrategy()) {
-            if (effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationLessResources")){
-                Method method;
-                try {
-                    method = effect.getClass().getMethod("apply",List.class);
-                    reward = (List<Risorsa>) method.invoke(effect,reward);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+        if(player.getEffects().getStrategy()!=null){
+            for(EffectStrategy effect : player.getEffects().getStrategy()) {
+                if (effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationLessResources")){
+                    Method method;
+                    try {
+                        method = effect.getClass().getMethod("apply",List.class);
+                        reward = (List<Risorsa>) method.invoke(effect,reward);
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

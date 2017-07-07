@@ -25,8 +25,8 @@ public class Rules implements RulesInterface{
 
     private void createMapping() {
         eventMap.put(Message.FMONMARKET, new FMonMarket());
+        eventMap.put(Message.FMONTOWER, new FMonTower());
         eventMap.put(Message.ENDTURN, new EndTurn());
-
 
     }
 
