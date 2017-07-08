@@ -12,7 +12,7 @@ public class FMonRaccolto implements Event {
 
     @Override
     public boolean isLegal(AbstractClient client, String uuid) {
-        return false;
+        return true;
     }
 
     @Override

@@ -10,6 +10,9 @@ public class Message{
     public static final String FMONMARKET="fm on market";
     public static final String FMONTOWER="fm on tower";
     public static final String FMONPALACE="fm on palace";
+    public static final String FMONHARVEST="fm on harvest";
+    public static final String FMONPRODUCTION="fm on production";
+
     public static final String ENDTURN="end";
 
 

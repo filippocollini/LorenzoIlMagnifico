@@ -27,6 +27,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     CommandLineUI cli;
     private String uuid;
     private List<Risorsa> rewards;
+    private boolean secondChoice = false;
 
 
 
@@ -129,7 +130,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
     @Override
     public void notifyChooseFavor() throws RemoteException {
-
+        cli.notifyChooseFavor();
     }
 
     @Override
@@ -167,6 +168,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         String tower = askTower();
         int floor = askFloor();
         server.towerMove(uuid, member, tower, floor);
+    }
+
+    public void harvestMove(String uuid){
+        String member = askMember();
+        server.harvestMove(uuid, member);
     }
 
     public void fmChoice(String uuid, String choice) throws RemoteException{
@@ -286,9 +292,18 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     }
 
     public void palaceMove(String uuid) throws RemoteException{
-        String palaceFavor = choosePalaceFavor();
-        String member = askMember();
-        server.palaceMove(uuid, member, palaceFavor);
+        if(secondChoice==false){
+            String palaceFavor = choosePalaceFavor();
+            String member = askMember();
+            server.palaceMove(uuid, member, palaceFavor);
+
+        }else{
+            String palaceFavor = chooseSecondPalaceFavor();
+            String member = askMember();
+            server.palaceMove(uuid, member, palaceFavor);
+            secondChoice = false;
+        }
+        secondChoice = true;
 
     }
 

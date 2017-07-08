@@ -119,13 +119,30 @@ public class Stanza implements Serializable {
     public void palaceEvent(AbstractPlayer player, String member, String favor) {
         String control="";
         if (turn!=null && turn.getPlayer()==player){
-            /*control = */game.addFMonPalace(game.herethePlayer(usernames.get(player)), member, favor);
+            control = game.addFMonPalace(game.herethePlayer(usernames.get(player)), member, favor);
         }
         if (control.equals(Game.SUCCESS)){
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else
-            notifyError();
+            if (control.equals(Game.CHOOSEANOTHERFM))//TODO diversa la stringa
+                notifyChooseFavor();
+            else
+                notifyError();
+    }
+
+    public void harvestEvent(AbstractPlayer player, String member) {
+        String control="";
+        if (turn!=null && turn.getPlayer()==player){
+            control = game.addFMonHarvest(game.herethePlayer(usernames.get(player)), member);
+        }
+        if (control.equals(Game.SUCCESS)){
+            notifyPlayerMadeAMove();
+            notifyActionMade();
+        }else if(control.equals(Game.FMPRESENT)){
+            //TODO tirare eccezione
+        }else if (control.equals(Game.TOOLOW))
+            notifyFMTooLow();//TODO rivedere
     }
 
     private class GameHandler extends TimerTask{
@@ -306,7 +323,7 @@ public class Stanza implements Serializable {
 
     public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
         if (turn!=null && turn.getPlayer()==abstractPlayer){
-            
+
         }
             
 
@@ -335,6 +352,11 @@ public class Stanza implements Serializable {
     }
 
     public void notifyChooseFavor(){
+        try {
+            turn.getPlayer().notifyChooseFavor();
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
 
     }
 

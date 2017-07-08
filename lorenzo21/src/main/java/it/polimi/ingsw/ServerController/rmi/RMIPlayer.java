@@ -51,7 +51,7 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
 
     @Override
     public void notifyChooseFavor() throws RemoteException {
-
+        playerInt.notifyChooseFavor();
     }
 
     @Override

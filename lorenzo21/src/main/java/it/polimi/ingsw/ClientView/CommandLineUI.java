@@ -30,8 +30,6 @@ public class CommandLineUI extends AbstactUI {
     private Game game;
     private AbstractClient client;
     private State state;
-    public boolean needInput = true;
-    public String request="";
 
     /**
      * Default constructor
@@ -107,27 +105,27 @@ public class CommandLineUI extends AbstactUI {
     public void notifyFMTooLow(){
         System.out.println("Your family member is too low! Do you want to choose another one? (Y - yes, any other key - make another action");
         state = new GameState();
-
+        System.out.println("Make another action");
     }
 
     public void notifyChooseFavor(){
         System.out.println("Choose your palace favor");
-        //mettere needInput = false
-        state = new GameState();
-    }
-
-    public void notifyChooseSecondFavor(){
-
+        state = new ChooseFavorState();
+        try {
+            client.handle("fm on palace", state);
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
+        }
     }
 
     public void notifyNotEnoughResources(){
-        System.out.println("It's your turn! Make your move!");
+        System.out.println("You have not enough resources!");
         state = new GameState();
-
+        System.out.println("Make another action");
     }
 
     public void askForServants(){
-        System.out.println("It's your turn! Make your move!");
+        System.out.println("Do you want to pay servants? ");
         state = new GameState();
 
     }
@@ -138,10 +136,9 @@ public class CommandLineUI extends AbstactUI {
         @Override
         public void run() {
             Scanner scanner = new Scanner(System.in);
+            String request;
             while(true){
-                if (needInput) {
-                    request = scanner.nextLine();
-                }
+                request = scanner.nextLine();
                 if(state!=null) {
                     try {
                         client.handle(request, state);

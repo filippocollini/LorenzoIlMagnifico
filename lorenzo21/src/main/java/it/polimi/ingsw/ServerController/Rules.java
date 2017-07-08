@@ -27,6 +27,9 @@ public class Rules implements RulesInterface{
         eventMap.put(Message.FMONMARKET, new FMonMarket());
         eventMap.put(Message.FMONTOWER, new FMonTower());
         eventMap.put(Message.FMONPALACE, new FMonCouncilPalace());
+        eventMap.put(Message.FMONHARVEST, new FMonRaccolto());
+        eventMap.put(Message.FMONPRODUCTION, new FMonProduzione());
+
         eventMap.put(Message.ENDTURN, new EndTurn());
 
     }

@@ -35,6 +35,8 @@ public class Game implements Serializable {
     public static final String EXCOMM="excomm";
     public static final String SAMETOWER="sametower";
     public static final String CHOOSEANOTHERFM="another fm";
+    public static final String FMPRESENT="fm already present";
+    public static final String TOOLOW="fm power too low";
     private int turn;
     private List<BonusTile> bonustilesnormal;
     private transient List<BonusTile> bonustileleader;
@@ -704,34 +706,32 @@ public class Game implements Serializable {
         return decks;
     }
 
-    public String addFMonHarvest(Player player){
+    public String addFMonHarvest(Player player, String member){
         String type = "harvest";
-        String color = askMember();
         int oldvalue;
-        oldvalue = player.getMember(color).getValue();
+        oldvalue = player.getMember(member).getValue();
 
         for(CellAction cell : board.getHarvest()){ //controllo se ha già altri fm qui
             if(cell.getcolorMember().equals(player.getColor()) && !cell.getMember().getColor().equalsIgnoreCase("Neutral")){
-                System.out.println("You've another FM here!"); //TODO
-                return FAIL;
+                System.out.println("You've another FM here!");
+                return FMPRESENT;
             }
         }
 
-        player.getMember(color).setValue(controlboost(player,player.getMember(color),type).getValue());
+        player.getMember(member).setValue(controlboost(player,player.getMember(member),type).getValue());
 
         CellAction space;
         space = board.createCellHarvestorPoduction();
         space.setType(type);
 
         if(board.getHarvest().size() == 1 && players.length<3){
-            System.out.println("there is no space here"); //TODO
-            player.getMember(color).setValue(oldvalue);
+            player.getMember(member).setValue(oldvalue);
             return FAIL;
         }else if(board.getHarvest().size()>=1){
             space.setDice(-3);
-            player.getMember(color).setValue(player.getMember(color).getValue()+space.getDice());
+            player.getMember(member).setValue(player.getMember(member).getValue()+space.getDice());
         }
-        if(player.getMember(color).getValue()>1){
+        if(player.getMember(member).getValue()>1){
             for(CellPB cellPB : player.getPB().getterritories()){
                 for(EffectStrategy effect : player.getEffects().getStrategy()){
                     for(int id : cellPB.getCard().getPermanenteffect()){
@@ -739,7 +739,7 @@ public class Game implements Serializable {
                             Method method;
                             try {
                                 method = effect.getClass().getMethod("apply", Player.class,String.class);
-                                player = (Player) method.invoke(effect,player,color);
+                                player = (Player) method.invoke(effect,player,member);
                             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                                 LOG.log(Level.SEVERE, "Method not found", e);
                             }
@@ -751,12 +751,11 @@ public class Game implements Serializable {
 
             // TODO get bonus personale dalla tile
         }else {
-            System.out.println("you can't do the action because the power is too low"); //TODO
-            player.getMember(color).setValue(oldvalue);
-            return FAIL;
+            player.getMember(member).setValue(oldvalue);
+            return TOOLOW;
         }
 
-        space.setFamilyMemberinCell(player.getMember(color));
+        space.setFamilyMemberinCell(player.getMember(member));
         board.getHarvest().add(space);
 
         int l = 0;
@@ -890,31 +889,37 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
-    public String addFMonPalace(Player player, String member, String favor){
+    public String addFMonPalace(Player player, String member, String favor){ //TODO rivedere per sicurezza
 
         if(player.getMember(member).getValue()>=1) {
 
-           CellAction space;
+            CellAction space;
 
-           space = board.createCellPalace();
+            space = board.createCellPalace();
 
-           space.setFamilyMemberinCell(player.getMember(member));
+            space.setFamilyMemberinCell(player.getMember(member));
 
-           player = getimmediateBonus(player,space.getBonus(),false);
+            for (Risorsa resource : space.getBonus()) {
+                if (resource.gettipo().equals("PalaceFavor") && resource.getquantity() != 0) {
+                    List<Risorsa> listfavor = choosePalaceFavor(player, member, favor);
+                    player = getimmediateBonus(player, listfavor, false);
+                }
+                player = getimmediateBonus(player, space.getBonus(), false);
 
-           board.getCouncilpalace().add(space);
+                board.getCouncilpalace().add(space);
 
-           int k = 0;
-           for(Player p :players){
-               if(p.getUsername().equalsIgnoreCase(player.getUsername())){
-                  players[k] = player;
-               }
-               k++;
-           }
+                int k = 0;
+                for (Player p : players) {
+                    if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
+                        players[k] = player;
+                    }
+                    k++;
+                }
+
+            }
 
         }else
-            System.out.println("non puoi fare l'azione"); //TODO
-
+            return FAIL;
        return SUCCESS;
     }
 
@@ -1360,10 +1365,7 @@ public class Game implements Serializable {
         reward = controlExcommunicationLessRes(player,reward,negative);
 
         for(Risorsa resource : reward) {
-            if (resource.gettipo().equals("PalaceFavor") && resource.getquantity()!=0) {
-                listfavor = choosePalaceFavor(palaceFavors,resource.getquantity());
-                player = getimmediateBonus(player,listfavor,false);
-            }else if(resource.getquantity()!=0){
+            if(resource.getquantity()!=0){
                 single.setTipo(resource.gettipo());
                 single.setQuantity(resource.getquantity());
                 if(negative)
@@ -1435,7 +1437,7 @@ public class Game implements Serializable {
         return player;
     }
 
-    public String choosePalaceFavor(Player player, String member, String choice) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
+    public List<Risorsa> choosePalaceFavor(Player player, String member, String choice) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
         Risorsa res = new Risorsa();
         List<Risorsa> rewards = new ArrayList<>();
         for (Risorsa singlereward : palaceFavors) {
@@ -1458,7 +1460,7 @@ public class Game implements Serializable {
             i++;
         }
 
-        return SUCCESS;
+        return rewards;
     }
 
     public static List<Risorsa> choosePalaceFavor(List<Risorsa> palaceBonus, int n) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
