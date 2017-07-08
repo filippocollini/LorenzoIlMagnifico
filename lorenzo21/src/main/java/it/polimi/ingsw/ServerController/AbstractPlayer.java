@@ -23,6 +23,14 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
 
     public abstract void notifyActionMade() throws RemoteException;
 
+    public abstract void notifyFMTooLow() throws RemoteException;
+
+    public abstract void notifyChooseFavor() throws RemoteException;
+
+    public abstract void notifyNotEnoughResources() throws RemoteException;
+
+    public abstract void askForServants() throws RemoteException;
+
     public abstract void notifyEndTurn() throws RemoteException;
 
     /**

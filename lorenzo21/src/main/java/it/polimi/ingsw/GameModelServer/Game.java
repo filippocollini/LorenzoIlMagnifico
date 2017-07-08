@@ -33,6 +33,7 @@ public class Game implements Serializable {
     public static final String FAIL="fail";
     public static final String EXCOMM="excomm";
     public static final String SAMETOWER="sametower";
+    public static final String CHOOSEANOTHERFM="another fm";
     private int turn;
     private List<BonusTile> bonustilesnormal;
     private transient List<BonusTile> bonustileleader;
@@ -872,22 +873,24 @@ public class Game implements Serializable {
         return player;
     }
 
-    public Player addFMonPalace(Player player){
-       String color = askMember();
-        if(player.getMember(color).getValue()>=1) {
+    public String addFMonPalace(Player player, String member, String favor){
+
+        if(player.getMember(member).getValue()>=1) {
 
            CellAction space;
 
            space = board.createCellPalace();
 
-           space.setFamilyMemberinCell(player.getMember(color));
+           space.setFamilyMemberinCell(player.getMember(member));
 
            player = getimmediateBonus(player,space.getBonus(),false);
 
            board.getCouncilpalace().add(space);
-        }else System.out.println("non puoi fare l'azione"); //TODO
 
-       return player;
+        }else
+            System.out.println("non puoi fare l'azione"); //TODO
+
+       return SUCCESS;
     }
 
     public String addFMonMarket(Player player, String member, String request){
@@ -1008,7 +1011,7 @@ public class Game implements Serializable {
             if (!controlpurchase(player,towerchosen.getFloors().get(dice).getCard(),false)) {
                 player.getMember(member).setValue(oldvalue);
                 System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
-                return FAIL;
+                return CHOOSEANOTHERFM;
             }
 
         //poi vedo se il suo fm basta o si deve potenziare
@@ -1390,6 +1393,32 @@ public class Game implements Serializable {
         player = getimmediateBonus(player,listreward,negative);
 
         return player;
+    }
+
+    public String choosePalaceFavor(Player player, String member, String choice) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
+        Risorsa res = new Risorsa();
+        List<Risorsa> rewards = new ArrayList<>();
+        for (Risorsa singlereward : palaceFavors) {
+            if (choice.equals(singlereward.gettipo()) && choice.equals("WoodStone")) {
+                res.setTipo("Woods");
+                res.setQuantity(1);
+                rewards.add((Risorsa) res.clone());
+                res.setTipo("Stones");
+                res.setQuantity(1);
+                rewards.add((Risorsa) res.clone());
+            } else if (choice.equals(singlereward.gettipo())) {
+                rewards.add(singlereward);
+            }
+        }
+        int i = 0;
+
+        for(Player p : players) {
+            if(p.getUsername().equals(player.getUsername()))
+                players[i] = getimmediateBonus(player, rewards, false);
+            i++;
+        }
+
+        return SUCCESS;
     }
 
     public static List<Risorsa> choosePalaceFavor(List<Risorsa> palaceBonus, int n) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo

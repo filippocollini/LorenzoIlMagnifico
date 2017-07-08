@@ -1,30 +1,26 @@
 
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(ß‡Î“ÿÿÿÿÿ8¸æŒÇÎ+
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¤Ì‹ÖÍ+
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ì‰ïÍ8¤Ì‹ÖÍ+
-zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(íê÷üÿÿÿÿ8®‚êÂÊ+
 V
 squid:S106";Replace this usage of System.out or System.err by a logger.(áñÁ·8«ÏÑÉÎ+
-rsquid:S1450"VRemove the "doneSub" field and declare it as a local variable in the relevant methods.(ØÍöÄ8ÌÇ—ÅÎ+
-U
-squid:S106";Replace this usage of System.out or System.err by a logger.(«¨ÂW8Ü¼»”Ğ+
-Dsquid:S3010"#Remove this assignment of "stanze".(²ô­°şÿÿÿÿ8ÈµŠÃÊ+
 Asquid:S1166"%Either log or rethrow this exception.(™÷£Ñ8¤Ì‹ÖÍ+
-Psquid:S1068"4Remove this unused "socketSubscriber" private field.(éû¿×8ÌÇ—ÅÎ+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¤Ì‹ÖÍ+
 usquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(… õ¯8ìÙâÿÊ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(Šóùì8Ü¼»”Ğ+
 ksquid:S1132"JMove the "show" string literal on the left side of this string comparison.(ı‘«ÿÿÿÿÿ8½ñÏÉÎ+
 V
 squid:S106";Replace this usage of System.out or System.err by a logger.(Ø¼¢ƒ8½ñÏÉÎ+
 [
-squid:S106";Replace this usage of System.out or System.err by a logger.(ØĞÓµúÿÿÿÿ8¤Ì‹ÖÍ+
-\squid:S2259"@NullPointerException might be thrown as 'event' is nullable here(”ÜÿÌ8Ü¼»”Ğ+
+squid:S106";Replace this usage of System.out or System.err by a logger.(àş¦úÿÿÿÿ8õ£ŸÚÎ+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ì‰ïÍ8¤Ì‹ÖÍ+
 [
 squid:S106";Replace this usage of System.out or System.err by a logger.(ç±¸¿ûÿÿÿÿ8¸÷àĞÎ+
-Asquid:S1166"%Either log or rethrow this exception.(ï­£Ä8¤Ì‹ÖÍ+
 Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¤Ì‹ÖÍ+
 Gsquid:S1068"+Remove this unused "doneSub" private field.(ØÍöÄ8ÌÇ—ÅÎ+
 [
-squid:S106";Replace this usage of System.out or System.err by a logger.(àş¦úÿÿÿÿ8õ£ŸÚÎ+
+squid:S106";Replace this usage of System.out or System.err by a logger.(ß‡Î“ÿÿÿÿÿ8¼óÑ+
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(íê÷üÿÿÿÿ8®‚êÂÊ+
+Asquid:S1166"%Either log or rethrow this exception.(ï­£Ä8¤Ì‹ÖÍ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(ØĞÓµúÿÿÿÿ8¤Ì‹ÖÍ+
+Dsquid:S3010"#Remove this assignment of "stanze".(²ô­°şÿÿÿÿ8ÈµŠÃÊ+
+Psquid:S1068"4Remove this unused "socketSubscriber" private field.(éû¿×8ÌÇ—ÅÎ+
+Jsquid:S1068")Remove this unused "rules" private field.(Ï«ıæşÿÿÿÿ8Ö¦‘øĞ+
+rsquid:S1450"VRemove the "doneSub" field and declare it as a local variable in the relevant methods.(ØÍöÄ8ÌÇ—ÅÎ+

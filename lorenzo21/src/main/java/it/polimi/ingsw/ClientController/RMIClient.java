@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -24,6 +26,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     private int port;
     CommandLineUI cli;
     private String uuid;
+    private List<Risorsa> rewards;
 
 
 
@@ -31,6 +34,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         this.host=host;
         this.port=port;
         this.cli = cli;
+        this.rewards = new ArrayList<>();
         startClient();
     }
 
@@ -119,6 +123,26 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     }
 
     @Override
+    public void notifyFMTooLow() throws RemoteException {
+        cli.notifyFMTooLow();
+    }
+
+    @Override
+    public void notifyChooseFavor() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyNotEnoughResources() throws RemoteException {
+
+    }
+
+    @Override
+    public void askForServants() throws RemoteException {
+
+    }
+
+    @Override
     public void notifyEndTurn() throws RemoteException {
         cli.notifyEndTurn();
     }
@@ -143,6 +167,28 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         String tower = askTower();
         int floor = askFloor();
         server.towerMove(uuid, member, tower, floor);
+    }
+
+    public void fmChoice(String uuid, String choice) throws RemoteException{
+        //server.fmChoiceMove(uuid, choice);
+    }
+
+    @Override
+    public void favorChoice(String uuid) throws RemoteException {
+        String choice = choosePalaceFavor();
+        String member = askMember();
+        server.favorChoiceMove(uuid, member, choice);
+    }
+
+    @Override
+    public void secondfavorChoice(String uuid) throws RemoteException {
+        String choice = chooseSecondPalaceFavor();
+        server.secondFavorChoiceMove(uuid, choice);
+    }
+
+    @Override
+    public void addServants(String uuid) throws RemoteException {
+
     }
 
     public String askMember() {
@@ -203,7 +249,46 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         return choice;
     }
 
+    public String choosePalaceFavor() { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
+        List<Risorsa> rewards = new ArrayList<>();
+        Risorsa res = new Risorsa();
+        String choice="";
+        int i;
+        System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextLine();
+        while(!(choice.equals("Coins") || choice.equals("WoodStone") || choice.equals("Servants") || choice.equals("MilitaryPoints") || choice.equals("FaithPoints"))){
+            System.out.println("Error in input!");
+            System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
+            Scanner scanner = new Scanner(System.in);
+            choice = scanner.nextLine();
+        }
+
+        this.rewards = rewards;
+
+        return choice;
+    }
+
+    public String chooseSecondPalaceFavor(){
+
+        String choice = "";
+
+        for (Risorsa previouschoice : this.rewards) {
+            Scanner scan = new Scanner(System.in);
+            choice = scan.nextLine();
+            while ((choice.equals("WoodStone") && previouschoice.gettipo().equals("Woods")) || choice.equals(previouschoice.gettipo())) {
+                System.out.println("You've already chosen this type of favor, type another type");
+                Scanner sc = new Scanner(System.in);
+                choice = sc.nextLine();
+            }
+        }
+        return choice;
+    }
+
     public void palaceMove(String uuid) throws RemoteException{
+        String palaceFavor = choosePalaceFavor();
+        String member = askMember();
+        server.palaceMove(uuid, member, palaceFavor);
 
     }
 

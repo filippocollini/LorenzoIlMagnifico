@@ -44,5 +44,15 @@ public abstract class AbstractClient  {
 
     public abstract void towerMove(String uuid) throws RemoteException;
 
+    public abstract void palaceMove(String uuid) throws RemoteException;
+
+    public abstract void fmChoice(String uuid, String choice) throws RemoteException;
+
+    public abstract void favorChoice(String uuid) throws RemoteException;
+
+    public abstract void secondfavorChoice(String uuid) throws RemoteException;
+
+    public abstract void addServants(String uuid) throws RemoteException;
+
     public abstract void endMove(String uuid) throws RemoteException;
 }

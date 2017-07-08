@@ -18,5 +18,9 @@ public interface RMIClientInterface<M> extends Remote {
     public void notifyProva() throws RemoteException;
     public void notifyTurnStarted() throws RemoteException;
     public void notifyActionMade() throws RemoteException;
+    public void notifyFMTooLow() throws RemoteException;
+    public void notifyChooseFavor() throws RemoteException;
+    public void notifyNotEnoughResources() throws RemoteException;
+    public void askForServants() throws RemoteException;
     public void notifyEndTurn() throws RemoteException;
 }

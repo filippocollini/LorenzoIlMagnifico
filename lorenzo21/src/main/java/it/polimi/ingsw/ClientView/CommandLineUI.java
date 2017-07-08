@@ -30,6 +30,8 @@ public class CommandLineUI extends AbstactUI {
     private Game game;
     private AbstractClient client;
     private State state;
+    public boolean needInput = true;
+    public String request="";
 
     /**
      * Default constructor
@@ -102,14 +104,44 @@ public class CommandLineUI extends AbstactUI {
         state = null;
     }
 
+    public void notifyFMTooLow(){
+        System.out.println("Your family member is too low! Do you want to choose another one? (Y - yes, any other key - make another action");
+        state = new GameState();
+
+    }
+
+    public void notifyChooseFavor(){
+        System.out.println("Choose your palace favor");
+        //mettere needInput = false
+        state = new GameState();
+    }
+
+    public void notifyChooseSecondFavor(){
+
+    }
+
+    public void notifyNotEnoughResources(){
+        System.out.println("It's your turn! Make your move!");
+        state = new GameState();
+
+    }
+
+    public void askForServants(){
+        System.out.println("It's your turn! Make your move!");
+        state = new GameState();
+
+    }
+
+
     private class RequestHandler implements Runnable{
 
         @Override
         public void run() {
             Scanner scanner = new Scanner(System.in);
-            String request;
             while(true){
-                request = scanner.nextLine();
+                if (needInput) {
+                    request = scanner.nextLine();
+                }
                 if(state!=null) {
                     try {
                         client.handle(request, state);

@@ -116,6 +116,18 @@ public class Stanza implements Serializable {
         return players.size();
     }
 
+    public void palaceEvent(AbstractPlayer player, String member, String favor) {
+        String control="";
+        if (turn!=null && turn.getPlayer()==player){
+            /*control = */game.addFMonPalace(game.herethePlayer(usernames.get(player)), member, favor);
+        }
+        if (control.equals(Game.SUCCESS)){
+            notifyPlayerMadeAMove();
+            notifyActionMade();
+        }else
+            notifyError();
+    }
+
     private class GameHandler extends TimerTask{
 
         @Override
@@ -246,7 +258,7 @@ public class Stanza implements Serializable {
                 p.dispatchEsempio();
             } catch (RemoteException e) {
                 LOG.log(Level.SEVERE, "Cannot reach the client", e);
-                throw new NetworkException("Cannot reach the server");
+                throw new NetworkException("Cannot reach the client");
             }
         }
     }
@@ -256,6 +268,7 @@ public class Stanza implements Serializable {
             if(p.disconnected==false)
                 stack.push(p);
         }
+        //TODO modificare token nella board
     }
 
     public void playerDisconnected(AbstractPlayer player){
@@ -285,7 +298,18 @@ public class Stanza implements Serializable {
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else
-            notifyError();
+            if(control.equals(Game.CHOOSEANOTHERFM)){
+                notifyFMTooLow();
+            }else
+                notifyError();
+    }
+
+    public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
+        if (turn!=null && turn.getPlayer()==abstractPlayer){
+            
+        }
+            
+
     }
 
     public void endEvent(AbstractPlayer abstractPlayer){
@@ -300,6 +324,29 @@ public class Stanza implements Serializable {
     public void notifyPlayerMadeAMove(){
         turn.playerMadeAMove();
     }
+
+    public void notifyFMTooLow(){
+        try {
+            turn.getPlayer().notifyFMTooLow();
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
+
+    }
+
+    public void notifyChooseFavor(){
+
+    }
+
+    public void notifyNotEnoughResources(){
+
+    }
+
+    public void askForServants(){
+
+    }
+
+
 
     public void notifyActionMade(){
         try {
