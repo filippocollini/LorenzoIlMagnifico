@@ -7,16 +7,26 @@ import java.util.*;
  */
 public class FamilyMember {
 
-    public String colorplayer;
-    public String color;
-    public int value;
+    private String colorplayer;
+    private String color;
+    private int value;
+    private boolean fmUsed;
+
 
     public FamilyMember(String color,String colorplayer) {
         this.color = color;
         this.colorplayer = colorplayer;
         value=0;
+        fmUsed = false;
     }
 
+    public boolean isFmUsed() {
+        return fmUsed;
+    }
+
+    public void setFmUsed(boolean fmUsed) {
+        this.fmUsed = fmUsed;
+    }
 
     public String getColor(){
         return color;

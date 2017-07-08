@@ -10,6 +10,7 @@ import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.Stanza;
 
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class Game implements Serializable {
     private static final Logger LOG = Logger.getLogger(Game.class.getName());
 
 
-    private Player[] players;
+    private static Player[] players;
     private Board board;
     public static final String SUCCESS="success";
     public static final String FAIL="fail";
@@ -703,7 +704,7 @@ public class Game implements Serializable {
         return decks;
     }
 
-    public Player addFMonHarvest(Player player){
+    public String addFMonHarvest(Player player){
         String type = "harvest";
         String color = askMember();
         int oldvalue;
@@ -712,7 +713,7 @@ public class Game implements Serializable {
         for(CellAction cell : board.getHarvest()){ //controllo se ha già altri fm qui
             if(cell.getcolorMember().equals(player.getColor()) && !cell.getMember().getColor().equalsIgnoreCase("Neutral")){
                 System.out.println("You've another FM here!"); //TODO
-                return player;
+                return FAIL;
             }
         }
 
@@ -725,7 +726,7 @@ public class Game implements Serializable {
         if(board.getHarvest().size() == 1 && players.length<3){
             System.out.println("there is no space here"); //TODO
             player.getMember(color).setValue(oldvalue);
-            return player;
+            return FAIL;
         }else if(board.getHarvest().size()>=1){
             space.setDice(-3);
             player.getMember(color).setValue(player.getMember(color).getValue()+space.getDice());
@@ -752,16 +753,24 @@ public class Game implements Serializable {
         }else {
             System.out.println("you can't do the action because the power is too low"); //TODO
             player.getMember(color).setValue(oldvalue);
-            return player;
+            return FAIL;
         }
 
         space.setFamilyMemberinCell(player.getMember(color));
         board.getHarvest().add(space);
 
-        return player;
+        int l = 0;
+        for(Player p : players){
+            if(p.getUsername().equalsIgnoreCase(player.getUsername())){
+                players[l] = player;
+            }
+            l++;
+        }
+
+        return SUCCESS;
     }
 
-    public Player addFMonProduction(Player player){
+    public String addFMonProduction(Player player){
         String type = "production";
         String color = askMember();
         Player control;
@@ -772,7 +781,7 @@ public class Game implements Serializable {
         for(CellAction cell : board.getProduction()){ //controllo se ha già altri fm qui
             if(cell.getcolorMember().equals(player.getColor()) && !cell.getMember().getColor().equalsIgnoreCase("Neutral")){
                 System.out.println("You've another FM here!"); //TODO
-                return player;
+                return FAIL;
             }
         }
 
@@ -784,9 +793,9 @@ public class Game implements Serializable {
 
         if(board.getProduction().size() == 1 && players.length<3){
             System.out.println("there is no space here"); //TODO
-            player.getMember(color).setValue(oldvalue);
-            return player;
-        }else if(board.getHarvest().size()>=1){
+            player.getMember(color).setValue(oldvalue); //c'è bisogno di rimettere il valore vecchio? player non viene ritornato
+            return FAIL;
+        }else if(board.getProduction().size()>=1){
             space.setDice(-3);
             player.getMember(color).setValue(player.getMember(color).getValue()+space.getDice());
         }
@@ -864,13 +873,21 @@ public class Game implements Serializable {
         }else {
             System.out.println("you can't do the action because the power is too low"); //TODO
             player.getMember(color).setValue(oldvalue);
-            return player;
+            return FAIL;
         }
 
         space.setFamilyMemberinCell(player.getMember(color));
         board.getHarvest().add(space);
 
-        return player;
+        int l = 0;
+        for(Player p : players){
+            if(p.getUsername().equalsIgnoreCase(player.getUsername())){
+                players[l] = player;
+            }
+            l++;
+        }
+
+        return SUCCESS;
     }
 
     public String addFMonPalace(Player player, String member, String favor){
@@ -886,6 +903,14 @@ public class Game implements Serializable {
            player = getimmediateBonus(player,space.getBonus(),false);
 
            board.getCouncilpalace().add(space);
+
+           int k = 0;
+           for(Player p :players){
+               if(p.getUsername().equalsIgnoreCase(player.getUsername())){
+                  players[k] = player;
+               }
+               k++;
+           }
 
         }else
             System.out.println("non puoi fare l'azione"); //TODO
@@ -907,6 +932,13 @@ public class Game implements Serializable {
                     if (cell.getType().equalsIgnoreCase(request)){
                         player = getimmediateBonus(player,cell.getBonus(),false);
                     }
+                }
+                int k = 0;
+                for(Player p : players){
+                    if(p.getUsername().equalsIgnoreCase(player.getUsername())){
+                        players[k] = player;
+                    }
+                    k++;
                 }
                 return SUCCESS;
 
@@ -1023,7 +1055,7 @@ public class Game implements Serializable {
     return SUCCESS;
    }
 
-    public static Player addFMonTowerAction(Player player, FamilyMember member, int floor, String tower, boolean free){
+    public static void addFMonTowerAction(Player player, FamilyMember member, int floor, String tower, boolean free){
         //do action
         int i = 0;
         DevelopementCard card;
@@ -1080,6 +1112,8 @@ public class Game implements Serializable {
                                 player.getEffects().getStrategy()
                                         .add(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
                             }
+                            //TODO controllare se l'effetto è un getfreeAction(o un getfreeandDiscount) e farsi passare dal client
+                            // il piano che vuole occupare (SISTEMA ANCHE I METODI APPLY DELLE DUE CLASSI)
                             try {
                                 method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
                                         .getClass().getMethod("apply", Player.class);
@@ -1100,7 +1134,13 @@ public class Game implements Serializable {
             }
             i++;
         }
-        return player;
+        int k = 0;
+        for(Player p : players){
+            if(p.getUsername().equalsIgnoreCase(player.getUsername())){
+                players[k] = player;
+            }
+            k++;
+        }
     }
 
     public static FamilyMember isFMok(FamilyMember member, int floor, Player player, int oldvalue){
@@ -1718,12 +1758,15 @@ public class Game implements Serializable {
 
     }
 
-    /*public void draftbonustiles(){
+
+
+
+    public void draftbonustiles(){
         int i;
 
         for(i = players.length-1; i==0;i--){
 
         }
-    }*/
+    }
 
 }

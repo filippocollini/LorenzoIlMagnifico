@@ -70,7 +70,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
                 return player;
             }
             ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
-            player = Game.addFMonTowerAction(player, ghostmember, floor, tower, free);
+            Game.addFMonTowerAction(player, ghostmember, floor, tower, free);
         }
 
         return player;

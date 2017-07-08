@@ -19,11 +19,11 @@ public class Board{
 
     private List<CellFaithPoints> faithPoints;
 
-    private List<Player> ordineTurno;
+
     private List<CellAction> production;
     private List<CellAction> harvest;
     private List<CellAction> market;
-    private List<ExcommunicationTiles> carteScomunica;
+    private List<ExcommunicationTiles> excommtiles;
     private List<CellAction> councilpalace;
     private List<Dices> dices;
     private static Board instance;
@@ -32,7 +32,7 @@ public class Board{
     private Tower charactersTower;
     private Tower venturesTower;
     private List<Token[]> tokens;
-
+    private List<Tower> towers;
     private List<BoardObserver> observers;
 
 
@@ -41,7 +41,7 @@ public class Board{
         buildingsTower = createyellowTower();
         charactersTower = createblueTower();
         venturesTower = createvioletTower();
-
+        excommtiles = new ArrayList<>();
         faithPoints = setFaithPointsTrack();
         observers = new ArrayList<>();
         market = createMarket(nplayers);
@@ -49,13 +49,21 @@ public class Board{
         harvest = new ArrayList<>();
         production = new ArrayList<>();
         tokens = inizializationTokens(nplayers);
-
+        towers = addingtowers();
         dices = creatingDices();
 
 
     }
 
+    public List<Tower> addingtowers(){
+        List<Tower> tower = new ArrayList<>();
+        tower.add(territoriesTower);
+        tower.add(charactersTower);
+        tower.add(buildingsTower);
+        tower.add(venturesTower);
 
+        return tower;
+    }
 
     private List<Token[]> inizializationTokens(int nplayers) {
         int i;
@@ -420,7 +428,7 @@ public class Board{
     }
 
     public List<ExcommunicationTiles> getCarteScomunica() {
-        return carteScomunica;
+        return excommtiles;
     }
 
     public List<Dices> getDices() {
@@ -469,6 +477,175 @@ public class Board{
             if (instance == null)
                 instance = new Board(nplayers);
         return instance;
+    }
+
+    public StringBuilder showBoard(){
+        StringBuilder showboard = new StringBuilder();
+
+        //TOWERS
+        for(Tower tower : towers) {
+            showboard.append(tower.getType());
+            showboard.append("\n");
+            for (CellTower floor : tower.getFloors()) {
+                showboard.append("Floor : ");
+                showboard.append(floor.getDice());
+                showboard.append("\n");
+                showboard.append("Cell Bonus : ");
+                showboard.append(floor.getResourceBonus().getquantity());
+                showboard.append(" ");
+                showboard.append(floor.getResourceBonus().gettipo());
+                showboard.append("\n");
+                if(floor.isfMPresent()) {
+                    showboard.append("There is the ");
+                    showboard.append(floor.getFmOnIt().getColor());
+                    showboard.append(" member of the player ");
+                    showboard.append(floor.getFmOnIt().getColorplayer());
+                }else
+                    showboard.append("Free Cell");
+                showboard.append("\n");
+                showboard.append("Card\n");
+                showboard.append("Name : ");
+                showboard.append(floor.getCard().getName());
+                showboard.append("\n");
+                if (floor.getCard().getChoice()) {
+                    showboard.append("You can pay with the Military Points or with the resources\n");
+                }
+                showboard.append("Cost : ");
+                for (Risorsa cost : floor.getCard().getCost1()) {
+                    showboard.append(cost.getquantity());
+                    showboard.append(" ");
+                    showboard.append(cost.gettipo());
+                    showboard.append("       \n");
+                }
+                showboard.append("\n");
+                showboard.append("Immediate Effect id : ");
+                for (int id : floor.getCard().getImmediateeffect()) {
+                    showboard.append(id);
+                    showboard.append(" ; ");
+                }
+                showboard.append("\n");
+                if (floor.getCard().getPermchoice()) {
+                    showboard.append("You can choose to activate one of these effects\n");
+                }
+                showboard.append("Permanent Effect id : ");
+                for (int id : floor.getCard().getPermanenteffect()) {
+                    showboard.append(id);
+                    showboard.append(" ; ");
+                }
+
+            }
+        }
+        showboard.append("\n");
+        showboard.append("\n");
+
+        //PALACE
+        if(councilpalace.size()!=0) {
+            for (CellAction cell : councilpalace) {
+                showboard.append("Bonus : ");
+                for(Risorsa bonus : cell.getBonus()) {
+                    showboard.append(bonus.getquantity());
+                    showboard.append(" ");
+                    showboard.append(bonus.gettipo());
+                    showboard.append("       \n");
+                }
+                showboard.append("\n");
+                showboard.append("Dice : ");
+                showboard.append(cell.getDice());
+                showboard.append("\n");
+                showboard.append("FM present : ");
+                showboard.append(cell.getMember().getColorplayer());
+                showboard.append("\n");
+            }
+        }else{
+            showboard.append("CouncilPalace empty\n");
+        }
+        showboard.append("\n");
+
+        //TOKENS
+        for(Token[] token : tokens){
+            showboard.append(token[0].getColor());
+            showboard.append(" player position on Board\n");
+            for(Token single : token){
+                showboard.append(single.getType());
+                showboard.append(" : ");
+                showboard.append(single.getPosition());
+                showboard.append("\n");
+            }
+        }
+        showboard.append("\n");
+
+        //PRODUCTION
+        if(production.size()!=0) {
+            for(CellAction cell : production){
+                showboard.append("Malus on dice : ");
+                showboard.append(cell.getDice());
+                showboard.append("\n");
+                showboard.append("There is the ");
+                showboard.append(cell.getMember().getColor());
+                showboard.append(" of the ");
+                showboard.append(cell.getMember().getColorplayer());
+                showboard.append(" player\n");
+
+            }
+        }
+        showboard.append("\n");
+
+        //HARVEST
+        if(harvest.size()!=0) {
+            for(CellAction cell : harvest){
+                showboard.append("Malus on dice : ");
+                showboard.append(cell.getDice());
+                showboard.append("\n");
+                showboard.append("There is the ");
+                showboard.append(cell.getMember().getColor());
+                showboard.append(" of the ");
+                showboard.append(cell.getMember().getColorplayer());
+                showboard.append(" player\n");
+            }
+        }
+        showboard.append("\n");
+
+        //MARKET
+        for(CellAction cell : market){
+            for(Risorsa bonus : cell.getBonus()) {
+                showboard.append("Bonus : ");
+                showboard.append(bonus.getquantity());
+                showboard.append(" ");
+                showboard.append(bonus.gettipo());
+                showboard.append("        \n");
+            }
+            showboard.append("\n");
+            if(cell.isfMOn()) {
+                showboard.append("There is the ");
+                showboard.append(cell.getMember().getColor());
+                showboard.append(" of the ");
+                showboard.append(cell.getMember().getColorplayer());
+                showboard.append(" player\n");
+            }else
+                showboard.append("Free Cell");
+
+        }
+        showboard.append("\n");
+
+        //DICES
+        for(Dices dice : dices){
+            showboard.append(dice.getColor());
+            showboard.append(" dice has value : ");
+            showboard.append(dice.getValue());
+        }
+        showboard.append("\n");
+
+        //EXCOMMUNICATIONS
+        for(ExcommunicationTiles tile : excommtiles){
+            showboard.append("Period of the Excommunication : ");
+            showboard.append(tile.getPeriod());
+            showboard.append("\n");
+            showboard.append("The excommunication is : ");
+            showboard.append(tile.getId());
+        }
+        showboard.append("\n");
+
+        return showboard;
     }
 
 }

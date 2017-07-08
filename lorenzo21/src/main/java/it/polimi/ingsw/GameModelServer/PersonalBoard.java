@@ -211,6 +211,84 @@ public class PersonalBoard {
         return resource;
     }
 
+    public StringBuilder showPB(){
+        StringBuilder showpb = new StringBuilder();
 
+        showpb.append("GREENCARDS");
+        for(CellPB cell : territories){
+            if(cell.getUnlockedcell()){
+                showpb.append("In the cell number ");
+                showpb.append(cell.getIndex());
+                showpb.append(" you have : ");
+                showpb.append("\n");
+                showpb.append("Card name : ");
+                showpb.append(cell.getCard().getName());
+                showpb.append("\n");
+                showpb.append("End game VP gained :");
+                showpb.append(cell.getVictoryPoints());
+
+            }else {
+                showpb.append("Cell is locked");
+                showpb.append("\n");
+                showpb.append("You need ");
+                showpb.append(cell.getMpNecessary());
+                showpb.append(" Military Points to unlock this cell\n");
+            }
+        }
+        showpb.append("\n");
+        showpb.append("YELLOWCARDS");
+        for(CellPB cell : buildings) {
+            showpb.append("In the cell number ");
+            showpb.append(cell.getIndex());
+            showpb.append(" you have : ");
+            showpb.append("\n");
+            showpb.append("Card name : ");
+            showpb.append(cell.getCard().getName());
+            showpb.append("\n");
+
+        }
+        showpb.append("\n");
+
+        showpb.append("BLUECARDS");
+        for(CellPB cell : characters) {
+            showpb.append("In the cell number ");
+            showpb.append(cell.getIndex());
+            showpb.append(" you have : ");
+            showpb.append("\n");
+            showpb.append("Card name : ");
+            showpb.append(cell.getCard().getName());
+            showpb.append("\n");
+            showpb.append("End game VP gained :");
+            showpb.append(cell.getVictoryPoints());
+        }
+        showpb.append("\n");
+
+
+        showpb.append("VIOLETCARDS");
+        for(CellPB cell : ventures) {
+            showpb.append("In the cell number ");
+            showpb.append(cell.getIndex());
+            showpb.append(" you have : ");
+            showpb.append("\n");
+            showpb.append("Card name : ");
+            showpb.append(cell.getCard().getName());
+            showpb.append("\n");
+
+        }
+        showpb.append("\n");
+
+        //RESOURCES
+        showpb.append("Resources : ");
+        for(Risorsa res : risorse){
+            showpb.append("You have ");
+            showpb.append(res.getquantity());
+            showpb.append(" ");
+            showpb.append(res.gettipo());
+            showpb.append("            \n");
+        }
+        showpb.append("\n");
+
+        return showpb;
+    }
 
 }

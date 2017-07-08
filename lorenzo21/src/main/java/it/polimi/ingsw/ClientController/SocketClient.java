@@ -111,6 +111,31 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
+    public void palaceMove(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void fmChoice(String uuid, String choice) throws RemoteException {
+
+    }
+
+    @Override
+    public void favorChoice(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void secondfavorChoice(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void addServants(String uuid) throws RemoteException {
+
+    }
+
+    @Override
     public void endMove(String uuid) throws RemoteException {
 
     }

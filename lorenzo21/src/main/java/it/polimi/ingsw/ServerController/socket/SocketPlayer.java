@@ -58,6 +58,26 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
     }
 
     @Override
+    public void notifyFMTooLow() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyChooseFavor() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyNotEnoughResources() throws RemoteException {
+
+    }
+
+    @Override
+    public void askForServants() throws RemoteException {
+
+    }
+
+    @Override
     public void notifyEndTurn() throws RemoteException {
 
     }

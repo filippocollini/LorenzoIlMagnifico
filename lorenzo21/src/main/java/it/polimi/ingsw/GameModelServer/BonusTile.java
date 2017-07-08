@@ -1,11 +1,12 @@
 package it.polimi.ingsw.GameModelServer;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * 
  */
-public class BonusTile {
+public class BonusTile implements Serializable {
 
     private String type1;
     private String type2;
@@ -67,4 +68,35 @@ public class BonusTile {
             return null;
         }
     }
+
+    public StringBuilder showBonusTile(){
+        StringBuilder showbt = new StringBuilder();
+        List<Risorsa> bonus;
+        List<String> types = new ArrayList<>();
+        types.add(type1);
+        types.add(type2);
+        int i;
+
+        for(i = 0; i<types.size();i++){
+            showbt.append("On ");
+            showbt.append(types.get(i));
+            showbt.append(" action you get these Bonuses : ");
+            showbt.append("\n");
+            if(types.get(i).equalsIgnoreCase(type1)) {
+                bonus = bonus1;
+            }else
+                bonus = bonus2;
+
+            for(Risorsa res : bonus){
+                showbt.append(res.getquantity());
+                showbt.append(" ");
+                showbt.append(res.gettipo());
+                showbt.append("\n");
+            }
+            showbt.append("\n");
+
+        }
+        return showbt;
+    }
+
 }

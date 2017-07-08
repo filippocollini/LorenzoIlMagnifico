@@ -15,23 +15,23 @@ public class Player extends BoardObserver implements Serializable{
     private String color;
     private PersonalBoard personalBoard;
     private Effect effects;
-    private List<LeaderCard> carteLeader;
-    private BonusTile tesseraBonus;
+    private List<LeaderCard> leadcards;
+
     private Token[] token;
-    private transient BonusTile bonustile;
+    private BonusTile bonustile;
 
 
-    public Player(String username, String color, Board board/*,  BonusTile tesseraBonus*/) {
+    public Player(String username, String color, Board board) {
         this.username = username;
         members = createFamilyMember(color);
         this.color = color;
         personalBoard = new PersonalBoard();
         effects = new Effect();
-        carteLeader = new ArrayList<LeaderCard>();
-        this.tesseraBonus = tesseraBonus;
+        leadcards = new ArrayList<LeaderCard>();
+
         this.board = board;
         this.board.addObserver(this);
-        bonustile = new BonusTile();
+        bonustile = new BonusTile(); //da attribuire in seguito alla scelta
     }
 
     public FamilyMember getMember(String color) {
@@ -87,12 +87,13 @@ public class Player extends BoardObserver implements Serializable{
         return personalBoard;
     }
 
-    public BonusTile tessaraBonus(){
-        return tesseraBonus;
+    public BonusTile getBonustile(){
+        return bonustile;
     }
 
+
     protected List<LeaderCard> getcarteLeader(){
-        return carteLeader;
+        return leadcards;
     }
 
 
@@ -145,6 +146,49 @@ public class Player extends BoardObserver implements Serializable{
             System.out.println("non hai abbastanza servants "); //TODO
         return member;
 
+    }
+
+    public StringBuilder showPlayergoods(){
+        StringBuilder showgoods = new StringBuilder();
+
+        //FAMILY MEMBER
+        for(FamilyMember member : members){
+            if(!member.isFmUsed()){
+                showgoods.append(member.getColor());
+                showgoods.append(" member has this power ");
+                showgoods.append(member.getValue());
+                showgoods.append("\n");
+            }else{
+                showgoods.append("You've already used ");
+                showgoods.append(member.getColor());
+                showgoods.append(" member ");
+                showgoods.append("\n");
+            }
+        }
+        showgoods.append("\n");
+        //PERSONALBOARD
+        showgoods.append(personalBoard.showPB());
+        showgoods.append("\n");
+
+        //EFFECTS
+        if(effects.getStrategy().size()!= 0){
+            showgoods.append("These are the ids of your activated effects : ");
+            showgoods.append("\n");
+            for(EffectStrategy effect : effects.getStrategy()){
+                showgoods.append(effect.getId());
+                showgoods.append("\n");
+            }
+        }else
+            showgoods.append("You don't have permanent effect active");
+        showgoods.append("\n");
+
+        //LEADER CARDS
+
+        //BONUSTILE
+        showgoods.append(bonustile.showBonusTile());
+        showgoods.append("\n");
+
+        return showgoods;
     }
 
 }

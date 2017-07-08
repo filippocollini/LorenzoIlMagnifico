@@ -75,7 +75,7 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
         }
 
         ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
-        player = Game.addFMonTowerAction(player, ghostmember, floor, tower,free);
+        Game.addFMonTowerAction(player, ghostmember, floor, tower,free);
 
         return player;
     }
