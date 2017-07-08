@@ -69,6 +69,8 @@ public class Game implements Serializable {
         excommunicationdeck = creatingExcommunicationDeck(creatingExcommunicationTiles());
         order = setOrderFirstTurn();
         leaderdeck = creatingLeaderDeck();
+        settinginitialResources();
+        fillExcommunicationTiles();
     }
 
     //setting initial game
@@ -98,7 +100,6 @@ public class Game implements Serializable {
         return dices;
     }
 
-    //TODO da mettere nel settaggio iniziale del gioco FULIPPOOOOOO!!!
     public void settinginitialResources(){
         int i = 0;
         int index = 0;
@@ -202,6 +203,14 @@ public class Game implements Serializable {
             board.getTower("ventures").getFloors().get(i).setCarta(cell.getCard());
             i++;
         }
+    }
+
+    private void fillExcommunicationTiles(){
+        int i;
+        for(i=0; i<3;i++){
+            board.getExcommTiles().add(i,excommunicationdeck.get(i).drawfirstCard());
+        }
+
     }
 
     public void setLeaderCard(){}
@@ -1042,8 +1051,8 @@ public class Game implements Serializable {
        //controlla se può boostare il familymember e lo fa //il type è il tipo della torre
        player.getMember(member).setValue( controlboost(player , player.getMember(member),tower).getValue());
 
-       dice = floor;
-        //prima controllo se può comprare la carta altrimenti ritorno
+        dice = floor;
+            //prima controllo se può comprare la carta altrimenti ritorno
 
             if (!controlpurchase(player,towerchosen.getFloors().get(dice).getCard(),false)) {
                 player.getMember(member).setValue(oldvalue);
@@ -1054,6 +1063,14 @@ public class Game implements Serializable {
         //poi vedo se il suo fm basta o si deve potenziare
         player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
 
+        //controllo che se la carta è territorio il player deve avere celle disponibili
+        if(tower.equalsIgnoreCase("territory")){
+            for(CellPB cell : player.getPB().getterritories()){
+                if((cell.getCard() == null) && !cell.getUnlockedcell()){
+                    return FAIL; //TODO ho messo fail ma non so se può scegliere un'altra torre
+                }
+            }
+        }
         //poi faccio l'azione applicando lo sconto
         addFMonTowerAction(player, player.getMember(member),dice, tower,false);
 
@@ -1063,6 +1080,7 @@ public class Game implements Serializable {
     public static void addFMonTowerAction(Player player, FamilyMember member, int floor, String tower, boolean free){
         //do action
         int i = 0;
+        boolean bonus = true;
         DevelopementCard card;
 
         for(CellTower cell : player.board.getTower(tower).getFloors()) {
@@ -1074,7 +1092,17 @@ public class Game implements Serializable {
                 //poi la compra
                 player = buyCard(player,card);
 
-                player = getimmediateBonus(player,player.board.getTower(tower).getFloors().get(i).getResourceBonus(),false);
+                if(player.getEffects().getStrategy().size()!=0){
+                    for(EffectStrategy effect : player.getEffects().getStrategy()){
+                        if(effect.getClass().getSimpleName().equalsIgnoreCase("RemoveBonusTower")){
+                            bonus = false;
+                        }
+                    }
+                }
+                if(bonus) {
+                    player = getimmediateBonus(player, player.board.getTower(tower).getFloors().get(i).getResourceBonus(), false);
+                }
+
                 player.board.getTower(tower).getFloors().get(i).setfMIsPresent(true);
                 player.board.getTower(tower).getFloors().get(i).setFmOnIt(member);
                 //TODO 3 monete
@@ -1094,6 +1122,7 @@ public class Game implements Serializable {
 
                 //mette la carta sulla pb
                 player.getPB().addCard(player.board.getTower(tower).getFloors().get(i).getCard());
+
 
 
                 //effetti immediati per ultimi così fa partire l'eventuale nuova azione gratis
@@ -1244,6 +1273,20 @@ public class Game implements Serializable {
 
     public static DevelopementCard applydiscount(Player player, DevelopementCard card, boolean free) {
 
+        //SCONTO MONETE PICO
+        for(LeaderCard leadcard : player.getcarteLeader()){
+            if(leadcard.getClass().getSimpleName().equalsIgnoreCase("PicodellaMirandola") && leadcard.isActive()){
+                Method method;
+                try {
+                    method = leadcard.getClass().getMethod("coinsdiscount", List.class);
+                    card.setCost1((List<Risorsa>) method.invoke(leadcard,card.getCost1()));
+                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
         List<Risorsa> listcost;
         DevelopementCard disccard = card;
         int i;
@@ -1251,6 +1294,8 @@ public class Game implements Serializable {
             return card;
         else
             listcost = card.getCost1();
+
+
 
        //controlla se può scontare
         if (player.getEffects().getStrategy()!=null) {
@@ -1311,6 +1356,8 @@ public class Game implements Serializable {
         boolean rsn = false;
         int size = 0;
         int i = 0;
+
+
         DevelopementCard newcard = applydiscount(player, card, free);
         if(newcard.getCardtype().equals("territory")){
            return true;
@@ -1533,6 +1580,8 @@ public class Game implements Serializable {
 
         return reward;
     }
+
+
 
     //GETTERS
     public Board getBoard(){
@@ -1761,6 +1810,140 @@ public class Game implements Serializable {
     }
 
 
+    public void vaticanReport(int turn){
+        int i = 0;
+        for(Player p : players){
+            for(Token token : p.getToken()){
+                if(token.getType().equalsIgnoreCase("FaithPoints")){
+                    if(token.getPosition()<(2+turn)){ //TI BECCHI LA SCOMUNICA
+                        players[i].getEffects().getStrategy()
+                                .add(board.getExcommTiles().get(turn-1)
+                                        .activateEffect(board.getExcommTiles().get(turn-1).getId()));
+                    }
+                }else{
+                    //TODO si deve fare la scelta se vuoi la scomunica o meno
+                }
+            }
+            i++;
+        }
+
+    }
+
+    public void endGameCounting(){
+        int i = 0;
+
+        for(Player p : players){
+            if(p.getEffects().getStrategy().size()!=0) {
+                for (EffectStrategy excomm : p.getEffects().getStrategy()) { //SCOMUNICHE
+                    if (excomm.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationEndVP")
+                            || excomm.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationLostVP")) {
+                        Method method;
+                        try {
+                            method = excomm.getClass().getMethod("apply", Player.class);
+                            players[i] = (Player) method.invoke(excomm, p);
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+                Token[] tokens = players[i].board.getTokens(players[i].getColor());
+                int numterritories = 0; //GAIN VP FROM TERRITORIES
+                for(CellPB cell : p.getPB().getterritories()) {
+                    if(cell.getCard()!=null)
+                        numterritories++;
+                }
+                int k = 0;
+                for(Token token : tokens){
+                    if(token.getType().equalsIgnoreCase("VictoryPoints")){
+                        tokens[k].setPosition(token.getPosition()+p.getPB()
+                                .getterritories().get(numterritories).getVictoryPoints());
+                    }
+                    k++;
+                }
+                int numcharacters = 0; //GAIN VP FROM CHARACTERS
+                for(CellPB cell : p.getPB().getcharacters()) {
+                    if(cell.getCard()!=null)
+                        numcharacters++;
+                }
+                k=0;
+                for(Token token : tokens){
+                    if(token.getType().equalsIgnoreCase("VictoryPoints")){
+                        tokens[k].setPosition(token.getPosition()+p.getPB()
+                                .getcharacters().get(numcharacters).getVictoryPoints());
+                    }
+                    k++;
+                }
+
+                players[i].board.setTokens(tokens); //SETTO I TOKENS DELLA BOARD CHE FANNO PARTIRE L'OBSERVER
+
+                //GAIN VP FROM VENTURES
+            if(p.getEffects().getStrategy().size()!=0) {
+                for (EffectStrategy effect : p.getEffects().getStrategy()) {
+                    if (effect.getClass().getSimpleName().equalsIgnoreCase("GetVPEnd")) {
+                        Method method;
+                        try {
+                            method = effect.getClass().getMethod("apply", Player.class);
+                            players[i] = (Player) method.invoke(effect, players[i]);
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+
+            i++;
+        }
+
+
+    }
+
+    public boolean controlrequiresLeadercard(Player player, LeaderCard card){ //CONTROLLO SE PUO' ATTIVARLA
+        int sizerequireslist = card.getRequires().size();
+
+        for(Risorsa require : card.getRequires()){
+            for(Risorsa res : player.getPB().getresources()){
+                if(require.gettipo().equalsIgnoreCase(res.gettipo())){
+                    if(res.getquantity()>=require.getquantity()){
+                        sizerequireslist--;
+                    }
+                }
+            }
+            for(Token token : player.getToken()){
+                if(require.gettipo().equalsIgnoreCase(token.getType())){
+                    if(token.getPosition()>=require.getquantity()){
+                        sizerequireslist--;
+                    }
+                }
+            }
+        }
+        if(sizerequireslist!=0){
+            return false;
+        }
+        return true;
+    }
+
+    public String activeLeaderCard(Player player, LeaderCard card){
+        int i = 0;
+        int k = 0;
+        if(controlrequiresLeadercard(player , card)) {
+            for (Player p : players) {
+                if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
+                    for (LeaderCard lead : p.getcarteLeader()) {
+                        if (lead.getName().equalsIgnoreCase(card.getName())) {
+                            players[i].getcarteLeader().get(k).setActive(true);
+                        }
+                    }
+                    k++;
+                }
+                i++;
+            }
+        }else
+            return FAIL;
+        return SUCCESS;
+    }
 
 
     public void draftbonustiles(){

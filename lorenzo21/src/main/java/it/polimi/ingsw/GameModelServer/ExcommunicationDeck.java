@@ -43,12 +43,12 @@ public class ExcommunicationDeck extends Deck {
         tile = tilesdeck.get(0);
 
         while(iter.hasNext()){
-            next = tilesdeck.get(i+1);
+            next = (ExcommunicationTiles) iter.next();
             tilesdeck.set(i,next);
             i++;
 
         }
-        iter.remove();
+        tilesdeck.remove(tilesdeck.size()-1);
 
         return tile;
     }

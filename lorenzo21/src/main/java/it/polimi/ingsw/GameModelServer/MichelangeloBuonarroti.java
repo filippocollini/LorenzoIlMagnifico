@@ -13,4 +13,14 @@ public class MichelangeloBuonarroti extends LeaderCard {
         single.setQuantity(10);
         this.requires.add(single);
     }
+
+    @Override
+    public Player onceInaRow(Player player) {
+
+        onceinarow = true;
+        player.getPB().getsingleresource("Coins").
+                setQuantity(player.getPB().getsingleresource("Coins").getquantity()+3);
+
+        return player;
+    }
 }

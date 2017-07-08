@@ -99,7 +99,7 @@ public class PersonalBoard {
     }
 
    public void addCard(DevelopementCard card){
-        if(card.getCardtype().equals("cards/territory") ){
+        if(card.getCardtype().equals("territory") ){
            addTCard(card);
        }else if(card.getCardtype().equals("buildings")){
             addBCard(card);
@@ -116,12 +116,9 @@ public class PersonalBoard {
         while(territories.get(i).getCard() != null && territories.get(i).getIndex()<6) //ricerca prima cella libera
             i++;
 
-        if(territories.get(i).getUnlockedcell())
              territories.get(i).setCard(card);
-        // (else) TODO ritorno errore 'non puoi avere altre carte, devi sbloccare celle con MP'
-
-        //TODO error nullpointerException se si guarda una cella vuota
-        //TODO try catch nel main quando si addano carte
+        //TODO non so se ci saranno errori per nullpointerexception
+        // se si punta una cella vuota
     }
 
     public void addBCard(DevelopementCard card){

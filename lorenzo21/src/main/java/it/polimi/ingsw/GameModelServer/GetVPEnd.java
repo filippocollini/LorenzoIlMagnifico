@@ -30,13 +30,14 @@ public class GetVPEnd extends EffectStrategy implements Cloneable{
     @Override
     public Player apply(Player player) {
         int i = 0;
-        for(Token token : player.board.getTokens(player.getColor())){
+        Token[] tokens = player.board.getTokens(player.getColor());
+        for(Token token : tokens){
             if(token.getType().equalsIgnoreCase("VictoryPoints")){
-                player.board.getTokens(player.getColor())[i]
-                        .setPosition(player.board.getTokens(player.getColor())[i].getPosition()+VP);
+                tokens[i].setPosition(tokens[i].getPosition()+VP);
             }
             i++;
         }
+        player.board.setTokens(tokens);
 
         return player;
     }

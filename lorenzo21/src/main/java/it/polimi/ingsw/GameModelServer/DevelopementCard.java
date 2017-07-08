@@ -35,6 +35,7 @@ public class DevelopementCard extends Card implements Cloneable{
     protected List<GetBoostDice> boost;
     protected List<GetForEach> resfor;
     protected List<GetVPEnd> getvp;
+    protected EffectStrategy removing;
 
 
     protected List<GetBoostandDiscount> discountandboost;
@@ -53,6 +54,7 @@ public class DevelopementCard extends Card implements Cloneable{
         boost = getboostparsing();
         resfor = forEachparsing();
         getvp = getVPparsing();
+        removing = removingparsing();
     }
 
     @Override
@@ -96,6 +98,10 @@ public class DevelopementCard extends Card implements Cloneable{
             if(effect.getId() == id)
                 righteffect = effect;
         }
+        if(removing.getId() == id) {
+            righteffect = removing;
+        }
+
         return righteffect;
 
     }
@@ -183,9 +189,6 @@ public class DevelopementCard extends Card implements Cloneable{
     public List<GetVPEnd> getGetvp() {
         return getvp;
     }
-
-    //TODO effetto non puoi ricevere risorse dagli spazi azione sulle torri
-
 
     public void setname(String name){
         this.name = name;
@@ -696,6 +699,26 @@ public class DevelopementCard extends Card implements Cloneable{
             throw new FileMalformedException("Error in parsing");        }
 
         return listendeffect;
+    }
+
+    public EffectStrategy removingparsing(){
+        JsonObject jremove;
+        EffectStrategy removing = new RemoveBonusTower();
+
+        try{
+
+            File file = new File("lorenzo21/src/main/resources/effects/removebonustower.json");
+            FileReader read = new FileReader(file.getAbsolutePath());
+
+            jremove = Json.parse(read).asObject();
+
+            removing.setId(jremove.get("id").asInt());
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return removing;
     }
 
 

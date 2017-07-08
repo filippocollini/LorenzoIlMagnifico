@@ -12,4 +12,10 @@ public class FedericodaMontefeltro extends LeaderCard {
         this.requires.add((Risorsa) single.clone());
     }
 
+    @Override
+    public FamilyMember onceInaRow(FamilyMember member) {
+        onceinarow = true;
+        member.setValue(6);
+        return member;
+    }
 }

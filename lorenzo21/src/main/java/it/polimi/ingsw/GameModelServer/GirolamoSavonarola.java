@@ -14,5 +14,20 @@ public class GirolamoSavonarola extends LeaderCard {
         this.requires.add(single);
     }
 
+    @Override
+    public Player onceInaRow(Player player) {
+
+        onceinarow = true;
+        int i = 0;
+        Token[] tokens = player.board.getTokens(player.getColor());
+        for(Token token : tokens){
+            if(token.getType().equalsIgnoreCase("FaithPoints")){
+                tokens[i].setPosition(token.getPosition()+1);
+            }
+            i++;
+        }
+        player.board.setTokens(tokens);
+        return player;
+    }
 }
 

@@ -118,7 +118,7 @@ public class Board{
 
 
             } catch (IOException e) {
-                //TODO
+                e.printStackTrace();
             }
 
 
@@ -427,7 +427,7 @@ public class Board{
         return councilpalace;
     }
 
-    public List<ExcommunicationTiles> getCarteScomunica() {
+    public List<ExcommunicationTiles> getExcommTiles() {
         return excommtiles;
     }
 

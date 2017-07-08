@@ -40,5 +40,4 @@ public class CellFaithPoints implements Cloneable {
     return null;
     }
 
-    //TODO metodo che garantisce il tornare indietro
 }

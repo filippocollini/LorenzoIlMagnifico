@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -58,6 +60,20 @@ public class GetResources extends EffectStrategy implements Cloneable {
         }
         player.board.setTokens(tokens);
         */
+        List<Risorsa> santaresources = new ArrayList<>();
+        //Applicasantarita
+        for(LeaderCard leadcard : player.getcarteLeader()){
+            if(leadcard.getClass().getSimpleName().equalsIgnoreCase("SantaRita") && leadcard.isActive()){
+                Method method3;
+                try {
+                    method3 = leadcard.getClass().getMethod("doublebonusfromcard", List.class);
+                    santaresources = (List<Risorsa>) method3.invoke(leadcard,this.extendedresources);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        player = Game.getimmediateBonus(player,santaresources,false);
         player = Game.getimmediateBonus(player,this.extendedresources,false);
 
         return player;

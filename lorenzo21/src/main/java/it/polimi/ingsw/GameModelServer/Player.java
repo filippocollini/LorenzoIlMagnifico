@@ -3,6 +3,8 @@ package it.polimi.ingsw.GameModelServer;
 
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -97,12 +99,13 @@ public class Player extends BoardObserver implements Serializable{
     }
 
 
-    //TODO appena i punti militari arrivano a X sblocchi la cella nella PB
-    public void unlockGreenCell(int puntiMilitari, PersonalBoard pboard){
+
+    public void unlockGreenCell(int puntiMilitari){
         int i;
-        for(i=0;i<pboard.getterritories().size();i++){
-            if (pboard.getterritories().get(i).getMpNecessary() <= puntiMilitari)
-            pboard.getterritories().get(i).setUnlockedcell(true);
+        for(i=0;i<personalBoard.getterritories().size();i++){
+            if (personalBoard.getterritories().get(i).getMpNecessary() <= puntiMilitari) {
+                personalBoard.getterritories().get(i).setUnlockedcell(true);
+            }
         }
 
     }
@@ -110,13 +113,45 @@ public class Player extends BoardObserver implements Serializable{
     @Override
     public void update() {
         this.token = board.getTokens(this.color);
-        System.out.println("ciao");
+        for(Token single : this.token){
+            if(single.getType().equalsIgnoreCase("MilitaryPoints")){
+                unlockGreenCell(single.getPosition());
+            }
+        }
+
         int i = 0;
+        int coeff = 0;
+        for(LeaderCard card : leadcards){
+            if(card.getClass().getSimpleName().equalsIgnoreCase("LucreziaBorgia") && card.isActive()){
+                coeff = 2;
+            }
+        }
+
         for(FamilyMember member : members){
             for(Dices dice : board.getDices()){
                 if(member.getColor().equalsIgnoreCase(dice.getColor())){
-                    this.members.get(i).setValue(dice.getValue());
-                    System.out.println("n: "+members.get(i).getValue());
+                    this.members.get(i).setValue(dice.getValue()+coeff); //modifico il dado dalla board
+
+                    for(LeaderCard card : leadcards){ //se ho ludovico il moro setto a 5
+                        if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoilMoro") && card.isActive()){
+                            this.members.get(i).setValue(5+coeff);
+                        }
+                    }
+
+                    for(EffectStrategy excomm : effects.getStrategy()){ //se ho scomunica riduco di uno
+                        if(excomm.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationReduction")){
+                            Method method;
+                            try {
+                                method = excomm.getClass().getMethod("apply", FamilyMember.class, String.class);
+                                FamilyMember helper = (FamilyMember) method.invoke(excomm,this.members.get(i),"dices");
+                                this.members.get(i).setValue(helper.getValue());
+                            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+
                 }
             }
             i++;

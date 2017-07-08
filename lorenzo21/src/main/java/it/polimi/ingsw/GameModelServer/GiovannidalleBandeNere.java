@@ -14,4 +14,18 @@ public class GiovannidalleBandeNere extends LeaderCard {
         this.requires.add(single);
     }
 
+
+    @Override
+    public Player onceInaRow(Player player) {
+
+        onceinarow = true;
+        player.getPB().getsingleresource("Woods").
+                setQuantity(player.getPB().getsingleresource("Woods").getquantity()+1);
+        player.getPB().getsingleresource("Stones").
+                setQuantity(player.getPB().getsingleresource("Stones").getquantity()+1);
+        player.getPB().getsingleresource("Coins").
+                setQuantity(player.getPB().getsingleresource("Coins").getquantity()+1);
+
+        return player;
+    }
 }
