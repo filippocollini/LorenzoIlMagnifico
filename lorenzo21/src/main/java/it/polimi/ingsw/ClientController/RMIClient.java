@@ -124,8 +124,8 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     }
 
     @Override
-    public void notifyFMTooLow() throws RemoteException {
-        cli.notifyFMTooLow();
+    public void notifyFMTooLow(int nServants, String event) throws RemoteException {
+        cli.notifyFMTooLow(nServants, event);
     }
 
     @Override
@@ -146,6 +146,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     @Override
     public void notifyEndTurn() throws RemoteException {
         cli.notifyEndTurn();
+    }
+
+    @Override
+    public void notifyError() throws RemoteException {
+        cli.notifyError();
     }
 
 
@@ -173,6 +178,12 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     public void harvestMove(String uuid){
         String member = askMember();
         server.harvestMove(uuid, member);
+    }
+
+    @Override
+    public void productionMove(String uuid) throws RemoteException {
+        String member = askMember();
+        server.productionMove(uuid, member);
     }
 
     public void fmChoice(String uuid, String choice) throws RemoteException{

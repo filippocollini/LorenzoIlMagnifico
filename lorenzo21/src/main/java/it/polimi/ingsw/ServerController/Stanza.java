@@ -2,7 +2,6 @@ package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.Exceptions.NetworkException;
-import it.polimi.ingsw.Exceptions.TurnException;
 import it.polimi.ingsw.GameModelServer.Game;
 
 import java.io.Serializable;
@@ -140,9 +139,16 @@ public class Stanza implements Serializable {
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else if(control.equals(Game.FMPRESENT)){
-            //TODO tirare eccezione
-        }else if (control.equals(Game.TOOLOW))
-            notifyFMTooLow();//TODO rivedere
+            notifyError();
+        }else
+            notifyFMTooLow(Integer.parseInt(control), "fm on harvest");
+    }
+
+    public void productionEvent(AbstractPlayer player, String member) {
+        String control="";
+        if (turn!=null && turn.getPlayer()==player){
+            control = game.addFMonProduction(game.herethePlayer(usernames.get(player)), member);
+        }
     }
 
     private class GameHandler extends TimerTask{
@@ -315,10 +321,12 @@ public class Stanza implements Serializable {
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else
-            if(control.equals(Game.CHOOSEANOTHERFM)){
-                notifyFMTooLow();
-            }else
+            if(control.equals(Game.FAIL) || control.equals(Game.SAMETOWER)) {
                 notifyError();
+            }else if (control.equals(Game.NOTENOUGHRESOURCES))
+                notifyNotEnoughResources();
+            else
+                notifyFMTooLow(Integer.parseInt(control), "fm on tower");
     }
 
     public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
@@ -342,9 +350,9 @@ public class Stanza implements Serializable {
         turn.playerMadeAMove();
     }
 
-    public void notifyFMTooLow(){
+    public void notifyFMTooLow(int nServants, String event){
         try {
-            turn.getPlayer().notifyFMTooLow();
+            turn.getPlayer().notifyFMTooLow(nServants, event);
         } catch (RemoteException e) {
             LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }
@@ -391,7 +399,11 @@ public class Stanza implements Serializable {
     }
 
     public void notifyError(){
-        //TODO
+        try {
+            turn.getPlayer().notifyError();
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
     }
 
 }

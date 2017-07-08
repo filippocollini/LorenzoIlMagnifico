@@ -4,8 +4,6 @@ import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.ClientController.RMIClient;
 import it.polimi.ingsw.ClientController.SocketClient;
 import it.polimi.ingsw.Exceptions.ClientException;
-import it.polimi.ingsw.Exceptions.NetworkException;
-import it.polimi.ingsw.GameModelServer.DevelopementCard;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.*;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
@@ -102,9 +100,20 @@ public class CommandLineUI extends AbstactUI {
         state = null;
     }
 
-    public void notifyFMTooLow(){
-        System.out.println("Your family member is too low! Do you want to choose another one? (Y - yes, any other key - make another action");
-        state = new GameState();
+    public void notifyFMTooLow(int nServants, String event){
+        System.out.println("Your family member is too low! Do you want to choose another one? (Y - yes, S - spend servants, any other key - make another action");
+        Scanner scanner = new Scanner(System.in);
+        String response = scanner.nextLine();
+        if(response.equalsIgnoreCase("Y")){
+            state = new GameState();
+        }else if (response.equalsIgnoreCase("S"))
+            try {
+                client.handle(event, new GameState());
+            } catch (RemoteException e) {
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
+            }
+
+        //TODO rivedere
         System.out.println("Make another action");
     }
 
@@ -128,6 +137,12 @@ public class CommandLineUI extends AbstactUI {
         System.out.println("Do you want to pay servants? ");
         state = new GameState();
 
+    }
+
+    public void notifyError() {
+        System.out.println("There was an error, try again");
+        state = new GameState();
+        System.out.println("Insert your action");
     }
 
 

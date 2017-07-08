@@ -45,8 +45,8 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     }
 
     @Override
-    public void notifyFMTooLow() throws RemoteException {
-        playerInt.notifyFMTooLow();
+    public void notifyFMTooLow(int nServants, String event) throws RemoteException {
+        playerInt.notifyFMTooLow(nServants, event);
     }
 
     @Override
@@ -67,6 +67,11 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     @Override
     public void notifyEndTurn() throws RemoteException {
         playerInt.notifyEndTurn();
+    }
+
+    @Override
+    public void notifyError() throws RemoteException {
+        playerInt.notifyError();
     }
 
     @Override

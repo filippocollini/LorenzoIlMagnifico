@@ -23,7 +23,7 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
 
     public abstract void notifyActionMade() throws RemoteException;
 
-    public abstract void notifyFMTooLow() throws RemoteException;
+    public abstract void notifyFMTooLow(int nServants, String event) throws RemoteException;
 
     public abstract void notifyChooseFavor() throws RemoteException;
 
@@ -33,6 +33,7 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
 
     public abstract void notifyEndTurn() throws RemoteException;
 
+    public abstract void notifyError() throws RemoteException;
     /**
      * 
      */
@@ -46,4 +47,7 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
 
     public abstract M receive() throws SocketException;
     public abstract void send(M message, State state);
+
+
+
 }

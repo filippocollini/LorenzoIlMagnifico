@@ -134,4 +134,13 @@ public class RMIServer extends AbstractServer implements Callback{
         room.harvestEvent(player, member);
     }
 
+    @Override
+    public void productionMove(String uuid, String member) {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.productionEvent(player, member);
+    }
+
 }

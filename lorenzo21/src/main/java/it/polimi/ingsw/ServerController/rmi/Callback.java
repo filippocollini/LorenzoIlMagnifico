@@ -24,4 +24,5 @@ public interface Callback extends Remote{
     public void endMove(String uuid) throws RemoteException;
     public void sendLong(long val) throws RemoteException;
     public void harvestMove(String uuid, String member);
+    public void productionMove(String uuid, String member);
 }

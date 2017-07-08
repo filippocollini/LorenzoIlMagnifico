@@ -46,6 +46,10 @@ public abstract class AbstractClient  {
 
     public abstract void palaceMove(String uuid) throws RemoteException;
 
+    public abstract void harvestMove(String uuid) throws RemoteException;
+
+    public abstract void productionMove(String uuid) throws RemoteException;
+
     public abstract void fmChoice(String uuid, String choice) throws RemoteException;
 
     public abstract void favorChoice(String uuid) throws RemoteException;

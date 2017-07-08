@@ -116,6 +116,16 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
+    public void harvestMove(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void productionMove(String uuid) throws RemoteException {
+
+    }
+
+    @Override
     public void fmChoice(String uuid, String choice) throws RemoteException {
 
     }

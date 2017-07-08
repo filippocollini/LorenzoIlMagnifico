@@ -36,7 +36,7 @@ public class Game implements Serializable {
     public static final String SAMETOWER="sametower";
     public static final String CHOOSEANOTHERFM="another fm";
     public static final String FMPRESENT="fm already present";
-    public static final String TOOLOW="fm power too low";
+    public static final String NOTENOUGHRESOURCES="not enough resources";
     private int turn;
     private List<BonusTile> bonustilesnormal;
     private transient List<BonusTile> bonustileleader;
@@ -239,7 +239,7 @@ public class Game implements Serializable {
     }
 
     //Parsing palacefavor Bonus
-    private List<Risorsa> palaceFavorparsing(){
+    private List<Risorsa> palaceFavorparsing() throws FileMalformedException {
         JsonObject jpalace;
 
         Risorsa coin = new Risorsa();
@@ -273,15 +273,15 @@ public class Game implements Serializable {
 
 
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
 
         return favors;
     }
 
 
     //parsing developement cards
-    private List<TerritoryCard> territoryParsing() {
+    private List<TerritoryCard> territoryParsing() throws FileMalformedException {
 
         JsonArray jarraycard;
         JsonObject jcard;
@@ -348,12 +348,12 @@ public class Game implements Serializable {
 
 
         } catch (IOException e) {
-            e.printStackTrace(); // TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return cardList;
     }
 
-    private List<BuildingCard> buildingParsing() {
+    private List<BuildingCard> buildingParsing() throws FileMalformedException {
 
         JsonArray jarraycard;
         JsonObject jcard;
@@ -441,8 +441,8 @@ public class Game implements Serializable {
 
 
         } catch (IOException e) {
-            e.printStackTrace(); // TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return cardList;
     }
 
@@ -523,7 +523,7 @@ public class Game implements Serializable {
         return cardList;
     }
 
-    private List<VentureCard> ventureParsing() {
+    private List<VentureCard> ventureParsing() throws FileMalformedException {
 
         JsonArray jarraycard;
         JsonObject jcard;
@@ -619,8 +619,8 @@ public class Game implements Serializable {
 
 
         } catch (IOException e) {
-            e.printStackTrace(); // TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);
+            throw new FileMalformedException("Error in parsing");        }
         return cardList;
     }
 
@@ -761,7 +761,8 @@ public class Game implements Serializable {
             // TODO get bonus personale dalla tile
         }else {
             player.getMember(member).setValue(oldvalue);
-            return TOOLOW;
+            int result = 1-player.getMember(member).getValue();
+            return String.valueOf(result);
         }
 
         space.setFamilyMemberinCell(player.getMember(member));
@@ -778,34 +779,33 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
-    public String addFMonProduction(Player player){
+    public String addFMonProduction(Player player, String member){
         String type = "production";
-        String color = askMember();
         Player control;
         int oldvalue;
-        oldvalue = player.getMember(color).getValue();
+        oldvalue = player.getMember(member).getValue();
         List<Risorsa> gained = new ArrayList<>();
 
         for(CellAction cell : board.getProduction()){ //controllo se ha già altri fm qui
             if(cell.getcolorMember().equals(player.getColor()) && !cell.getMember().getColor().equalsIgnoreCase("Neutral")){
-                System.out.println("You've another FM here!"); //TODO
-                return FAIL;
+                System.out.println("You've another FM here!");
+                return SAMETOWER;
             }
         }
 
-        player.getMember(color).setValue(controlboost(player,player.getMember(color),type).getValue());
+        player.getMember(member).setValue(controlboost(player,player.getMember(member),type).getValue());
 
         CellAction space;
         space = board.createCellHarvestorPoduction();
         space.setType(type);
 
         if(board.getProduction().size() == 1 && players.length<3){
-            System.out.println("there is no space here"); //TODO
-            player.getMember(color).setValue(oldvalue); //c'è bisogno di rimettere il valore vecchio? player non viene ritornato
+            //System.out.println("there is no space here");
+            player.getMember(member).setValue(oldvalue); //c'è bisogno di rimettere il valore vecchio? player non viene ritornato
             return FAIL;
         }else if(board.getProduction().size()>=1){
             space.setDice(-3);
-            player.getMember(color).setValue(player.getMember(color).getValue()+space.getDice());
+            player.getMember(member).setValue(player.getMember(member).getValue()+space.getDice());
         }
 
         int choice;
@@ -813,12 +813,12 @@ public class Game implements Serializable {
         int j = 0;
         int i = 0;
         boolean spent = false;
-        if(player.getMember(color).getValue()>1){
+        if(player.getMember(member).getValue()>1){
             for(CellPB cellPB : player.getPB().getbuildings()){
                 for(EffectStrategy effect : player.getEffects().getStrategy()){
                     choice = effect.getId();
                     if(cellPB.getCard().getPermchoice()){
-                        System.out.println("Which effect do you want to activate?"); //TODO
+                        System.out.println("Which effect do you want to activate?"); //TODO aggiungo un parametro che normalmente è a 0, ma se serve una scelta avrà il valore della scelta... basta un parametro o ce ne vogliono di più?
                         for(k=0;k<cellPB.getCard().getPermanenteffect().size();k++)
                             System.out.println(cellPB.getCard().getPermanenteffect().get(k));
                         Scanner scan = new Scanner(System.in);
@@ -831,7 +831,7 @@ public class Game implements Serializable {
                             Method method2;
                             try {
                                 method = effect.getClass().getMethod("apply", Player.class,String.class);
-                                control = (Player) method.invoke(effect,player,color);
+                                control = (Player) method.invoke(effect,player,member);
                                 for(Risorsa controlres : control.getPB().getresources()){
                                     for(Risorsa resplay : player.getPB().getresources()){
                                         if(!(controlres.getquantity() == resplay.getquantity()))
@@ -848,7 +848,7 @@ public class Game implements Serializable {
 
                                 if(spent) {
                                     method2 = effect.getClass().getMethod("apply", List.class, Player.class, String.class);
-                                    gained = (List<Risorsa>) method2.invoke(effect, gained, player, color);
+                                    gained = (List<Risorsa>) method2.invoke(effect, gained, player, member);
                                 }
                             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                                 LOG.log(Level.SEVERE, "Method not found", e);
@@ -879,12 +879,14 @@ public class Game implements Serializable {
 
             // TODO get bonus personale dalla tile
         }else {
-            System.out.println("you can't do the action because the power is too low"); //TODO
-            player.getMember(color).setValue(oldvalue);
-            return FAIL;
+            //System.out.println("you can't do the action because the power is too low");
+
+            player.getMember(member).setValue(oldvalue);
+            int result = 1-player.getMember(member).getValue();
+            return String.valueOf(result);//TODO è giusto così? o devo controllare prima di settare setValue(oldValue)?
         }
 
-        space.setFamilyMemberinCell(player.getMember(color));
+        space.setFamilyMemberinCell(player.getMember(member));
         board.getHarvest().add(space);
 
         int l = 0;
@@ -1057,17 +1059,24 @@ public class Game implements Serializable {
             if (!controlpurchase(player,towerchosen.getFloors().get(dice).getCard(),false)) {
                 player.getMember(member).setValue(oldvalue);
                 System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
-                return CHOOSEANOTHERFM;
+                return NOTENOUGHRESOURCES;
             }
 
         //poi vedo se il suo fm basta o si deve potenziare
-        player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
+        if (isFMok(player.getMember(member),dice,player,oldvalue)!=null){
+            player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
+        }else{
+            int result = 1-player.getMember(member).getValue();
+            return String.valueOf(result);
+        }
+
+
 
         //controllo che se la carta è territorio il player deve avere celle disponibili
         if(tower.equalsIgnoreCase("territory")){
             for(CellPB cell : player.getPB().getterritories()){
                 if((cell.getCard() == null) && !cell.getUnlockedcell()){
-                    return FAIL; //TODO ho messo fail ma non so se può scegliere un'altra torre
+                    return FAIL;
                 }
             }
         }
@@ -1181,19 +1190,7 @@ public class Game implements Serializable {
        if (member.getValue() < floor) {
            System.out.println(member.getValue());
            System.out.println("Your FM Power is too low!");
-
-
-           System.out.println("Do You want to power up it spending servants? Y - any other letter to say NO");
-           Scanner action = new Scanner(System.in);
-           if (action.nextLine().equalsIgnoreCase("Y")) {
-               int servant;
-               servant = floor - member.getValue();
-               member.setValue( player.spendservants(member, servant).getValue());
-
-           } else {
-               member.setValue(oldvalue);
-               return null; //TODO
-           }
+           return null;
        }
         return member;
    }
