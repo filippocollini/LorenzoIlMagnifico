@@ -2173,6 +2173,7 @@ public class Game implements Serializable {
             if(require.gettipo().equalsIgnoreCase("samedevelopment")) {
                 String[] types = {"territory", "characters", "buildings", "ventures"};
                 for (String req : types) {
+                    quantity = 0;
                     for (CellPB cell : player.getPB().gettypecards(req)) {
                         if (cell.getCard() != null) {
                             quantity++;
@@ -2180,6 +2181,9 @@ public class Game implements Serializable {
                     }
                     if (quantity >= require.getquantity()) {
                         sizerequireslist--;
+                    }
+                    if(sizerequireslist==0){
+                        return true;
                     }
                 }
             }
@@ -2251,7 +2255,73 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
-    public void activeinaRow(Player player){}
+    public String discardLeaderCard(Player player,String name,String favor){
+        boolean present = false;
+        LeaderCard card = null;
+        for(LeaderCard lead : player.getcarteLeader()){
+            if(lead.getClass().getSimpleName().equalsIgnoreCase(name)) {
+                present = true;
+                card = lead;
+            }
+        }
+        if(present){
+
+            List<Risorsa> listfavor = choosePalaceFavor(player, favor);
+            player = getimmediateBonus(player, listfavor, false);
+
+            int k = 0;
+            int i = 0;
+            for (Player p : players) {
+                if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
+                    players[k] = player;
+                    for(LeaderCard leaderCard : players[k].getcarteLeader()){
+                        if(leaderCard.getName().equalsIgnoreCase(card.getName())){
+                            players[k].getcarteLeader().remove(leaderCard);
+                        }
+                        i++;
+                    }
+                }
+                k++;
+            }
+
+        }else
+            return FAIL;
+        return SUCCESS;
+    }
+
+    public void activeinaRow(Player player){
+        for(LeaderCard card : player.getcarteLeader()){
+            if(card.isActive()){
+                if(card.getClass().getSimpleName().equalsIgnoreCase("FedericodaMontefeltro")){
+                    //TODO ask quale member
+                }
+                if(card.getClass().getSimpleName().equalsIgnoreCase("LorenzodeMedici")){
+                    //TODO ask quale carta leader copiare
+                }
+                if(card.getClass().getSimpleName().equalsIgnoreCase("FrancescoSforza") ||
+                        card.getClass().getSimpleName().equalsIgnoreCase("LeonardodaVinci")){
+                    //TODO power up member
+                }
+                if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoIIIGonzaga")){
+                    //TODO ask favor
+                }
+                Method method;
+                try {
+                    method = card.getClass().getMethod("onceInaRow", Player.class);
+                    method.invoke(card,player);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        int k = 0;
+        for (Player p : players) {
+            if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
+                players[k] = player;
+            }
+        }
+    }
 
     public StringBuilder showotherPlayers(){
         StringBuilder showothers = new StringBuilder();
@@ -2283,7 +2353,7 @@ public class Game implements Serializable {
         showactions.append("showPlayergoods\n");
         showactions.append("showboard\n");
         showactions.append("showotherPlayers\n");
-        showactions.append("spendservants\n");
+        showactions.append("fm power up\n");
 
 
         return showactions;

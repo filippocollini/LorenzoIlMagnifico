@@ -20,7 +20,7 @@ public class FrancescoSforza extends LeaderCard {
         /*FamilyMember ghostmember = new FamilyMember("ghost",player.getColor());
         Game.addFMonHarvest();*/
         //attiva gli effetti permanenti delle carte sulla pb del raccolto
-
+        //TODO power up
     return player;
     }
 }
