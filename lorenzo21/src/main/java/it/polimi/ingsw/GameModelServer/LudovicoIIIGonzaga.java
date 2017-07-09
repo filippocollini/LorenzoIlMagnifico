@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class LudovicoIIIGonzaga extends LeaderCard {
@@ -14,4 +15,11 @@ public class LudovicoIIIGonzaga extends LeaderCard {
         single.setQuantity(15);
         this.requires.add((Risorsa) single.clone());
     }
+
+    /*@Override
+    public Player onceInaRow(Player player) {
+        onceinarow = true;
+
+
+    }*/
 }

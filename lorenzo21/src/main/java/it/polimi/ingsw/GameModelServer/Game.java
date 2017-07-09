@@ -9,6 +9,7 @@ import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.Stanza;
+import javafx.print.PageLayout;
 
 
 import java.io.File;
@@ -37,6 +38,7 @@ public class Game implements Serializable {
     public static final String CHOOSEANOTHERFM="another fm";
     public static final String FMPRESENT="fm already present";
     public static final String NOTENOUGHRESOURCES="not enough resources";
+    public static int PALACE;
 
     private List<BonusTile> bonustilesnormal;
     private transient List<BonusTile> bonustileleader;
@@ -242,21 +244,57 @@ public class Game implements Serializable {
     public void setBonustiles(List<Player> players){}
 
     public void reOrder(){
-        List<FamilyMember> neworder = new ArrayList<>();
+        List<String> neworder = new ArrayList<>();
+        List<String> oldorder = new ArrayList<>();
         boolean present = false;
         for(CellAction cell : board.getCouncilpalace()){
-            for(FamilyMember mem : neworder){
-                if(cell.getMember().getColorplayer().equalsIgnoreCase(mem.getColorplayer()))
+            for(String mem : neworder){
+                if(cell.getMember().getColorplayer().equalsIgnoreCase(mem))
                     present = true;
             }
             if(!present) {
-                neworder.add(cell.getMember());
+                neworder.add(cell.getMember().getColorplayer());
             }
         }
-        int size = neworder.size();
-        int i = 0;
-        for(Player p : players){
+        if(neworder.size() == 0){
+            return;
+        }
 
+        for(Player play : players){ //mi metto in una lista l'ordine vecchio
+            for(Token toke : play.getToken()){
+                if(toke.getType().equalsIgnoreCase("Order")){
+                    oldorder.add(toke.getPosition()-1,play.getColor());
+                }
+            }
+        }
+
+       for(String old : oldorder) { //setto il nuovo ordine con tutti i giocatori
+           boolean pre = false;
+           for (String pla : neworder) {
+                if(pla.equalsIgnoreCase(old)){
+                    pre = true;
+                }
+           }
+           if(!pre){
+               neworder.add(old);
+           }
+       }
+
+        int size = 0;
+        int i = 0;   //setto i valori di ogni token
+        for(Player p : players){
+            Token[] tokens = board.getTokens(p.getColor());
+            for(Token token : tokens){
+                if(token.getType().equalsIgnoreCase("Order")){
+                    for(String mem : neworder){
+                        if(mem.equalsIgnoreCase(p.getColor())){
+                            tokens[i].setPosition(size+1);
+                        }
+                        size++;
+                    }
+                }
+            }
+            board.setTokens(tokens);
         }
 
     }
@@ -1000,7 +1038,7 @@ public class Game implements Serializable {
 
             for (Risorsa resource : space.getBonus()) {
                 if (resource.gettipo().equals("PalaceFavor") && resource.getquantity() != 0) {
-                    List<Risorsa> listfavor = choosePalaceFavor(player, member, favor);
+                    List<Risorsa> listfavor = choosePalaceFavor(player, favor);
                     player = getimmediateBonus(player, listfavor, false);
                 }
                 player = getimmediateBonus(player, space.getBonus(), false);
@@ -1522,9 +1560,15 @@ public class Game implements Serializable {
         Risorsa single = new Risorsa();
         List<Risorsa> listfavor;
 
+
         reward = controlExcommunicationLessRes(player,reward,negative);
 
         for(Risorsa resource : reward) {
+
+            if(resource.gettipo().equalsIgnoreCase("PalaceFavor")){
+                PALACE = resource.getquantity();
+            }
+
             if(resource.getquantity()!=0){
                 single.setTipo(resource.gettipo());
                 single.setQuantity(resource.getquantity());
@@ -1597,7 +1641,7 @@ public class Game implements Serializable {
         return player;
     }
 
-    public List<Risorsa> choosePalaceFavor(Player player, String member, String choice) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
+    public List<Risorsa> choosePalaceFavor(Player player, String choice) { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
         Risorsa res = new Risorsa();
         List<Risorsa> rewards = new ArrayList<>();
         for (Risorsa singlereward : palaceFavors) {
@@ -2071,6 +2115,8 @@ public class Game implements Serializable {
             return FAIL;
         return SUCCESS;
     }
+
+    public void activeinaRow(Player player){}
 
     public StringBuilder showotherPlayers(){
         StringBuilder showothers = new StringBuilder();
