@@ -299,35 +299,36 @@ public class Game implements Serializable {
 
     public void setBonustiles(List<Player> players){}
 
-    public void reOrder(){
-        List<String> neworder = new ArrayList<>();
-        List<String> oldorder = new ArrayList<>();
+    public List<Player> reOrder(){
+        List<Player> neworder = new ArrayList<>();
+        List<Player> oldorder = new ArrayList<>();
         boolean present = false;
         for(CellAction cell : board.getCouncilpalace()){
-            for(String mem : neworder){
-                if(cell.getMember().getColorplayer().equalsIgnoreCase(mem))
+            for(Player mem : neworder){
+                if(cell.getMember().getColorplayer().equalsIgnoreCase(mem.getColor()))
                     present = true;
             }
             if(!present) {
-                neworder.add(cell.getMember().getColorplayer());
+                neworder.add(getPlayer(cell.getMember().getColorplayer()));
             }
         }
-        if(neworder.size() == 0){
-            return;
-        }
+
 
         for(Player play : players){ //mi metto in una lista l'ordine vecchio
             for(Token toke : play.getToken()){
                 if(toke.getType().equalsIgnoreCase("Order")){
-                    oldorder.add(toke.getPosition()-1,play.getColor());
+                    oldorder.add(toke.getPosition()-1,getPlayer(play.getColor()));
                 }
             }
         }
+        if(neworder.size() == 0){
+            return oldorder;
+        }
 
-       for(String old : oldorder) { //setto il nuovo ordine con tutti i giocatori
+       for(Player old : oldorder) { //setto il nuovo ordine con tutti i giocatori
            boolean pre = false;
-           for (String pla : neworder) {
-                if(pla.equalsIgnoreCase(old)){
+           for (Player pla : neworder) {
+                if(pla.getColor().equalsIgnoreCase(old.getColor())){
                     pre = true;
                 }
            }
@@ -342,8 +343,8 @@ public class Game implements Serializable {
             Token[] tokens = board.getTokens(p.getColor());
             for(Token token : tokens){
                 if(token.getType().equalsIgnoreCase("Order")){
-                    for(String mem : neworder){
-                        if(mem.equalsIgnoreCase(p.getColor())){
+                    for(Player mem : neworder){
+                        if(mem.getColor().equalsIgnoreCase(p.getColor())){
                             tokens[i].setPosition(size+1);
                         }
                         size++;
@@ -352,6 +353,7 @@ public class Game implements Serializable {
             }
             board.setTokens(tokens);
         }
+        return neworder;
 
     }
 
@@ -1836,6 +1838,18 @@ public class Game implements Serializable {
         return players;
     }
 
+    public Player getPlayer(String colorplayer){
+        int i = 0;
+        Player rightplayer = null;
+        for(Player p : players){
+            if(p.getColor().equalsIgnoreCase(colorplayer)){
+                rightplayer = players[i];
+            }
+            i++;
+        }
+        return rightplayer;
+    }
+
     public List<BonusTile> getbonustilesnormal(){
         return bonustilesnormal;
     }
@@ -2154,6 +2168,30 @@ public class Game implements Serializable {
                     }
                 }
             }
+            int quantity = 0;
+
+            if(require.gettipo().equalsIgnoreCase("samedevelopment")) {
+                String[] types = {"territory", "characters", "buildings", "ventures"};
+                for (String req : types) {
+                    for (CellPB cell : player.getPB().gettypecards(req)) {
+                        if (cell.getCard() != null) {
+                            quantity++;
+                        }
+                    }
+                    if (quantity >= require.getquantity()) {
+                        sizerequireslist--;
+                    }
+                }
+            }
+            for (CellPB cell : player.getPB().gettypecards(require.gettipo())) {
+                if (cell.getCard() != null) {
+                    quantity++;
+                }
+            }
+                if (quantity >= require.getquantity()) {
+                    sizerequireslist--;
+            }
+
         }
         if(sizerequireslist!=0){
             return false;

@@ -1,4 +1,4 @@
-[{"period":3,"id":31,"type":"character"},
-  {"period":3,"id":32,"type":"venture"},
+[{"period":3,"id":31,"type":"characters"},
+  {"period":3,"id":32,"type":"ventures"},
   {"period":3,"id":33,"type":"territory"}
 ]

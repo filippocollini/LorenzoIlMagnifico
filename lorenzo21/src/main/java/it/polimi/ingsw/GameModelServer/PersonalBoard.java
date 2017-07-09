@@ -180,15 +180,15 @@ public class PersonalBoard {
     }
 
     public List<CellPB> gettypecards(String type){
-        if(type.equals("TerritoryCards"))
+        if(type.equals("territory"))
             return territories;
-        else if(type.equals("BuildingCards"))
+        else if(type.equals("buildings"))
             return buildings;
-        else if (type.equals("VentureCards"))
+        else if (type.equals("ventures"))
             return ventures;
-        else if(type.equals("CharacterCards"))
+        else if(type.equals("characters"))
             return characters;
-        return null; //TODO avviso dato passato errato
+        return null;
     }
 
     public BonusTile gettesserabonus(){
