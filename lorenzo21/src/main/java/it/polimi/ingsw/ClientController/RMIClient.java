@@ -353,6 +353,14 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     }
 
     @Override
+    public void playLeaderCard(String uuid) throws RemoteException {
+        System.out.println("Insert the name of the leader card without spaces between the words");
+        Scanner scanner = new Scanner(System.in);
+        String card = scanner.nextLine();
+        server.leaderMove(uuid, card);
+    }
+
+    @Override
     public String getUuid() {
         return this.uuid;
     }

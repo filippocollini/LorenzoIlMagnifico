@@ -63,8 +63,11 @@ public abstract class AbstractClient  {
 
     public abstract void endMove(String uuid) throws RemoteException;
 
+    public abstract void playLeaderCard(String uuid) throws RemoteException;
 
     public abstract void powerUp(String uuid, int nServants) throws RemoteException;
 
     public abstract String getUuid();
+
+
 }

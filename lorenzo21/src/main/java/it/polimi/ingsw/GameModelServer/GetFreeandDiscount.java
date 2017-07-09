@@ -55,41 +55,16 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
     }
 
     public Player apply(Player player) {
-        FamilyMember ghostmember = new FamilyMember(null,player.getColor());
+        FamilyMember ghostmember = new FamilyMember("ghost","ghost");
         ghostmember.setValue(dicepower);
         String tower = null;
         boolean free = true;
         int floor;
 
-        if(typecard.equalsIgnoreCase("color")){
-            towerFreeAction = "color";
-        }
-        else if (typecard.equalsIgnoreCase("territory"))
-            towerFreeAction = "territory";
-        else if (typecard.equalsIgnoreCase("ventures"))
-            towerFreeAction = "ventures";
-        else if (typecard.equalsIgnoreCase("buildings"))
+        if (typecard.equalsIgnoreCase("buildings"))
             towerFreeAction = "buildings";
         else if(typecard.equalsIgnoreCase("characters"))
             towerFreeAction = "characters";
-
-        /*if (typecard.equalsIgnoreCase("characters"))
-            tower = typecard;
-        else if (typecard.equalsIgnoreCase("buildings"))
-            tower = typecard;
-        ghostmember.setValue( Game.controlboost(player , ghostmember,tower).getValue());
-
-        floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
-
-        //CONTROL DISCOUNT
-        if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
-            ghostmember.setValue(dicepower);
-            System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
-            return player;
-        }
-
-        ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
-        Game.addFMonTowerAction(player, ghostmember, floor, tower,free);*/
 
         return player;
     }

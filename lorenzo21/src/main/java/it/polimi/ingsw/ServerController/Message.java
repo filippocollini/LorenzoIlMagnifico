@@ -16,6 +16,10 @@ public class Message{
     public static final String PLAYLEADERCARD="play leader card";
 
     public static final String ENDTURN="end";
+    public static final String SHOWPLAYERGOODS="show player goods";
+    public static final String SHOWBOARD="show board";
+    public static final String SHOWOTHERPLAYERS="show other players";
+
 
 
     public static final String ESEMPIO_REPLY="reply";

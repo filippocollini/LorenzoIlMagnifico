@@ -156,6 +156,11 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
+    public void playLeaderCard(String uuid) throws RemoteException {
+
+    }
+
+    @Override
     public void powerUp(String uuid, int nServants) throws RemoteException {
 
     }

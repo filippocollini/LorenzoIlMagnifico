@@ -27,4 +27,5 @@ public interface Callback extends Remote{
     public void harvestMove(String uuid, String member);
     public void productionMove(String uuid, String member, List<Integer> choices);
     public void powerUpMove(String uuid, String member, int nServants);
+    public void leaderMove(String uuid, String card);
 }

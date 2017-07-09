@@ -17,6 +17,7 @@ public class GameState implements State, GeneralMoveState {
 
     @Override
     public void print() {
+        
 
     }
 

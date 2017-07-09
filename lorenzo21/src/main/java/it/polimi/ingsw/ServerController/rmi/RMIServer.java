@@ -153,4 +153,13 @@ public class RMIServer extends AbstractServer implements Callback{
         room.powerUpEvent(player, member, nServants);
     }
 
+    @Override
+    public void leaderMove(String uuid, String card) {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.leaderMove(player, card);
+    }
+
 }

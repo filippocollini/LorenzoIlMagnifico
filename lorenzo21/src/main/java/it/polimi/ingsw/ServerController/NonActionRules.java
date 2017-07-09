@@ -23,7 +23,9 @@ public class NonActionRules {
 
     private void createMapping() {
         eventMap.put(Message.ENDTURN, new EndTurn());
-
+        eventMap.put(Message.SHOWBOARD, new ShowBoard());
+        eventMap.put(Message.SHOWOTHERPLAYERS, new ShowOtherPlayers());
+        eventMap.put(Message.SHOWPLAYERGOODS, new ShowPlayerGoods());
 
     }
 

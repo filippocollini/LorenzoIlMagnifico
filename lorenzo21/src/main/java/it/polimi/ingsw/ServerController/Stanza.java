@@ -3,6 +3,7 @@ package it.polimi.ingsw.ServerController;
 import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.Exceptions.NetworkException;
 import it.polimi.ingsw.GameModelServer.Game;
+import it.polimi.ingsw.GameModelServer.Player;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -23,20 +24,14 @@ public class Stanza implements Serializable {
     public Stanza() {
         players= new HashMap<>();
         usernames= new HashMap<>();
-        stack = new Stack();
         timerStarted = false;
         matchStarted= false;
-        turnHandler = new TurnHandler(stack, this);
+
     }
 
     private transient Timer timer;
 
     public static final int MAXPLAYERS = 4;
-
-    /**
-     *
-     */
-    Stack stack;
 
     /**
      *
@@ -56,11 +51,11 @@ public class Stanza implements Serializable {
 
     public boolean matchStarted;
 
-    private transient TurnHandler turnHandler;
-
     private transient PlayerTurn turn;
 
     private boolean endTurn=false;
+
+    private List<Player> playersInOrder;
 
 
 
@@ -149,7 +144,8 @@ public class Stanza implements Serializable {
         String control="";
         if (turn!=null && turn.getPlayer()==player){
             control = game.addFMonProduction(game.herethePlayer(usernames.get(player)), member, choices);
-        }else if (control.equals(Game.SUCCESS)){
+        }
+        if (control.equals(Game.SUCCESS)){
             if(Game.PALACE!=0){
                 for (; Game.PALACE>0;Game.PALACE--)
                     notifyChooseFavor("fm on production");
@@ -164,9 +160,22 @@ public class Stanza implements Serializable {
     }
 
     public void powerUpEvent(AbstractPlayer player, String member, int nServants) {
+        String control = "";
         if (turn!=null && turn.getPlayer()==player){
-            //TODO PULLARE il metodo
+            control = game.spendservants(game.herethePlayer(usernames.get(player)), member, nServants);
         }
+        if(control.equalsIgnoreCase("FAIL"))
+            notifyError();
+    }
+
+    public void leaderMove(AbstractPlayer player, String card) {
+        String control = "";
+        if (turn!=null && turn.getPlayer()==player){
+            control = game.activeLeaderCard(game.herethePlayer(usernames.get(player)), card);
+        }
+        if(control.equalsIgnoreCase("FAIL"))
+            notifyError();
+
     }
 
     private class GameHandler extends TimerTask{
@@ -184,30 +193,33 @@ public class Stanza implements Serializable {
             }
             //timer.schedule(new TurnHandler(), 10*1000L);
             //turnHandler.run();
-            setStack();
             for(int i=0;i<3;i++){
                 System.out.println("Era: "+(i+1));
                 for(int j=0;j<2;j++){
                     setBoard();
                     game.fillTowers(j+1);
+                    if (j==0)
+                        playersInOrder = game.setOrderFirstTurn();
+                    else
+                        playersInOrder = game.reOrder();
                     System.out.println("Turno: "+(j+1));
-                    AbstractPlayer p = (AbstractPlayer) stack.pop();
+                    AbstractPlayer p = players.get(playersInOrder.get(0).getUsername());
                     System.out.println("turno iniziatooooooooooo");
-                    try {
-                        startPlayerTurn(p);
-                    } catch (NetworkException e) {
-                        LOG.log(Level.SEVERE, "Cannot start player's turn", e);
-                    }
-                    try {
-                        synchronized (Stanza.this){
-                            Stanza.this.wait();
+                    for(int k = 0; k<4; k++){
+                        try {
+                            startPlayerTurn(p);
+                        } catch (NetworkException e) {
+                            LOG.log(Level.SEVERE, "Cannot start player's turn", e);
                         }
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+                        try {
+                            synchronized (Stanza.this){
+                                Stanza.this.wait();
+                            }
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
-                    if(stack.isEmpty()){
-                        setStack();
-                    }
+
                 }
             }
             /*for(AbstractPlayer p = (AbstractPlayer) stack.pop(); stack.size()==1;p= (AbstractPlayer) stack.pop()){
@@ -302,14 +314,6 @@ public class Stanza implements Serializable {
                 throw new NetworkException("Cannot reach the client");
             }
         }
-    }
-
-    public void setStack(){
-        for(AbstractPlayer p : players.values()){
-            if(p.disconnected==false)
-                stack.push(p);
-        }
-        //TODO modificare token nella board
     }
 
     public void playerDisconnected(AbstractPlayer player){

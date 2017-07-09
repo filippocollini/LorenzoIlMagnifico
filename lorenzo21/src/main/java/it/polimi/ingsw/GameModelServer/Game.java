@@ -2289,7 +2289,7 @@ public class Game implements Serializable {
         return showactions;
     }
 
-    public String spendservants(Player player, FamilyMember member ,int servants){ //servant==punti da aggiungere al dado
+    public String spendservants(Player player, String member , int servants){ //servant==punti da aggiungere al dado
         int oldvalue;
         int oldservants;
         int coeff = 1;
@@ -2303,8 +2303,8 @@ public class Game implements Serializable {
 
         oldservants = player.getPB().getsingleresource("Servants").getquantity();
         if(oldservants>(coeff*servants)){
-            oldvalue = member.getValue();
-            player.getMember(member.getColor()).setValue(oldvalue + (servants));
+            oldvalue = player.getMember(member).getValue();
+            player.getMember(member).setValue(oldvalue + (servants));
             player.getPB().getsingleresource("Servants").setQuantity(oldservants - (coeff*servants));
 
             for(Player p : players){
@@ -2313,7 +2313,6 @@ public class Game implements Serializable {
                 }
             }
         }else {
-            System.out.println("non hai abbastanza servants "); //TODO
             return FAIL;
         }
         return SUCCESS;

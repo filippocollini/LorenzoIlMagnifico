@@ -5,12 +5,9 @@ import it.polimi.ingsw.ClientController.AbstractClient;
 import java.rmi.RemoteException;
 
 /**
- * Created by filippocollini on 26/05/17.
+ * Created by filippocollini on 09/07/17.
  */
-public class PlayLeaderCard implements Event {
-    public void eventHappened(Event event){
-
-    }
+public class ShowBoard implements Event {
 
     @Override
     public boolean isLegal(AbstractClient client, String uuid) {
@@ -19,7 +16,6 @@ public class PlayLeaderCard implements Event {
 
     @Override
     public void eventHappened(AbstractClient client, String uuid) throws RemoteException {
-        client.playLeaderCard(uuid);
 
     }
 }

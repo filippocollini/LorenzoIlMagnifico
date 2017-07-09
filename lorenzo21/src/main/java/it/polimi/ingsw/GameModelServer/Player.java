@@ -94,7 +94,7 @@ public class Player extends BoardObserver implements Serializable{
     }
 
 
-    protected List<LeaderCard> getcarteLeader(){
+    public List<LeaderCard> getcarteLeader(){
         return leadcards;
     }
 
