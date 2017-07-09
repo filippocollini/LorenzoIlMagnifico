@@ -21,4 +21,14 @@ public class LudovicoilMoro extends LeaderCard {
         single.setQuantity(2);
         this.requires.add(single);
     }
+
+    @Override
+    public FamilyMember boostmember(FamilyMember member) {
+
+            if (!member.getColor().equalsIgnoreCase("Neutral")) {
+                member.setValue(5);
+            }
+
+        return member;
+    }
 }

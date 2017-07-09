@@ -14,4 +14,14 @@ public class SigismondoMalatesta extends LeaderCard{
         single.setQuantity(3);
         this.requires.add(single);
     }
+
+    @Override
+    public FamilyMember boostmember(FamilyMember member) {
+
+        if (member.getColor().equalsIgnoreCase("Neutral")) {
+            member.setValue(member.getValue()+3);
+        }
+
+        return member;
+    }
 }

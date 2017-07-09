@@ -69,6 +69,9 @@ public class LeaderCard extends Card {
     public List<Risorsa> coinsdiscount(List<Risorsa> cost){
         return null;
     }
+    public FamilyMember boostmember(FamilyMember member){
+        return null;
+    }
 
 
 }

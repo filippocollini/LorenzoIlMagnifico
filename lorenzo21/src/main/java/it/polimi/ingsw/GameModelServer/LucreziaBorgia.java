@@ -13,4 +13,15 @@ public class LucreziaBorgia extends LeaderCard {
         this.requires.add((Risorsa) single.clone());
     }
 
+    @Override
+    public FamilyMember boostmember(FamilyMember member) {
+
+
+            if (!member.getColor().equalsIgnoreCase("Neutral")) {
+                member.setValue(member.getValue()+2);
+            }
+
+
+        return member;
+    }
 }

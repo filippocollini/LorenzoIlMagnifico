@@ -32,7 +32,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
         return id;
     }
 
-    public String getTypecard() {
+    public String getTypeCard() {
         return typecard;
     }
 
@@ -64,13 +64,13 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
 
             floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
 
-            if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
+           /*if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
                 ghostmember.setValue(dicepower);
                 System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
                 return player;
             }
             ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
-            Game.addFMonTowerAction(player, ghostmember, floor, tower, free);
+            Game.addFMonTowerAction(player, ghostmember, floor, tower, free);*/
         }
 
         return player;
