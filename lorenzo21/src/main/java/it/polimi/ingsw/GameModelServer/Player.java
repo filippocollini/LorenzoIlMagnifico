@@ -30,7 +30,7 @@ public class Player extends BoardObserver implements Serializable{
         personalBoard = new PersonalBoard();
         effects = new Effect();
         leadcards = new ArrayList<LeaderCard>();
-
+        token = new Token[4];
         this.board = board;
         this.board.addObserver(this);
         bonustile = new BonusTile(); //da attribuire in seguito alla scelta
@@ -113,6 +113,8 @@ public class Player extends BoardObserver implements Serializable{
     @Override
     public void update() {
         this.token = board.getTokens(this.color);
+        System.out.println(this.token.length);
+        System.out.println(this.token);
         for(Token single : this.token){
             if(single.getType().equalsIgnoreCase("MilitaryPoints")){
                 unlockGreenCell(single.getPosition());

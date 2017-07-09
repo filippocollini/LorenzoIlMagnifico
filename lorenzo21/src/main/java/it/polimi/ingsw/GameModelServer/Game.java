@@ -274,6 +274,7 @@ public class Game implements Serializable {
     public List<Player> setOrderFirstTurn(){
         List<Player> turn = new ArrayList<>();
         turn.addAll(Arrays.asList(players));
+        System.out.println(turn.size());
 
         Collections.shuffle(turn);
         int i = 0;

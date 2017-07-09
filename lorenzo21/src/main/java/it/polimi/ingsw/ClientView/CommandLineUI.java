@@ -39,6 +39,8 @@ public class CommandLineUI extends AbstactUI {
 
     public void start() throws ClientException {
 
+        Server server = new Server();
+
         String connection;
 
         Scanner scanner = new Scanner(System.in);

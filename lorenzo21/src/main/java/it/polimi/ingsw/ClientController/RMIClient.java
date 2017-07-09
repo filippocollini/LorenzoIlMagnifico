@@ -1,7 +1,8 @@
 package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ClientView.CommandLineUI;
-import it.polimi.ingsw.GameModelServer.*;
+import it.polimi.ingsw.GameModelServer.Game;
+import it.polimi.ingsw.GameModelServer.Risorsa;
 import it.polimi.ingsw.ServerController.State;
 import it.polimi.ingsw.ServerController.rmi.Callback;
 
@@ -35,7 +36,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         this.host=host;
         this.port=port;
         this.cli = cli;
-        this.rewards = new ArrayList<>();
+        //this.rewards = new ArrayList<>();
         startClient();
     }
 
@@ -75,10 +76,10 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
             this.uuid=result;
 
-            this.server = server;
+            //this.server = server;
 
         } catch (RemoteException | NotBoundException e) {
-
+            e.printStackTrace();
         }
 
     }
