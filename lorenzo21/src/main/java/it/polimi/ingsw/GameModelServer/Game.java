@@ -1942,6 +1942,42 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
+    public StringBuilder showotherPlayers(){
+        StringBuilder showothers = new StringBuilder();
+
+        for(Player player : players) {
+            showothers.append(player.getPB().showPB());
+            showothers.append("\n");
+            showothers.append(player.getBonustile().showBonusTile());
+            showothers.append("\n");
+            for (LeaderCard card : player.getcarteLeader()) {
+                if (card.isActive()) {
+                    showothers.append(card.getName());
+                    showothers.append("\n");
+                }
+            }
+        }
+
+        return showothers;
+    }
+    public StringBuilder showPossibleActions(){
+        StringBuilder showactions = new StringBuilder();
+
+        showactions.append("fm on tower\n");
+        showactions.append("fm on market\n");
+        showactions.append("fm on harvest\n");
+        showactions.append("fm on production\n");
+        showactions.append("fm on palace\n");
+        showactions.append("discard leader card to get a PF\n");
+        showactions.append("showPlayergoods\n");
+        showactions.append("showboard\n");
+        showactions.append("showotherPlayers\n");
+
+
+        return showactions;
+    }
+
+
 
     public void draftbonustiles(){
         int i;

@@ -218,6 +218,25 @@ public class Player extends BoardObserver implements Serializable{
         showgoods.append("\n");
 
         //LEADER CARDS
+        showgoods.append("Leader Cards : ");
+        showgoods.append("\n");
+        for(LeaderCard card : leadcards){
+            showgoods.append(card.getName());
+            showgoods.append("\n");
+            showgoods.append("Requires : ");
+            for(Risorsa req : card.getRequires()) {
+                showgoods.append(req.getquantity());
+                showgoods.append(" ");
+                showgoods.append(req.gettipo());
+            }
+            if(card.isActive()){
+                showgoods.append("Activated ");
+            }
+            if(card.isOnceinarow()){
+                showgoods.append(" Once in a row ability actived\n");
+            }
+        }
+        showgoods.append("\n");
 
         //BONUSTILE
         showgoods.append(bonustile.showBonusTile());
@@ -225,5 +244,8 @@ public class Player extends BoardObserver implements Serializable{
 
         return showgoods;
     }
+
+
+
 
 }
