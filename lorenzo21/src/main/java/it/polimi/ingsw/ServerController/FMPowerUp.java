@@ -2,6 +2,8 @@ package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.ClientController.AbstractClient;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by filippocollini on 26/05/17.
  */
@@ -12,11 +14,11 @@ public class FMPowerUp implements Event {
 
     @Override
     public boolean isLegal(AbstractClient client, String uuid) {
-        return false;
+        return true;
     }
 
     @Override
-    public void eventHappened(AbstractClient client, String uuid) {
+    public void eventHappened(AbstractClient client, String uuid) throws RemoteException {
 
 
     }

@@ -111,6 +111,11 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
+    public void towerFreeMove(String uuid, String color) throws RemoteException {
+
+    }
+
+    @Override
     public void palaceMove(String uuid) throws RemoteException {
 
     }
@@ -148,6 +153,16 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     @Override
     public void endMove(String uuid) throws RemoteException {
 
+    }
+
+    @Override
+    public void powerUp(String uuid, int nServants) throws RemoteException {
+
+    }
+
+    @Override
+    public String getUuid() {
+        return null;
     }
 
     @Override

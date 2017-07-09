@@ -203,6 +203,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/GetFreeAction.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/GetFreeandDiscount.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/Player.java">
           <value>
             <set />
@@ -384,6 +394,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/Message.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/NonActionState.java">
           <value>
             <set />
           </value>
@@ -609,6 +624,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/socket/SocketSubscriberHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/resources/effects/getfreeAction.json">
           <value>
             <set />
           </value>

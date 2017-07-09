@@ -111,7 +111,8 @@ public class CommandLineUI extends AbstactUI {
             System.out.println("Make another action");
         }else if (response.equalsIgnoreCase("S"))
             try {
-                client.handle(event, new GameState());
+                System.out.println("Adding the equivalent power of "+nServants+ " servants");
+                client.powerUp(getUuid(), nServants);
             } catch (RemoteException e) {
                 LOG.log(Level.SEVERE, "Cannot reach the server", e);
             }
@@ -119,11 +120,15 @@ public class CommandLineUI extends AbstactUI {
             System.out.println("Make another action");
     }
 
-    public void notifyChooseFavor(){
+    private String getUuid(){
+        return client.getUuid();
+    }
+
+    public void notifyChooseFavor(String event){
         System.out.println("Choose your palace favor");
         state = new ChooseFavorState();
         try {
-            client.handle("fm on palace", state);
+            client.handle(event, state);
         } catch (RemoteException e) {
             LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
@@ -158,6 +163,19 @@ public class CommandLineUI extends AbstactUI {
             LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
 
+    }
+
+    public void notifyFreeTowerAction(String color) {
+        try{
+            if(color.equalsIgnoreCase("color"))
+                client.towerFreeMove(getUuid(), "color");
+            else if (color.equalsIgnoreCase("territory"))
+                client.towerFreeMove(getUuid(), "territory");
+            else if (color.equalsIgnoreCase("ventures"))
+                client.towerFreeMove(getUuid(), "ventures");
+        }catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
+        }
     }
 
 

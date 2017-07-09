@@ -1082,7 +1082,9 @@ public class Game implements Serializable {
                                 return FAIL;
                         }
                     }else{
+
                         player = getimmediateBonus(player, cell.getBonus(), false);
+
                         board.getMarket().get(i).setFamilyMemberinCell(player.getMember(member));
                     }
                 }
@@ -1169,11 +1171,14 @@ public class Game implements Serializable {
         return member;
     }
 
-    public String addFMonTowerControl(Player player, String member, String tower, int floor){
+    public String addFMonTowerControl(Player player, String member, String tower, int floor, boolean free){
        Tower towerchosen;
        int dice ;
        boolean threecoins = false;
        int oldvalue;
+
+        FamilyMember ghostmember;
+
 
        towerchosen = player.board.getTower(tower);
        if(member.equals("Neutral")) {
@@ -1228,13 +1233,20 @@ public class Game implements Serializable {
                 }
             }
         }
+        String control;
         //poi faccio l'azione applicando lo sconto
-        addFMonTowerAction(player, player.getMember(member),dice, tower,false,threecoins);
+        if (free == true){
+            ghostmember = new FamilyMember("ghost","ghost");
+            control = addFMonTowerAction(player, ghostmember, floor, tower, free, threecoins);
+        }else
+            control = addFMonTowerAction(player, player.getMember(member),dice, tower,false,threecoins);
+        if (control!=SUCCESS)
+            return control;
 
     return SUCCESS;
    }
 
-    public static void addFMonTowerAction(Player player, FamilyMember member, int floor, String tower, boolean free,boolean threecoins){
+    public String addFMonTowerAction(Player player, FamilyMember member, int floor, String tower, boolean free,boolean threecoins){
         //do action
         int i = 0;
         boolean bonus = true;
@@ -1283,7 +1295,7 @@ public class Game implements Serializable {
                 //mette la carta sulla pb
                 player.getPB().addCard(player.board.getTower(tower).getFloors().get(i).getCard());
 
-
+                FamilyMember ghostmember = new FamilyMember("ghost", "ghost");
 
                 //effetti immediati per ultimi così fa partire l'eventuale nuova azione gratis
                 for(int id : player.board.getTower(tower).getFloors().get(i).getCard().getImmediateeffect()) {
@@ -1312,6 +1324,19 @@ public class Game implements Serializable {
                                 method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
                                         .getClass().getMethod("apply", Player.class);
                                 player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id), player);
+                                if (GetFreeAction.harvestOrProduction==1)
+                                    addFMonHarvest(player, ghostmember.getColor());
+                                else if (GetFreeAction.harvestOrProduction==2)
+                                    addFMonProduction(player, ghostmember.getColor(), new ArrayList<Integer>());
+                                else if (GetFreeAction.towerFreeAction.equalsIgnoreCase("color") ||
+                                         GetFreeAction.towerFreeAction.equalsIgnoreCase("territory") ||
+                                         GetFreeAction.towerFreeAction.equalsIgnoreCase("ventures"))
+                                        return GetFreeAction.towerFreeAction;
+                                else if( GetFreeandDiscount.towerFreeAction.equalsIgnoreCase("buildings") ||
+                                         GetFreeandDiscount.towerFreeAction.equalsIgnoreCase("characters")
+                                        )
+                                    return GetFreeandDiscount.towerFreeAction;
+
                             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                                 LOG.log(Level.SEVERE, "Method not found", e);
                             }
@@ -1335,6 +1360,7 @@ public class Game implements Serializable {
             }
             k++;
         }
+        return SUCCESS;
     }
 
     public static FamilyMember isFMok(FamilyMember member, int floor, Player player, int oldvalue){

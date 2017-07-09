@@ -45,6 +45,8 @@ public abstract class AbstractClient  {
 
     public abstract void towerMove(String uuid) throws RemoteException;
 
+    public abstract void towerFreeMove(String uuid, String color) throws RemoteException;
+
     public abstract void palaceMove(String uuid) throws RemoteException;
 
     public abstract void harvestMove(String uuid) throws RemoteException;
@@ -60,4 +62,9 @@ public abstract class AbstractClient  {
     public abstract void addServants(String uuid) throws RemoteException;
 
     public abstract void endMove(String uuid) throws RemoteException;
+
+
+    public abstract void powerUp(String uuid, int nServants) throws RemoteException;
+
+    public abstract String getUuid();
 }

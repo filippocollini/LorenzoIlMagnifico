@@ -8,8 +8,11 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
     private int id;
     private int dicepower;
     private String typecard;
+    public static int harvestOrProduction;
+    public static String towerFreeAction ="";
 
     public GetFreeAction() {
+        harvestOrProduction = 0;
     }
 
     public void setDicepower(int dicepower) {
@@ -50,27 +53,20 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
         String tower = null;
         int floor;
         boolean free = false;
-        if(typecard.equalsIgnoreCase("harvest") || typecard.equalsIgnoreCase("production")){
-            //TODO action production e harvest
+        if(typecard.equalsIgnoreCase("harvest")){
+            harvestOrProduction = 1;
+            return player;
+        } else if (typecard.equalsIgnoreCase("production")){
+            harvestOrProduction = 2;
+            return player;
         }else {
             if(typecard.equalsIgnoreCase("color")){
-                tower = Game.askTower();
+                towerFreeAction = "color";
             }
             else if (typecard.equalsIgnoreCase("territory"))
-                tower = "territory";
-            else if (typecard.equalsIgnoreCase("venture"))
-                tower = "ventures";
-            ghostmember.setValue( Game.controlboost(player , ghostmember,tower).getValue());
-
-            floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
-
-           /*if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
-                ghostmember.setValue(dicepower);
-                System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
-                return player;
-            }
-            ghostmember = Game.isFMok(ghostmember,floor,player,dicepower);
-            Game.addFMonTowerAction(player, ghostmember, floor, tower, free);*/
+                towerFreeAction = "territory";
+            else if (typecard.equalsIgnoreCase("ventures"))
+                towerFreeAction = "ventures";
         }
 
         return player;

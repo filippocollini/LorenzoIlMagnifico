@@ -50,8 +50,8 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     }
 
     @Override
-    public void notifyChooseFavor() throws RemoteException {
-        playerInt.notifyChooseFavor();
+    public void notifyChooseFavor(String event) throws RemoteException {
+        playerInt.notifyChooseFavor(event);
     }
 
     @Override
@@ -72,6 +72,11 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     @Override
     public void notifyError() throws RemoteException {
         playerInt.notifyError();
+    }
+
+    @Override
+    public void notifyFreeTowerAction(String color) throws RemoteException {
+        playerInt.notifyFreeTowerAction(color);
     }
 
     @Override

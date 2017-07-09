@@ -63,7 +63,7 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
     }
 
     @Override
-    public void notifyChooseFavor() throws RemoteException {
+    public void notifyChooseFavor(String event) throws RemoteException {
 
     }
 
@@ -84,6 +84,11 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
     @Override
     public void notifyError() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyFreeTowerAction(String color) throws RemoteException {
 
     }
 

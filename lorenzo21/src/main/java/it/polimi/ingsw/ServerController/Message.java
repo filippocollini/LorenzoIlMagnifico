@@ -12,6 +12,8 @@ public class Message{
     public static final String FMONPALACE="fm on palace";
     public static final String FMONHARVEST="fm on harvest";
     public static final String FMONPRODUCTION="fm on production";
+    public static final String FMPOWERUP="fm power up";
+    public static final String PLAYLEADERCARD="play leader card";
 
     public static final String ENDTURN="end";
 

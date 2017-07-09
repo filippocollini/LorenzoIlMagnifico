@@ -1,14 +1,13 @@
 package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.ClientController.AbstractClient;
-import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
 
 /**
  * Created by filippocollini on 04/07/17.
  */
-public class GameState implements State, GeneralMoveState, PowerUpState {
+public class GameState implements State, GeneralMoveState {
 
     Rules rules;
 
@@ -38,8 +37,4 @@ public class GameState implements State, GeneralMoveState, PowerUpState {
             event.eventHappened(client, uuid);
     }
 
-    @Override
-    public void handlePowerUp(String request) {
-
-    }
 }

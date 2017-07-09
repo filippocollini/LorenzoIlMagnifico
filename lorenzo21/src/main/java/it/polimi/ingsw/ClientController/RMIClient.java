@@ -129,8 +129,8 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     }
 
     @Override
-    public void notifyChooseFavor() throws RemoteException {
-        cli.notifyChooseFavor();
+    public void notifyChooseFavor(String event) throws RemoteException {
+        cli.notifyChooseFavor(event);
     }
 
     @Override
@@ -158,10 +158,20 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         cli.notifyProductionChoice(choice, uuid);
     }
 
+    @Override
+    public void notifyFreeTowerAction(String color) {
+        cli.notifyFreeTowerAction(color);
+    }
+
 
     public void handle(String request, State state) throws RemoteException {
         System.out.println("gestisco");
         state.handle(request, this, this.uuid);
+    }
+
+    public void powerUp(String uuid, int nServants) throws RemoteException{
+        String member = askMember();
+        server.powerUpMove(uuid, member, nServants);
     }
 
     public void marketMove(String uuid) throws RemoteException {
@@ -177,7 +187,20 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         String member = askMember();
         String tower = askTower();
         int floor = askFloor();
-        server.towerMove(uuid, member, tower, floor);
+        boolean free = false;
+        server.towerMove(uuid, member, tower, floor, free);
+    }
+
+    public void towerFreeMove(String uuid, String color) throws RemoteException {
+        String tower;
+        if (color.equalsIgnoreCase("color"))
+            tower = askTower();
+        else{
+            tower = color;
+        }
+        int floor = askFloor();
+        boolean free = true;
+        server.towerMove(uuid, null, tower, floor, free);
     }
 
     public void harvestMove(String uuid){
@@ -327,6 +350,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
     public void endMove(String uuid) throws RemoteException {
         server.endMove(uuid);
+    }
+
+    @Override
+    public String getUuid() {
+        return this.uuid;
     }
 
 

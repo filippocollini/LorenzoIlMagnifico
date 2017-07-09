@@ -16,6 +16,7 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
     private List<Risorsa> discount;
     private String typecard;
     private int dicepower;
+    public static String towerFreeAction="";
 
     public void setId(int id) {
         this.id = id;
@@ -49,7 +50,7 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
 
 
 
-    public String getTypecard() {
+    public String getTypeCard() {
         return typecard;
     }
 
@@ -59,7 +60,20 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
         String tower = null;
         boolean free = true;
         int floor;
-        if (typecard.equalsIgnoreCase("characters"))
+
+        if(typecard.equalsIgnoreCase("color")){
+            towerFreeAction = "color";
+        }
+        else if (typecard.equalsIgnoreCase("territory"))
+            towerFreeAction = "territory";
+        else if (typecard.equalsIgnoreCase("ventures"))
+            towerFreeAction = "ventures";
+        else if (typecard.equalsIgnoreCase("buildings"))
+            towerFreeAction = "buildings";
+        else if(typecard.equalsIgnoreCase("characters"))
+            towerFreeAction = "characters";
+
+        /*if (typecard.equalsIgnoreCase("characters"))
             tower = typecard;
         else if (typecard.equalsIgnoreCase("buildings"))
             tower = typecard;
@@ -67,7 +81,7 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
 
         floor = Game.askFloor(ghostmember,player.board.getTower(tower),player);
 
-       /* //CONTROL DISCOUNT
+        //CONTROL DISCOUNT
         if (!Game.controlpurchase(player,player.board.getTower(tower).getFloors().get(floor).getCard(),free)) {
             ghostmember.setValue(dicepower);
             System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO

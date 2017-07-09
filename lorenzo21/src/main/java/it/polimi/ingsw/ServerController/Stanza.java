@@ -124,10 +124,7 @@ public class Stanza implements Serializable {
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else
-            if (control.equals(Game.CHOOSEANOTHERFM))//TODO diversa la stringa
-                notifyChooseFavor();
-            else
-                notifyError();
+            notifyError();
     }
 
     public void harvestEvent(AbstractPlayer player, String member) {
@@ -136,6 +133,10 @@ public class Stanza implements Serializable {
             control = game.addFMonHarvest(game.herethePlayer(usernames.get(player)), member);
         }
         if (control.equals(Game.SUCCESS)){
+            if(Game.PALACE!=0){
+                for (; Game.PALACE>0;Game.PALACE--)
+                    notifyChooseFavor("fm on harvest");
+            }
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else if(control.equals(Game.FMPRESENT)){//TODO LUDOVICOARIOSTO
@@ -149,12 +150,22 @@ public class Stanza implements Serializable {
         if (turn!=null && turn.getPlayer()==player){
             control = game.addFMonProduction(game.herethePlayer(usernames.get(player)), member, choices);
         }else if (control.equals(Game.SUCCESS)){
+            if(Game.PALACE!=0){
+                for (; Game.PALACE>0;Game.PALACE--)
+                    notifyChooseFavor("fm on production");
+            }
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else if(control.equals(Game.FAIL))
             notifyError();
         else{
             notifyProductionChoice(player, control);
+        }
+    }
+
+    public void powerUpEvent(AbstractPlayer player, String member, int nServants) {
+        if (turn!=null && turn.getPlayer()==player){
+            //TODO PULLARE il metodo
         }
     }
 
@@ -312,6 +323,10 @@ public class Stanza implements Serializable {
             control = game.addFMonMarket(game.herethePlayer(usernames.get(abstractPlayer)), member, cell);
         }
         if (control.equals(Game.SUCCESS)){
+            if(Game.PALACE!=0){
+                for (; Game.PALACE>0;Game.PALACE--)
+                    notifyChooseFavor("fm on harvest");
+            }
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else
@@ -319,12 +334,16 @@ public class Stanza implements Serializable {
 
     }
 
-    public void towerEvent(AbstractPlayer abstractPlayer, String member, String tower, int floor){
+    public void towerEvent(AbstractPlayer abstractPlayer, String member, String tower, int floor, boolean free){
         String control="";
         if (turn!=null && turn.getPlayer()==abstractPlayer){
-            control = game.addFMonTowerControl(game.herethePlayer(usernames.get(abstractPlayer)), member, tower, floor);
+            control = game.addFMonTowerControl(game.herethePlayer(usernames.get(abstractPlayer)), member, tower, floor, free);
         }
         if (control.equals(Game.SUCCESS)){
+            if(Game.PALACE!=0){
+                for (; Game.PALACE>0;Game.PALACE--)
+                    notifyChooseFavor("fm on harvest");
+            }
             notifyPlayerMadeAMove();
             notifyActionMade();
         }else
@@ -332,8 +351,27 @@ public class Stanza implements Serializable {
                 notifyError();
             }else if (control.equals(Game.NOTENOUGHRESOURCES))
                 notifyNotEnoughResources();
+            else if(control.equalsIgnoreCase("color"))
+                notifyAnotherTowerAction("color");
+            else if (control.equalsIgnoreCase("territory"))
+                notifyAnotherTowerAction("territory");
+            else if (control.equalsIgnoreCase("ventures"))
+                notifyAnotherTowerAction("ventures");
+            else if (control.equalsIgnoreCase("buildings"))
+                notifyAnotherTowerAction("buildings");
+            else if (control.equalsIgnoreCase("characters"))
+                notifyAnotherTowerAction("characters");
             else
                 notifyFMTooLow(Integer.parseInt(control), "fm on tower");
+
+    }
+
+    private void notifyAnotherTowerAction(String color) {
+        try {
+            turn.getPlayer().notifyFreeTowerAction(color);
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
     }
 
     public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
@@ -367,9 +405,9 @@ public class Stanza implements Serializable {
 
     }
 
-    public void notifyChooseFavor(){
+    public void notifyChooseFavor(String event){
         try {
-            turn.getPlayer().notifyChooseFavor();
+            turn.getPlayer().notifyChooseFavor(event);
         } catch (RemoteException e) {
             LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }
