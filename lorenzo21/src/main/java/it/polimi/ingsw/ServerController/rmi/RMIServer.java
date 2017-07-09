@@ -36,7 +36,7 @@ public class RMIServer extends AbstractServer implements Callback{
             reg.rebind(Callback.NAME, brokerInt);
 
         } catch (RemoteException e) {
-            System.out.println("LANCIA ECCEZIONE");
+            e.printStackTrace();
         }
     }
 

@@ -24,8 +24,8 @@ public interface Callback extends Remote{
     public void addServantsMove(String uuid, int nServants) throws RemoteException;
     public void endMove(String uuid) throws RemoteException;
     public void sendLong(long val) throws RemoteException;
-    public void harvestMove(String uuid, String member);
-    public void productionMove(String uuid, String member, List<Integer> choices);
-    public void powerUpMove(String uuid, String member, int nServants);
-    public void leaderMove(String uuid, String card);
+    public void harvestMove(String uuid, String member) throws RemoteException;
+    public void productionMove(String uuid, String member, List<Integer> choices) throws RemoteException;
+    public void powerUpMove(String uuid, String member, int nServants) throws RemoteException;
+    public void leaderMove(String uuid, String card) throws RemoteException;
 }

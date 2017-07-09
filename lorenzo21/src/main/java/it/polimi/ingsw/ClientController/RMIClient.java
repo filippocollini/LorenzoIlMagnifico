@@ -49,7 +49,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
             Registry reg = LocateRegistry.getRegistry(host, port);
 
+            System.out.println("registry fatto");
+
             server = (Callback) reg.lookup(Callback.NAME);
+
+            System.out.println("lookup fatto");
 
             UnicastRemoteObject.exportObject(this,0);
 
@@ -203,7 +207,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         server.towerMove(uuid, null, tower, floor, free);
     }
 
-    public void harvestMove(String uuid){
+    public void harvestMove(String uuid) throws RemoteException {
         String member = askMember();
         server.harvestMove(uuid, member);
     }
