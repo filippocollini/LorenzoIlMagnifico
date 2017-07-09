@@ -33,6 +33,11 @@ public class CellAction implements Cloneable {
         this.member = member;
     }
 
+    public void unsetfMisOn() {
+        this.fMisOn = false;
+        this.member = null;
+    }
+
     public String getcolorMember() {
         return member.getColorplayer();
     }

@@ -470,8 +470,9 @@ public class Board{
         notifyAllObservers();
     }
 
-    public void modifyOrdineTurno(){}
-
+    public List<Tower> getTowers() {
+        return towers;
+    }
 
     public static Board getInstance(int nplayers) {
             if (instance == null)

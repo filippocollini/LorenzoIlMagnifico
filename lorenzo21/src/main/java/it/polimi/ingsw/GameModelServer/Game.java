@@ -9,7 +9,7 @@ import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.Stanza;
-import javafx.print.PageLayout;
+
 
 
 import java.io.File;
@@ -214,6 +214,62 @@ public class Game implements Serializable {
     }
 
     public void setLeaderCard(){}
+
+    public void resetBoard(){
+      for(CellAction cell : board.getCouncilpalace()){  //SVUOTA PALAZZO
+          board.getCouncilpalace().remove(cell);
+      }
+      int i = 0;
+      for(CellAction cell : board.getMarket()){  //SVUOTA MARKET
+          board.getMarket().get(i).unsetfMisOn();
+          i++;
+      }
+      i = 0;
+        int k = 0;
+      for(Player p : players){ //SETTA A FALSE I FAMILIARI USATI E A 0 QUELLO NEUTRO
+          for(FamilyMember member : p.getMembers()){
+              players[i].getMembers().get(k).setFmUsed(false);
+              if(member.getColor().equalsIgnoreCase("Neutral")){
+                  players[i].getMember("Neutral").setValue(0);
+                  for(LeaderCard card : p.getcarteLeader()){
+                      if(card.getClass().getSimpleName().equalsIgnoreCase("SigismondoMalatesta")){
+                          FamilyMember helper;
+                          Method method;
+                          try {
+                              method = card.getClass().getMethod("boostmember", FamilyMember.class);
+                              helper = (FamilyMember) method.invoke(card,member);
+                              players[i].getMember("Neutral").setValue(helper.getValue());
+                          } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                              e.printStackTrace();
+                          }
+                      }
+                  }
+              }
+              k++;
+          }
+      }
+
+      for(CellAction cell : board.getProduction()) {
+          board.getProduction().remove(cell);
+      }
+
+      for(CellAction cell : board.getHarvest()){
+            board.getHarvest().remove(cell);
+      }
+      //SVUOTA TORRI dai familiari
+        int l = 0;
+        int n = 0;
+        for(Tower single : board.getTowers()){
+          for(CellTower cell : single.getFloors()){
+                board.getTowers().get(n).getFloors().get(l).setFmOnIt(null);
+              board.getTowers().get(n).getFloors().get(l).setfMIsPresent(false);
+              l++;
+          }
+          n++;
+        }
+
+    }
+
 
     public List<Player> setOrderFirstTurn(){
         List<Player> turn = new ArrayList<>();
@@ -1041,7 +1097,9 @@ public class Game implements Serializable {
                     List<Risorsa> listfavor = choosePalaceFavor(player, favor);
                     player = getimmediateBonus(player, listfavor, false);
                 }
-                player = getimmediateBonus(player, space.getBonus(), false);
+                if(!member.equalsIgnoreCase("ghost")) {
+                    player = getimmediateBonus(player, space.getBonus(), false);
+                }
 
                 board.getCouncilpalace().add(space);
 
@@ -1272,8 +1330,10 @@ public class Game implements Serializable {
                     player = getimmediateBonus(player, player.board.getTower(tower).getFloors().get(i).getResourceBonus(), false);
                 }
 
-                player.board.getTower(tower).getFloors().get(i).setfMIsPresent(true);
-                player.board.getTower(tower).getFloors().get(i).setFmOnIt(member);
+                if(!(member.getColor().equalsIgnoreCase("ghost"))) {
+                    player.board.getTower(tower).getFloors().get(i).setfMIsPresent(true);
+                    player.board.getTower(tower).getFloors().get(i).setFmOnIt(member);
+                }
                 if(threecoins){
                     player.getPB().getsingleresource("Coins")
                             .setQuantity(player.getPB().getsingleresource("Coins").getquantity()-3);
@@ -2101,42 +2161,53 @@ public class Game implements Serializable {
         return true;
     }
 
-    public String activeLeaderCard(Player player, LeaderCard card){
+    public String activeLeaderCard(Player player, String name){
         int i = 0;
         int k = 0;
-        int coeff = 0;
-        if(controlrequiresLeadercard(player , card)) {
-            for (Player p : players) {
-                if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
-                    for (LeaderCard lead : p.getcarteLeader()) {
-                        if (lead.getName().equalsIgnoreCase(card.getName())) {
-                            players[i].getcarteLeader().get(k).setActive(true);
+        boolean present = false;
+        LeaderCard card = null;
+        for(LeaderCard lead : player.getcarteLeader()){
+            if(lead.getClass().getSimpleName().equalsIgnoreCase(name)) {
+                present = true;
+                card = lead;
+            }
+        }
 
-                            if ((lead.getClass().getSimpleName().equalsIgnoreCase("LudovicoilMoro"))
-                                    || (lead.getClass().getSimpleName().equalsIgnoreCase("LucreziaBorgia"))
-                                    || (lead.getClass().getSimpleName().equalsIgnoreCase("SigismondoMalatesta"))) {
-                                for (FamilyMember member : player.getMembers()) {
-                                    Method method;
-                                    FamilyMember helper;
-                                    try {
-                                        method = lead.getClass().getMethod("boostmember", FamilyMember.class);
-                                        helper = (FamilyMember) method.invoke(lead, member);
-                                        players[i].getMember(member.getColor()).setValue(helper.getValue());
-                                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                        e.printStackTrace();
+        if(present) {
+            if (controlrequiresLeadercard(player, card)) {
+                for (Player p : players) {
+                    if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
+                        for (LeaderCard lead : p.getcarteLeader()) {
+                            if (lead.getName().equalsIgnoreCase(card.getName())) {
+                                players[i].getcarteLeader().get(k).setActive(true);
+
+                                if ((lead.getClass().getSimpleName().equalsIgnoreCase("LudovicoilMoro"))
+                                        || (lead.getClass().getSimpleName().equalsIgnoreCase("LucreziaBorgia"))
+                                        || (lead.getClass().getSimpleName().equalsIgnoreCase("SigismondoMalatesta"))) {
+                                    for (FamilyMember member : player.getMembers()) {
+                                        Method method;
+                                        FamilyMember helper;
+                                        try {
+                                            method = lead.getClass().getMethod("boostmember", FamilyMember.class);
+                                            helper = (FamilyMember) method.invoke(lead, member);
+                                            players[i].getMember(member.getColor()).setValue(helper.getValue());
+                                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                                            e.printStackTrace();
+                                        }
+
+
                                     }
-
-
+                                } else if (lead.getClass().getSimpleName().equalsIgnoreCase("CesareBorgia")) {
+                                    players[i].unlockGreenCell(25);
                                 }
-                            } else if (lead.getClass().getSimpleName().equalsIgnoreCase("CesareBorgia")) {
-                                players[i].unlockGreenCell(25);
                             }
                         }
+                        k++;
                     }
-                    k++;
+                    i++;
                 }
-                i++;
-            }
+            } else
+                return FAIL;
         }else
             return FAIL;
         return SUCCESS;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.GameModelServer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 
 public class LudovicoIIIGonzaga extends LeaderCard {
@@ -16,10 +16,10 @@ public class LudovicoIIIGonzaga extends LeaderCard {
         this.requires.add((Risorsa) single.clone());
     }
 
-    /*@Override
+    @Override
     public Player onceInaRow(Player player) {
         onceinarow = true;
 
-
-    }*/
+        return player;
+    }
 }
