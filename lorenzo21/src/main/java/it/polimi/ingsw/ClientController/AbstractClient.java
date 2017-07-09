@@ -4,6 +4,7 @@ import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.State;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * 
@@ -48,7 +49,7 @@ public abstract class AbstractClient  {
 
     public abstract void harvestMove(String uuid) throws RemoteException;
 
-    public abstract void productionMove(String uuid) throws RemoteException;
+    public abstract void productionMove(String uuid, List<Integer> choices) throws RemoteException;
 
     public abstract void fmChoice(String uuid, String choice) throws RemoteException;
 

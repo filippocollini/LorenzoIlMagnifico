@@ -8,6 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -135,12 +136,12 @@ public class RMIServer extends AbstractServer implements Callback{
     }
 
     @Override
-    public void productionMove(String uuid, String member) {
+    public void productionMove(String uuid, String member, List<Integer> choices) {
         AbstractPlayer player = map.get(uuid);
 
         Stanza room = player.getRoom();
 
-        room.productionEvent(player, member);
+        room.productionEvent(player, member, choices);
     }
 
 }

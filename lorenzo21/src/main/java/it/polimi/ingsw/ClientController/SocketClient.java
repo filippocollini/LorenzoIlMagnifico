@@ -121,7 +121,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     }
 
     @Override
-    public void productionMove(String uuid) throws RemoteException {
+    public void productionMove(String uuid, List<Integer> choices) throws RemoteException {
 
     }
 

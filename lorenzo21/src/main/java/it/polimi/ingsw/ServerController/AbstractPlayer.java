@@ -34,6 +34,8 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
     public abstract void notifyEndTurn() throws RemoteException;
 
     public abstract void notifyError() throws RemoteException;
+
+    public abstract void notifyProductioChoice(String choice, String uuid) throws RemoteException;
     /**
      * 
      */

@@ -153,6 +153,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         cli.notifyError();
     }
 
+    @Override
+    public void notifyProductionChoice(String choice, String uuid) throws RemoteException {
+        cli.notifyProductionChoice(choice, uuid);
+    }
+
 
     public void handle(String request, State state) throws RemoteException {
         System.out.println("gestisco");
@@ -181,9 +186,9 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     }
 
     @Override
-    public void productionMove(String uuid) throws RemoteException {
+    public void productionMove(String uuid, List<Integer> choices) throws RemoteException {
         String member = askMember();
-        server.productionMove(uuid, member);
+        server.productionMove(uuid, member, choices);
     }
 
     public void fmChoice(String uuid, String choice) throws RemoteException{

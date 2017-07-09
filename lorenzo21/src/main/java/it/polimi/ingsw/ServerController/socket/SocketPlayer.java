@@ -87,6 +87,11 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
     }
 
+    @Override
+    public void notifyProductioChoice(String choice, String uuid) throws RemoteException {
+
+    }
+
     public M receive() throws SocketException {
         try{
             return ((M) in.readObject());

@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 /**
  * Created by filippocollini on 04/07/17.
  */
-public class GameState implements State, GeneralMoveState {
+public class GameState implements State, GeneralMoveState, PowerUpState {
 
     Rules rules;
 
@@ -36,5 +36,10 @@ public class GameState implements State, GeneralMoveState {
 
         if(event.isLegal(client, uuid))//anche qua passo il client?
             event.eventHappened(client, uuid);
+    }
+
+    @Override
+    public void handlePowerUp(String request) {
+
     }
 }

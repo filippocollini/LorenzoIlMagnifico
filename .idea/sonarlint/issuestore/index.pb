@@ -117,8 +117,6 @@ w
 Glorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/LeaderCard.java,d/d/dda2f3bff7b11d82e82cb21e848fe405bf1b98ca
 w
 Glorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/LeaderDeck.java,7/7/7728ce1e9e05ee5c4183f5d8da1eaec87e306143
-x
-Hlorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/ListRisorse.java,a/5/a59d0833b5bfa287bc9a1db8dec4eebfc07b2421
 z
 Jlorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/PersonalBoard.java,c/e/ce49989bff477aa1ad102cc1d84cf2ce637b7119
 s
@@ -143,8 +141,6 @@ Zlorenzo21/src/main/java/it/polimi/ingsw/ServerController/socket/SocketSocketPub
 Plorenzo21/src/main/java/it/polimi/ingsw/ClientController/RMIClientInterface.java,6/3/6399ffca958f107c162fa5805600b784c4b3b7f2
 {
 Klorenzo21/src/main/java/it/polimi/ingsw/ServerController/rmi/RMIPlayer.java,a/8/a8c44cdbb8405fc2a6aa00fb4a2210e786469544
-Ñ
-Tlorenzo21/src/main/java/it/polimi/ingsw/ClientController/RMIClientInterfaceImpl.java,a/d/addcd5be368f6a80ec585f8d8550ca26eca3d8b2
 t
 Dlorenzo21/src/main/java/it/polimi/ingsw/ServerController/Player.java,b/e/be8b27cedb077ba1a3b16c42d82cec4c04f7173d
 Å
@@ -193,3 +189,5 @@ x
 Hlorenzo21/src/main/java/it/polimi/ingsw/ServerController/PlayerTurn.java,2/e/2eb89ea7756b2e54a1ac168331d1ef8370ba7772
 w
 Glorenzo21/src/main/java/it/polimi/ingsw/Exceptions/ClientException.java,4/4/44aed8161674af2e2fbe135ef6d48fcbf7fb286f
+~
+Nlorenzo21/src/main/java/it/polimi/ingsw/ServerController/ChooseFavorState.java,b/6/b6bc78f16986d4c33de666d96aa010678246f0ed

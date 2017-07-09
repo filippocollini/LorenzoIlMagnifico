@@ -4,6 +4,7 @@ import it.polimi.ingsw.ClientController.RMIClientInterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Created by filippocollini on 23/06/17.
@@ -24,5 +25,5 @@ public interface Callback extends Remote{
     public void endMove(String uuid) throws RemoteException;
     public void sendLong(long val) throws RemoteException;
     public void harvestMove(String uuid, String member);
-    public void productionMove(String uuid, String member);
+    public void productionMove(String uuid, String member, List<Integer> choices);
 }

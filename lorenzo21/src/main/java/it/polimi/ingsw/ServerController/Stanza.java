@@ -138,16 +138,23 @@ public class Stanza implements Serializable {
         if (control.equals(Game.SUCCESS)){
             notifyPlayerMadeAMove();
             notifyActionMade();
-        }else if(control.equals(Game.FMPRESENT)){
+        }else if(control.equals(Game.FMPRESENT)){//TODO LUDOVICOARIOSTO
             notifyError();
         }else
             notifyFMTooLow(Integer.parseInt(control), "fm on harvest");
     }
 
-    public void productionEvent(AbstractPlayer player, String member) {
+    public void productionEvent(AbstractPlayer player, String member, List<Integer> choices) {
         String control="";
         if (turn!=null && turn.getPlayer()==player){
-            control = game.addFMonProduction(game.herethePlayer(usernames.get(player)), member);
+            control = game.addFMonProduction(game.herethePlayer(usernames.get(player)), member, choices);
+        }else if (control.equals(Game.SUCCESS)){
+            notifyPlayerMadeAMove();
+            notifyActionMade();
+        }else if(control.equals(Game.FAIL))
+            notifyError();
+        else{
+            notifyProductionChoice(player, control);
         }
     }
 
@@ -330,8 +337,9 @@ public class Stanza implements Serializable {
     }
 
     public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
+        String control;
         if (turn!=null && turn.getPlayer()==abstractPlayer){
-
+            control="";
         }
             
 
@@ -362,6 +370,15 @@ public class Stanza implements Serializable {
     public void notifyChooseFavor(){
         try {
             turn.getPlayer().notifyChooseFavor();
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
+
+    }
+
+    public void notifyProductionChoice(AbstractPlayer player, String choice){
+        try {
+            turn.getPlayer().notifyProductioChoice(choice, usernames.get(player));
         } catch (RemoteException e) {
             LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }

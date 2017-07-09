@@ -28,11 +28,13 @@ public class CommandLineUI extends AbstactUI {
     private Game game;
     private AbstractClient client;
     private State state;
+    private List<Integer> choices;
 
     /**
      * Default constructor
      */
     public CommandLineUI() {
+        choices = new ArrayList<>();
     }
 
     public void start() throws ClientException {
@@ -106,15 +108,15 @@ public class CommandLineUI extends AbstactUI {
         String response = scanner.nextLine();
         if(response.equalsIgnoreCase("Y")){
             state = new GameState();
+            System.out.println("Make another action");
         }else if (response.equalsIgnoreCase("S"))
             try {
                 client.handle(event, new GameState());
             } catch (RemoteException e) {
                 LOG.log(Level.SEVERE, "Cannot reach the server", e);
             }
-
-        //TODO rivedere
-        System.out.println("Make another action");
+        else
+            System.out.println("Make another action");
     }
 
     public void notifyChooseFavor(){
@@ -143,6 +145,19 @@ public class CommandLineUI extends AbstactUI {
         System.out.println("There was an error, try again");
         state = new GameState();
         System.out.println("Insert your action");
+    }
+
+    public void notifyProductionChoice(String choice, String uuid) {
+        System.out.println("Choose the effect between "+choice.substring(0,3) + " and "+choice.substring(4, 7));
+        Scanner scanner = new Scanner(System.in);
+        int request = scanner.nextInt();
+        choices.add(request);
+        try {
+            client.productionMove(uuid, choices);
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
+        }
+
     }
 
 

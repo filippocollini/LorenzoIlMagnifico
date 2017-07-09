@@ -75,6 +75,11 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     }
 
     @Override
+    public void notifyProductioChoice(String choice, String uuid) throws RemoteException {
+        playerInt.notifyProductionChoice(choice, uuid);
+    }
+
+    @Override
     public M receive() {
         return null;
     }

@@ -49,6 +49,7 @@ public class Game implements Serializable {
     private transient List<ExcommunicationDeck> excommunicationdeck;
     private List<Player> order;
     private transient List<LeaderCard> leaderdeck;
+    private int productionChoices = -1;
 
 
 
@@ -779,7 +780,7 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
-    public String addFMonProduction(Player player, String member){
+    public String addFMonProduction(Player player, String member, List<Integer> choices){
         String type = "production";
         Player control;
         int oldvalue;
@@ -813,16 +814,25 @@ public class Game implements Serializable {
         int j = 0;
         int i = 0;
         boolean spent = false;
+        String request="";
         if(player.getMember(member).getValue()>1){
             for(CellPB cellPB : player.getPB().getbuildings()){
                 for(EffectStrategy effect : player.getEffects().getStrategy()){
                     choice = effect.getId();
                     if(cellPB.getCard().getPermchoice()){
-                        System.out.println("Which effect do you want to activate?"); //TODO aggiungo un parametro che normalmente è a 0, ma se serve una scelta avrà il valore della scelta... basta un parametro o ce ne vogliono di più?
-                        for(k=0;k<cellPB.getCard().getPermanenteffect().size();k++)
-                            System.out.println(cellPB.getCard().getPermanenteffect().get(k));
-                        Scanner scan = new Scanner(System.in);
-                        choice = scan.nextInt();
+                        if(choices.isEmpty()){
+                            //System.out.println("Which effect do you want to activate?"); //TODO aggiungo un parametro che normalmente è a 0, ma se serve una scelta avrà il valore della scelta... basta un parametro o ce ne vogliono di più?
+                            for(k=0;k<cellPB.getCard().getPermanenteffect().size();k++) {
+                                request = request + cellPB.getCard().getPermanenteffect().get(k) + " ";
+
+                            }
+                            productionChoices = -1;
+                            return request;
+                        }else{
+                            productionChoices++;
+                            choice = choices.get(productionChoices);
+                        }
+
                     }
                     for(int id : cellPB.getCard().getPermanenteffect()){
 
@@ -881,9 +891,10 @@ public class Game implements Serializable {
         }else {
             //System.out.println("you can't do the action because the power is too low");
 
-            player.getMember(member).setValue(oldvalue);
+
             int result = 1-player.getMember(member).getValue();
-            return String.valueOf(result);//TODO è giusto così? o devo controllare prima di settare setValue(oldValue)?
+            player.getMember(member).setValue(oldvalue);
+            return String.valueOf(result);
         }
 
         space.setFamilyMemberinCell(player.getMember(member));
