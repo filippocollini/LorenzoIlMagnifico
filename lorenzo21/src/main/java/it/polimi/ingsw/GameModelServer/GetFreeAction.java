@@ -9,6 +9,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
     private int dicepower;
     private String typecard;
     public static int harvestOrProduction;
+    public static int DicePower;
     public static String towerFreeAction ="";
 
     public GetFreeAction() {
@@ -50,6 +51,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
     public Player apply(Player player) {
         FamilyMember ghostmember = new FamilyMember("ghost","ghost");
         ghostmember.setValue(dicepower);
+        DicePower = dicepower;
         String tower = null;
         int floor;
         boolean free = false;

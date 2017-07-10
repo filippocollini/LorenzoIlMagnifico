@@ -16,6 +16,7 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
     private List<Risorsa> discount;
     private String typecard;
     private int dicepower;
+    public static int power;
     public static String towerFreeAction="";
 
     public void setId(int id) {
@@ -55,12 +56,8 @@ public class GetFreeandDiscount extends EffectStrategy implements Cloneable{
     }
 
     public Player apply(Player player) {
-        FamilyMember ghostmember = new FamilyMember("ghost","ghost");
-        ghostmember.setValue(dicepower);
-        String tower = null;
-        boolean free = true;
-        int floor;
 
+        power = dicepower;
         if (typecard.equalsIgnoreCase("buildings"))
             towerFreeAction = "buildings";
         else if(typecard.equalsIgnoreCase("characters"))

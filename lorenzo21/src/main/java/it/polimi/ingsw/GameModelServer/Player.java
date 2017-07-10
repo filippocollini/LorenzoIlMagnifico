@@ -30,10 +30,26 @@ public class Player extends BoardObserver implements Serializable{
         personalBoard = new PersonalBoard();
         effects = new Effect();
         leadcards = new ArrayList<LeaderCard>();
-        token = new Token[4];
+        token = settingtokens();
         this.board = board;
         this.board.addObserver(this);
         bonustile = new BonusTile(); //da attribuire in seguito alla scelta
+    }
+
+    private Token[] settingtokens(){
+        Token[] tokens = new Token[3];
+
+        tokens[0] = new Token(this.color);
+        tokens[0].setType("VictoryPoints");
+        tokens[0].setPosition(0);
+        tokens[1] = new Token(this.color);
+        tokens[1].setType("MilitaryPoints");
+        tokens[1].setPosition(0);
+        tokens[2] = new Token(this.color);
+        tokens[2].setType("FaithPoints");
+        tokens[2].setPosition(0);
+
+        return tokens;
     }
 
     public FamilyMember getMember(String color) {
@@ -112,15 +128,28 @@ public class Player extends BoardObserver implements Serializable{
 
     @Override
     public void update() {
-        this.token = board.getTokens(this.color);
-        System.out.println(this.token.length);
-        System.out.println(this.token);
-        for(Token single : this.token){
-            if(single.getType().equalsIgnoreCase("MilitaryPoints")){
-                unlockGreenCell(single.getPosition());
+        int l = 0;
+
+        for(Token token : this.token) {
+            for (Token btoken : board.getTokens(this.color)) {
+                int k = 0;
+                this.token[l] = board.getTokens(this.color)[k];
+
+                k++;
             }
+            l++;
         }
 
+        /*int n = 0;
+        for(Token single : this.token){
+            if(this.token[n]
+                    .getType()
+                    .equalsIgnoreCase("MilitaryPoints")){
+                unlockGreenCell(this.token[n].getPosition());
+            }
+            n++;
+        }
+*/
         int i = 0;
         int coeff = 0;
         for(LeaderCard card : leadcards){

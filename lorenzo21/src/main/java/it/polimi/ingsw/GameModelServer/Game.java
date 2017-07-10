@@ -71,6 +71,7 @@ public class Game implements Serializable {
         leaderdeck = creatingLeaderDeck();
         settinginitialResources();
         fillExcommunicationTiles();
+
     }
 
     //setting initial game
@@ -102,7 +103,7 @@ public class Game implements Serializable {
 
     public void settinginitialResources(){
         int i = 0;
-        int index = 0;
+
         Risorsa wood = new Risorsa();
         Risorsa stone = new Risorsa();
         Risorsa servant = new Risorsa();
@@ -117,11 +118,14 @@ public class Game implements Serializable {
             servant.setTipo("Servants");
             servant.setQuantity(3);
             players[i].getPB().getresources().add((Risorsa) servant.clone());
+            int index = 0;
             for(Player ord : order){
+
                 if(ord.getUsername().equalsIgnoreCase(player.getUsername())){
                     coin.setTipo("Coins");
                     coin.setQuantity(5+index);
                     players[i].getPB().getresources().add((Risorsa) coin.clone());
+
                 }
                 index++;
             }
@@ -274,17 +278,22 @@ public class Game implements Serializable {
     public List<Player> setOrderFirstTurn(){
         List<Player> turn = new ArrayList<>();
         turn.addAll(Arrays.asList(players));
-        System.out.println(turn.size());
+
 
         Collections.shuffle(turn);
-        int i = 0;
-        int k = 0;
+
+        /*int k = 0;
         for(Player player : players) {
             Token[] tokens = board.getTokens(player.getColor());
+            System.out.println(board.getTokens(player.getColor())[0]);
             for(Player p : turn) {
                 if(p.getUsername().equalsIgnoreCase(player.getUsername())) {
-                    for (Token token : tokens) {
-                        if (token.getType().equalsIgnoreCase("Order")) {
+                    int i = 0;
+                    for (Token token : board.getTokens(player.getColor())) {
+                        System.out.println(tokens[i]);
+                        if (board.getTokens(player.getColor())[i]
+                                .getType()
+                                .equalsIgnoreCase("Order")) {
                             tokens[i].setPosition(k + 1);
                         }
                         i++;
@@ -293,16 +302,16 @@ public class Game implements Serializable {
                 k++;
             }
             board.setTokens(tokens);
-        }
+        }*/
 
         return turn;
     }
 
     public void setBonustiles(List<Player> players){}
 
-    public List<Player> reOrder(){
+    public List<Player> reOrder(List<Player> old){
         List<Player> neworder = new ArrayList<>();
-        List<Player> oldorder = new ArrayList<>();
+
         boolean present = false;
         for(CellAction cell : board.getCouncilpalace()){
             for(Player mem : neworder){
@@ -315,30 +324,30 @@ public class Game implements Serializable {
         }
 
 
-        for(Player play : players){ //mi metto in una lista l'ordine vecchio
+       /* for(Player play : players){ //mi metto in una lista l'ordine vecchio
             for(Token toke : play.getToken()){
                 if(toke.getType().equalsIgnoreCase("Order")){
                     oldorder.add(toke.getPosition()-1,getPlayer(play.getColor()));
                 }
             }
-        }
+        }*/
         if(neworder.size() == 0){
-            return oldorder;
+            return old;
         }
 
-       for(Player old : oldorder) { //setto il nuovo ordine con tutti i giocatori
+       for(Player older : old) { //setto il nuovo ordine con tutti i giocatori
            boolean pre = false;
            for (Player pla : neworder) {
-                if(pla.getColor().equalsIgnoreCase(old.getColor())){
+                if(pla.getColor().equalsIgnoreCase(older.getColor())){
                     pre = true;
                 }
            }
            if(!pre){
-               neworder.add(old);
+               neworder.add(older);
            }
        }
 
-        int size = 0;
+        /*int size = 0;
         int i = 0;   //setto i valori di ogni token
         for(Player p : players){
             Token[] tokens = board.getTokens(p.getColor());
@@ -353,7 +362,7 @@ public class Game implements Serializable {
                 }
             }
             board.setTokens(tokens);
-        }
+        }*/
         return neworder;
 
     }
@@ -1238,15 +1247,19 @@ public class Game implements Serializable {
         }
 
 
-
+        boolean cellfree = false;
         //controllo che se la carta è territorio il player deve avere celle disponibili
         if(tower.equalsIgnoreCase("territory")){
             for(CellPB cell : player.getPB().getterritories()){
-                if((cell.getCard() == null) && !cell.getUnlockedcell()){
-                    return FAIL;
+                if((cell.getCard() == null) && cell.getUnlockedcell()){
+                    cellfree = true;
                 }
             }
+            if(!cellfree){
+                return FAIL;
+            }
         }
+
         String control;
         //poi faccio l'azione applicando lo sconto
         if (free == true){
@@ -1312,6 +1325,13 @@ public class Game implements Serializable {
                 player.getPB().addCard(player.board.getTower(tower).getFloors().get(i).getCard());
 
                 FamilyMember ghostmember = new FamilyMember("ghost", "ghost");
+                if(GetFreeAction.DicePower!=0) {
+                    ghostmember.setValue(GetFreeAction.DicePower);
+                    GetFreeAction.DicePower = 0;
+                }else if(GetFreeandDiscount.power!=0){
+                    ghostmember.setValue(GetFreeandDiscount.power);
+                    GetFreeandDiscount.power = 0;
+                }
 
                 //effetti immediati per ultimi così fa partire l'eventuale nuova azione gratis
                 for(int id : player.board.getTower(tower).getFloors().get(i).getCard().getImmediateeffect()) {
@@ -1340,10 +1360,16 @@ public class Game implements Serializable {
                                 method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
                                         .getClass().getMethod("apply", Player.class);
                                 player = (Player) method.invoke(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id), player);
-                                if (GetFreeAction.harvestOrProduction==1)
+                                if (GetFreeAction.harvestOrProduction==1) {
+                                    ghostmember.setValue(GetFreeAction.DicePower);
+                                    GetFreeAction.DicePower = 0;
                                     addFMonHarvest(player, ghostmember.getColor());
-                                else if (GetFreeAction.harvestOrProduction==2)
+                                }
+                                else if (GetFreeAction.harvestOrProduction==2){
+                                    ghostmember.setValue(GetFreeAction.DicePower);
+                                    GetFreeAction.DicePower = 0;
                                     addFMonProduction(player, ghostmember.getColor(), new ArrayList<Integer>());
+                                }
                                 else if (GetFreeAction.towerFreeAction.equalsIgnoreCase("color") ||
                                          GetFreeAction.towerFreeAction.equalsIgnoreCase("territory") ||
                                          GetFreeAction.towerFreeAction.equalsIgnoreCase("ventures"))
@@ -1546,6 +1572,7 @@ public class Game implements Serializable {
         boolean rsn = false;
         int size = 0;
         int i = 0;
+        int costsize;
 
         if(threecoins){
             player.getPB().getsingleresource("Coins").setQuantity(player.getPB().getsingleresource("Coins").getquantity()-3);
@@ -1557,11 +1584,13 @@ public class Game implements Serializable {
         if(newcard.getCardtype().equalsIgnoreCase("territory")){
            return true;
         }
-        while (newcard.getCost1().get(i).getquantity() != 0 &&
+        costsize = newcard.getCost1().size();
+        while (costsize>0 && newcard.getCost1().get(i).getquantity() != 0 &&
                 !(newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPnecessary") ||
                         (newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPtospend")))) {
             size++;
             i++;
+            costsize--;
         }
 
 
@@ -2243,28 +2272,31 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
-    public void activeinaRow(Player player){
+    /*public String activeinaRow(Player player){
         for(LeaderCard card : player.getcarteLeader()){
             if(card.isActive()){
                 if(card.getClass().getSimpleName().equalsIgnoreCase("FedericodaMontefeltro")){
-                    //TODO ask quale member
-                }
+                    return "member";
+
+                }else
                 if(card.getClass().getSimpleName().equalsIgnoreCase("LorenzodeMedici")){
                     //TODO ask quale carta leader copiare
-                }
+                }else
                 if(card.getClass().getSimpleName().equalsIgnoreCase("FrancescoSforza") ||
                         card.getClass().getSimpleName().equalsIgnoreCase("LeonardodaVinci")){
                     //TODO power up member
-                }
+                }else
                 if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoIIIGonzaga")){
                     //TODO ask favor
-                }
-                Method method;
-                try {
-                    method = card.getClass().getMethod("onceInaRow", Player.class);
-                    method.invoke(card,player);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+                    return "favor";
+                }else {
+                    Method method;
+                    try {
+                        method = card.getClass().getMethod("onceInaRow", Player.class);
+                        method.invoke(card, player);
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -2275,7 +2307,7 @@ public class Game implements Serializable {
                 players[k] = player;
             }
         }
-    }
+    }*/
 
     public StringBuilder showotherPlayers(){
         StringBuilder showothers = new StringBuilder();

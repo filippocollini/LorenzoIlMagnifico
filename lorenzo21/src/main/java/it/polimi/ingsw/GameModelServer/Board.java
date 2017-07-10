@@ -49,6 +49,7 @@ public class Board{
         harvest = new ArrayList<>();
         production = new ArrayList<>();
         tokens = inizializationTokens(nplayers);
+        notifyAllObservers();
         towers = addingtowers();
         dices = creatingDices();
 
@@ -72,8 +73,9 @@ public class Board{
         for(i=0;i<nplayers;i++) {
             String color = Game.randomcolor(previouscolor);
             previouscolor.add(color);
-            Token[] token = new Token[4];
+            Token[] token = new Token[3];
             token[0] = new Token(color);
+
             token[0].setType("VictoryPoints");
             token[0].setPosition(0);
             token[1] = new Token(color);
@@ -82,11 +84,14 @@ public class Board{
             token[2] = new Token(color);
             token[2].setType("FaithPoints");
             token[2].setPosition(0);
-            token[3] = new Token(color);
-            token[3].setType("Order");
+            /*token[3] = new Token(color);
+            token[3].setType("Order");*/
             tokens.add(i, token);
+
+
+
         }
-        notifyAllObservers();
+
         return tokens;
 
     }
@@ -440,10 +445,11 @@ public class Board{
 
     public Token[] getTokens(String colorplayer) {
         int i;
-        Token[] token = new Token[4];
+        Token[] token = new Token[3];
         for(i=0;i<this.tokens.size();i++){
             if(this.tokens.get(i)[0].getColor().equals(colorplayer)){
-                token = this.tokens.get(i);
+
+                return this.tokens.get(i);
             }
         }
         return token;

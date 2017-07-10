@@ -76,7 +76,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
             this.uuid=result;
 
-            //this.server = server;
+            this.server = server;
 
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
@@ -198,7 +198,11 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         String tower = askTower();
         int floor = askFloor();
         boolean free = false;
-        server.towerMove(uuid, member, tower, floor, free);
+        server.towerMove(uuid
+                , member
+                , tower
+                , floor
+                , free);
     }
 
     public void towerFreeMove(String uuid, String color) throws RemoteException {
