@@ -38,9 +38,9 @@ public class PlayerTurn {
     }
 
     private void startTimer(){
-        System.out.println("se in 20 secondi non farai niente verrai disconnesso");
+        System.out.println("se in 10 secondi non farai niente verrai disconnesso");
         timer = new Timer();
-        timer.schedule(new DisconnectPlayer(), 20*1000L);
+        timer.schedule(new DisconnectPlayer(), 10*1000L);
     }
 
     private class DisconnectPlayer extends TimerTask{

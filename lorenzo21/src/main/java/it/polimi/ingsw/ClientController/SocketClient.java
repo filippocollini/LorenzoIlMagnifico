@@ -78,17 +78,17 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
 
     }
 
-    public void handle(String msg, State state){
+    public String handle(String msg, State state){
         comm.send((M) msg, state);
         try {
             String answer = (String) comm.receive();
             System.out.println(answer);
             if (answer.equalsIgnoreCase(Server.EVENT_FAILED)){
                 System.out.println("evento andato male");
-
+                return "ko";
             }else if (answer.equalsIgnoreCase(Server.EVENT_DONE)) {
                 System.out.println("evento riuscito");
-
+                return "ok";
             }else {
                 System.out.println("serve interazione col client");
 
@@ -97,7 +97,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
     @Override
@@ -168,6 +168,26 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     @Override
     public String getUuid() {
         return null;
+    }
+
+    @Override
+    public void discardLeaderCard(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void showPlayerGoods(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void showOtherPlayers(String uuid) throws RemoteException {
+
+    }
+
+    @Override
+    public void showBoard(String uuid) throws RemoteException {
+
     }
 
     @Override

@@ -211,3 +211,5 @@ Mlorenzo21/src/main/java/it/polimi/ingsw/ServerController/ShowPlayerGoods.java,
 Llorenzo21/src/main/java/it/polimi/ingsw/ServerController/NonActionRules.java,2/3/23c156aef855fed9ced99ab6bbdea27e67f2ca14
 w
 Glorenzo21/src/main/java/it/polimi/ingsw/ServerController/ShowBoard.java,2/0/204a6d8c06ca74338df1a73e9132abe8982affa6
+r
+Blorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/Token.java,b/9/b92470e692b8a7f367e6666073372c874d11762d

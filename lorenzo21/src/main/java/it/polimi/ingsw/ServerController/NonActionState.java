@@ -21,19 +21,19 @@ public class NonActionState implements State {
     }
 
     @Override
-    public void handle(String request, AbstractClient client, String uuid) throws RemoteException {
-        handleShowRequest(request, client, uuid);
+    public String handle(String request, AbstractClient client, String uuid) throws RemoteException {
+        return handleShowRequest(request, client, uuid);
     }
 
-    public void handleShowRequest(String request, AbstractClient client, String uuid) throws RemoteException {
+    public String handleShowRequest(String request, AbstractClient client, String uuid) throws RemoteException {
         Event event = rules.eventMap.get(request);
         if(event!=null){
             System.out.println("trovato l'evento");
             if(event.isLegal(client, uuid))//anche qua passo il client?
                 event.eventHappened(client, uuid);
-            //TODO metodi nel game che devo chiamre?
+            return "ok";
         } else
             System.out.println("evento non trovato");
-            //TODO notifyError
+            return "ko";
     }
 }

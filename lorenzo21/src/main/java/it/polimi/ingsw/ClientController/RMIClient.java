@@ -140,7 +140,7 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
 
     @Override
     public void notifyNotEnoughResources() throws RemoteException {
-
+        cli.notifyNotEnoughResources();
     }
 
     @Override
@@ -168,10 +168,15 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         cli.notifyFreeTowerAction(color);
     }
 
+    @Override
+    public void print(StringBuilder s) throws RemoteException {
+        cli.print(s);
+    }
 
-    public void handle(String request, State state) throws RemoteException {
+
+    public String handle(String request, State state) throws RemoteException {
         System.out.println("gestisco");
-        state.handle(request, this, this.uuid);
+        return state.handle(request, this, this.uuid);
     }
 
     public void powerUp(String uuid, int nServants) throws RemoteException{
@@ -368,6 +373,30 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
     @Override
     public String getUuid() {
         return this.uuid;
+    }
+
+    @Override
+    public void discardLeaderCard(String uuid) throws RemoteException {
+        System.out.println("Insert the name of the leader card without spaces between the words");
+        Scanner scanner = new Scanner(System.in);
+        String card = scanner.nextLine();
+        String palaceFavor = choosePalaceFavor();
+        server.discardLeaderCard(uuid, card, palaceFavor);
+    }
+
+    @Override
+    public void showPlayerGoods(String uuid) throws RemoteException {
+        server.showPlayerGoods(uuid);
+    }
+
+    @Override
+    public void showOtherPlayers(String uuid) throws RemoteException {
+        server.showOtherPlayers(uuid);
+    }
+
+    @Override
+    public void showBoard(String uuid) throws RemoteException {
+        server.showBoard(uuid);
     }
 
 

@@ -22,20 +22,23 @@ public class GameState implements State, GeneralMoveState {
     }
 
     @Override
-    public void handle(String request, AbstractClient client, String uuid) throws RemoteException {
+    public String handle(String request, AbstractClient client, String uuid) throws RemoteException {
         System.out.println("gestisco");
-        handleGeneralRequest(request, client, uuid);
+        return handleGeneralRequest(request, client, uuid);
     }
 
-    public void handleGeneralRequest(String request, AbstractClient client, String uuid) throws RemoteException {
+    public String handleGeneralRequest(String request, AbstractClient client, String uuid) throws RemoteException {
         Event event = rules.eventMap.get(request);
         if(event!=null)
             System.out.println("trovato l'evento");
-        else
+        else {
             System.out.println("evento non trovato");
+            return "ko";
+        }
 
         if(event.isLegal(client, uuid))//anche qua passo il client?
             event.eventHappened(client, uuid);
+        return "ok";
     }
 
 }

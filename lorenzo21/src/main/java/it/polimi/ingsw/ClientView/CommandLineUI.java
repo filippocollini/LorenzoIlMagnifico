@@ -180,6 +180,10 @@ public class CommandLineUI extends AbstactUI {
         }
     }
 
+    public void print(StringBuilder s) {
+        System.out.println(s);
+    }
+
 
     private class RequestHandler implements Runnable{
 
@@ -187,11 +191,13 @@ public class CommandLineUI extends AbstactUI {
         public void run() {
             Scanner scanner = new Scanner(System.in);
             String request;
+            String control = "ko";
             while(true){
                 request = scanner.nextLine();
                 if(state!=null) {
                     try {
-                        client.handle(request, state);
+                        while(control.equalsIgnoreCase("ko"))
+                            control = client.handle(request, state);
                     } catch (RemoteException e) {
                         LOG.log(Level.SEVERE, "Cannot reach the server", e);
                     }

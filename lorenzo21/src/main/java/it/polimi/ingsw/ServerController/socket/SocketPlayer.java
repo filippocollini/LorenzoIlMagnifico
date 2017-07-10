@@ -115,6 +115,11 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
         }
     }
 
+    @Override
+    public void print(StringBuilder s) throws RemoteException {
+
+    }
+
     public void close(){
         try {
             socket.close();

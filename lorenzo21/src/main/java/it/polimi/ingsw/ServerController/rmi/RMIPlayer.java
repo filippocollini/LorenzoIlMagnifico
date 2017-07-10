@@ -56,7 +56,7 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
 
     @Override
     public void notifyNotEnoughResources() throws RemoteException {
-
+        playerInt.notifyNotEnoughResources();
     }
 
     @Override
@@ -92,5 +92,10 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     @Override
     public void send(M message, State state) {
 
+    }
+
+    @Override
+    public void print(StringBuilder s) throws RemoteException {
+        playerInt.print(s);
     }
 }

@@ -10,11 +10,11 @@ import java.rmi.RemoteException;
 public class ShowOtherPlayers implements Event {
     @Override
     public boolean isLegal(AbstractClient client, String uuid) {
-        return false;
+        return true;
     }
 
     @Override
     public void eventHappened(AbstractClient client, String uuid) throws RemoteException {
-
+        client.showOtherPlayers(uuid);
     }
 }

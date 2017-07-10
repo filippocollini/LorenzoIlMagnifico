@@ -1,78 +1,85 @@
 
-lsquid:S1132"KMove the "Coins" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
-Ssquid:S1854"7Remove this useless assignment to local variable "res".(Êãº¶8øÄ¾ŒÒ+
-gsquid:S1132"KMove the "Black" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(üÈ¡ñ8ÇŸöÌÑ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(·ì‡¹8‹œØËÑ+
-Nsquid:S1135"2Complete the task associated to this TODO comment.(²üÆ‹8‹œØËÑ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(²üÆ‹8‹œØËÑ+
-hsquid:S1132"GMove the "S" string literal on the left side of this string comparison.(ø•üœúÿÿÿÿ8ÇŸöÌÑ+
-usquid:S1132"TMove the "MilitaryPoints" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
-lsquid:S1132"KMove the "Woods" string literal on the left side of this string comparison.(°®»Äüÿÿÿÿ8úÕ¶ŒÒ+
-U
-squid:S106";Replace this usage of System.out or System.err by a logger.(èÇß98ÇÕ¥ËÏ+
-psquid:S1132"OMove the "WoodStone" string literal on the left side of this string comparison.(°®»Äüÿÿÿÿ8úÕ¶ŒÒ+
-Nsquid:S1135"2Complete the task associated to this TODO comment.(·ì‡¹8‹œØËÑ+
-hsquid:S1132"LMove the "Orange" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
-¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(í‘®şúÿÿÿÿ8š®ô«Í+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(ïÉß™8‘ğÄÊÎ+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(»ù—ıÿÿÿÿ8öÕäÑ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(ï¯åÕ8µúŞ‹Ò+
 [
 squid:S106";Replace this usage of System.out or System.err by a logger.(Û¬óÜûÿÿÿÿ8š›ƒ¯Í+
-Nsquid:S1135"2Complete the task associated to this TODO comment.(‰ıÌœ8Ö—ÕşĞ+
-¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ò—Û¶ûÿÿÿÿ8¤ôéŠÒ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(ï¯åÕ8µúŞ‹Ò+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(õğ‹è8úÕ¶ŒÒ+
-gsquid:S1132"KMove the "White" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
-dsquid:S1132"HMove the "PF" string literal on the left side of this string comparison.(êñœ8ÇŸöÌÑ+
-isquid:S1132"MMove the "Neutral" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
-¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(óç­˜ÿÿÿÿÿ8ëÈëÇĞ+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(–ş–…ÿÿÿÿÿ8µúŞ‹Ò+
-Gsquid:S1481"&Remove this unused "i" local variable.(¾Øàéüÿÿÿÿ8”¿×ŒÒ+
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‰¦àı8•é˜Ò+
-psquid:S1132"OMove the "WoodStone" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ç˜Ëı8£ıÄ‹Ò+
 gsquid:S1132"KMove the "color" string literal on the left side of this string comparison.(î³åº8şÑ¨½Ò+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(Àúû‹ıÿÿÿÿ8ÇÕ¥ËÏ+
-osquid:S1132"NMove the "Servants" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
-psquid:S1132"OMove the "territory" string literal on the left side of this string comparison.(ìšˆÉûÿÿÿÿ8®ÒòâÑ+
-ksquid:S1132"OMove the "buildings" string literal on the left side of this string comparison.(œ—şÔ8®ÒòâÑ+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(ÔÀ¡şÿÿÿÿ8´ëãÑ+
-hsquid:S1132"GMove the "C" string literal on the left side of this string comparison.(ø•üœúÿÿÿÿ8ÇŸöÌÑ+
-V
-squid:S106";Replace this usage of System.out or System.err by a logger.(ı§·´8ÇŸöÌÑ+
-Dsquid:S1481"(Remove this unused "res" local variable.(Êãº¶8øÄ¾ŒÒ+
-{squid:S1067"ZReduce the number of conditional operators (4) used in the expression (maximum allowed 3).(³Óƒûÿÿÿÿ8µúŞ‹Ò+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(™ø×Ùûÿÿÿÿ8“ßÊËÑ+
-rsquid:S1132"QMove the "FaithPoints" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
-[
-squid:S106";Replace this usage of System.out or System.err by a logger.(’ßÔ©ÿÿÿÿÿ8®ÒòâÑ+
 jsquid:S1132"NMove the "ventures" string literal on the left side of this string comparison.(œ—şÔ8®ÒòâÑ+
-7squid:S2326"T is not used in the class.(Ê’îÕ8¸Å¸®Í+
-Asquid:S1166"%Either log or rethrow this exception.(«Òéú8‘ğÄÊÎ+
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(àÿ 8¤ôéŠÒ+
-Esquid:S1125")Remove the literal "false" boolean value.(½¨İÊ8¨±¼“Ò+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(í‘®şúÿÿÿÿ8š®ô«Í+
 V
 squid:S106";Replace this usage of System.out or System.err by a logger.(¤¶ƒ„8ª˜ÚÂÒ+
 [
-squid:S106";Replace this usage of System.out or System.err by a logger.(¡ÜÜ”ûÿÿÿÿ8š›ƒ¯Í+
-qsquid:S1132"PMove the "characters" string literal on the left side of this string comparison.(ìšˆÉûÿÿÿÿ8®ÒòâÑ+
-7squid:S2326"M is not used in the class.(Ê’îÕ8¸Å¸®Í+
+squid:S106";Replace this usage of System.out or System.err by a logger.(Úëìüÿÿÿÿ8øŒ·ÊÒ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(™ø×Ùûÿÿÿÿ8“ßÊËÑ+
 V
-squid:S106";Replace this usage of System.out or System.err by a logger.(…ÑÜ¾8®ÒòâÑ+
-esquid:S1132"IMove the "MPC" string literal on the left side of this string comparison.(êñœ8ÇŸöÌÑ+
+squid:S106";Replace this usage of System.out or System.err by a logger.(·ì‡¹8‹œØËÑ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(¡ÜÜ”ûÿÿÿÿ8š›ƒ¯Í+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(ï¯åÕ8µúŞ‹Ò+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(ı§·´8ÇŸöÌÑ+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8±Ë¬ÌÒ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(ïÉß™8‘ğÄÊÎ+
+ksquid:S1132"OMove the "buildings" string literal on the left side of this string comparison.(œ—şÔ8®ÒòâÑ+
 [
 squid:S106";Replace this usage of System.out or System.err by a logger.(ıÍ¦¿ûÿÿÿÿ8––¡ËÏ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(Àúû‹ıÿÿÿÿ8ÇÕ¥ËÏ+
+psquid:S1132"OMove the "WoodStone" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(’ßÔ©ÿÿÿÿÿ8®ÒòâÑ+
+gsquid:S1132"KMove the "White" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
+esquid:S1132"IMove the "MPC" string literal on the left side of this string comparison.(êñœ8ÇŸöÌÑ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(üÈ¡ñ8ÇŸöÌÑ+
+{squid:S1067"ZReduce the number of conditional operators (4) used in the expression (maximum allowed 3).(³Óƒûÿÿÿÿ8µúŞ‹Ò+
+Nsquid:S1135"2Complete the task associated to this TODO comment.(·ì‡¹8‹œØËÑ+
+qsquid:S1132"PMove the "characters" string literal on the left side of this string comparison.(ìšˆÉûÿÿÿÿ8®ÒòâÑ+
+lsquid:S1132"KMove the "Coins" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‰¦àı8•é˜Ò+
+hsquid:S1132"GMove the "C" string literal on the left side of this string comparison.(ø•üœúÿÿÿÿ8ÇŸöÌÑ+
+U
+squid:S106";Replace this usage of System.out or System.err by a logger.(èÇß98ÇÕ¥ËÏ+
+7squid:S2326"M is not used in the class.(Ê’îÕ8¸Å¸®Í+
+gsquid:S1132"KMove the "Black" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
+Nsquid:S1135"2Complete the task associated to this TODO comment.(²üÆ‹8‹œØËÑ+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(àÿ 8¤ôéŠÒ+
+Asquid:S1166"%Either log or rethrow this exception.(«Òéú8‘ğÄÊÎ+
+lsquid:S1132"KMove the "Woods" string literal on the left side of this string comparison.(°®»Äüÿÿÿÿ8úÕ¶ŒÒ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(»ù—ıÿÿÿÿ8öÕäÑ+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ò—Û¶ûÿÿÿÿ8¤ôéŠÒ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(ï¯åÕ8µúŞ‹Ò+
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ç˜Ëı8£ıÄ‹Ò+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(ÔÀ¡şÿÿÿÿ8´ëãÑ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(¤¶ƒ„8Ï‘¾ÍÒ+
+Esquid:S1125")Remove the literal "false" boolean value.(½¨İÊ8¨±¼“Ò+
+hsquid:S1132"GMove the "S" string literal on the left side of this string comparison.(ø•üœúÿÿÿÿ8ÇŸöÌÑ+
+Dsquid:S1481"(Remove this unused "res" local variable.(Êãº¶8øÄ¾ŒÒ+
+Gsquid:S1481"&Remove this unused "i" local variable.(¾Øàéüÿÿÿÿ8”¿×ŒÒ+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(óç­˜ÿÿÿÿÿ8ëÈëÇĞ+
+usquid:S1132"TMove the "MilitaryPoints" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
+psquid:S1132"OMove the "territory" string literal on the left side of this string comparison.(ìšˆÉûÿÿÿÿ8®ÒòâÑ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(…ÑÜ¾8®ÒòâÑ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(–ş–…ÿÿÿÿÿ8µúŞ‹Ò+
+dsquid:S1132"HMove the "PF" string literal on the left side of this string comparison.(êñœ8ÇŸöÌÑ+
+Nsquid:S1135"2Complete the task associated to this TODO comment.(‰ıÌœ8Ö—ÕşĞ+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(õğ‹è8úÕ¶ŒÒ+
+Ssquid:S1854"7Remove this useless assignment to local variable "res".(Êãº¶8øÄ¾ŒÒ+
+isquid:S1132"MMove the "Neutral" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+
+[
+squid:S106";Replace this usage of System.out or System.err by a logger.(ô÷ê¿ùÿÿÿÿ8óÂ·ÊÒ+
+rsquid:S1132"QMove the "FaithPoints" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
+osquid:S1132"NMove the "Servants" string literal on the left side of this string comparison.(³Óƒûÿÿÿÿ8µúŞ‹Ò+
+7squid:S2326"T is not used in the class.(Ê’îÕ8¸Å¸®Í+
+V
+squid:S106";Replace this usage of System.out or System.err by a logger.(²üÆ‹8‹œØËÑ+
+psquid:S1132"OMove the "WoodStone" string literal on the left side of this string comparison.(°®»Äüÿÿÿÿ8úÕ¶ŒÒ+
+hsquid:S1132"LMove the "Orange" string literal on the left side of this string comparison.(³ÁË¦8‹œØËÑ+

@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * 
+ *  This class represents the room that contains the players that are playing the game
  */
 public class Stanza implements Serializable {
 
@@ -29,6 +29,9 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * Timer to handle players turns
+     */
     private transient Timer timer;
 
     public static final int MAXPLAYERS = 4;
@@ -178,6 +181,40 @@ public class Stanza implements Serializable {
 
     }
 
+    public void discardLeaderCard(AbstractPlayer player, String card, String favor) {
+        String control = "";
+        if (turn!=null && turn.getPlayer()==player){
+            control = game.discardLeaderCard(game.herethePlayer(usernames.get(player)), card, favor);
+        }
+        if(control.equalsIgnoreCase("FAIL"))
+            notifyError();
+    }
+
+    public void showPlayerGoods(AbstractPlayer player) {
+        StringBuilder control= null;
+        if (turn != null && turn.getPlayer() == player) {
+            control = game.getPlayer(game.herethePlayer(usernames.get(player)).getColor()).showPlayergoods();
+        }
+            notifyPrint(control);
+    }
+
+    public void showOtherPlayers(AbstractPlayer player) {
+        StringBuilder control= null;
+        if (turn != null && turn.getPlayer() == player) {
+            control = game.showotherPlayers();
+        }
+        notifyPrint(control);
+    }
+
+    public void showBoard(AbstractPlayer player) {
+        StringBuilder control= null;
+        if (turn != null && turn.getPlayer() == player) {
+            control = game.getBoard().showBoard();
+        }
+        notifyPrint(control);
+    }
+
+
     private class GameHandler extends TimerTask{
 
         @Override
@@ -206,7 +243,8 @@ public class Stanza implements Serializable {
                     AbstractPlayer p = players.get(playersInOrder.get(0).getUsername());
                     for(int k = 0; k<4; k++){
                         try {
-                            startPlayerTurn(p);
+                            if (false==p.disconnected)
+                                startPlayerTurn(p);
                         } catch (NetworkException e) {
                             LOG.log(Level.SEVERE, "Cannot start player's turn", e);
                         }
@@ -377,6 +415,14 @@ public class Stanza implements Serializable {
         }
     }
 
+    private void notifyPrint(StringBuilder s) {
+        try {
+            turn.getPlayer().print(s);
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
+    }
+
     public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
         String control;
         if (turn!=null && turn.getPlayer()==abstractPlayer){
@@ -427,6 +473,11 @@ public class Stanza implements Serializable {
     }
 
     public void notifyNotEnoughResources(){
+        try {
+            turn.getPlayer().notifyNotEnoughResources();
+        } catch (RemoteException e) {
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
+        }
 
     }
 

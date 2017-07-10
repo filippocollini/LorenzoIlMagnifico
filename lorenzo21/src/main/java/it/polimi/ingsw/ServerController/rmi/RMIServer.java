@@ -162,4 +162,40 @@ public class RMIServer extends AbstractServer implements Callback{
         room.leaderMove(player, card);
     }
 
+    @Override
+    public void discardLeaderCard(String uuid, String card, String favor) {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.discardLeaderCard(player, card, favor);
+    }
+
+    @Override
+    public void showPlayerGoods(String uuid) throws RemoteException {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.showPlayerGoods(player);
+    }
+
+    @Override
+    public void showOtherPlayers(String uuid) throws RemoteException {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.showOtherPlayers(player);
+    }
+
+    @Override
+    public void showBoard(String uuid) throws RemoteException {
+        AbstractPlayer player = map.get(uuid);
+
+        Stanza room = player.getRoom();
+
+        room.showBoard(player);
+    }
+
 }

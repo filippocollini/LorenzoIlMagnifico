@@ -26,4 +26,5 @@ public interface RMIClientInterface<M> extends Remote {
     public void notifyError() throws RemoteException;
     public void notifyProductionChoice(String choice, String uuid) throws RemoteException;
     public void notifyFreeTowerAction(String color) throws RemoteException;
+    public void print(StringBuilder s) throws RemoteException;
 }

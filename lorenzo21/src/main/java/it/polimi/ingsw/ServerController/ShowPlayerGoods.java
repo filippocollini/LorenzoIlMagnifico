@@ -16,6 +16,6 @@ public class ShowPlayerGoods implements Event {
 
     @Override
     public void eventHappened(AbstractClient client, String uuid) throws RemoteException {
-
+        client.showPlayerGoods(uuid);
     }
 }

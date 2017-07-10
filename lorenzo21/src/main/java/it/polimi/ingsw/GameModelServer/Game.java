@@ -1165,53 +1165,6 @@ public class Game implements Serializable {
         return FAIL;
     }
 
-    /*public String askCellMarket(){
-        int size = board.getMarket().size();
-        String choice;
-        if(size==2){
-            System.out.println("What do you want to pick from Market?" +
-                    "5 Coins(C) - 5 Servants(S)"); //TODO
-        }else
-            System.out.println("What do you want to pick from Market?" +
-                    "5 Coins(C) - 5 Servants(S) - 3MP and 2 Coins(MPC) - 2PalaceFavors(PF) ");
-        Scanner scan = new Scanner(System.in);
-        choice = scan.nextLine();
-        while((size>=2 && !(choice.equalsIgnoreCase("C") || choice.equalsIgnoreCase("S")))||
-                (size==4 && !(choice.equalsIgnoreCase("MPC") || choice.equalsIgnoreCase("PF")))){
-            System.out.println("Error in input");
-            Scanner scanner = new Scanner(System.in);
-            choice = scanner.nextLine();
-        }
-        return choice;
-    }*/
-
-    public static String askTower(){
-        String type;
-        System.out.println("Which tower do you want to occupy? territory - buildings - ventures - characters");
-        Scanner scanner = new Scanner(System.in);
-        type = scanner.nextLine();
-        while(!(type.equalsIgnoreCase("territory") || type.equalsIgnoreCase("characters")
-                || type.equalsIgnoreCase("ventures") || type.equalsIgnoreCase("buildings"))){
-            System.out.println("Error on input : Which tower do you want to occupy? territory - buildings - ventures - characters");
-            Scanner scanning = new Scanner(System.in);
-            type = scanning.nextLine();
-        }
-        return type;
-    }
-
-    public String askMember() {
-        String choice;
-        System.out.println("Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
-        Scanner scan = new Scanner(System.in);
-        choice = scan.nextLine();
-        while(!(choice.equals("White") || choice.equals("Black") || choice.equals("Orange") || choice.equals("Neutral"))) {
-            System.out.println("Error on input : Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
-            Scanner scans = new Scanner(System.in);
-            choice = scans.nextLine();
-        }
-        return choice;
-    }
-
     public static FamilyMember controlboost(Player player, FamilyMember member, String type){
         if (player.getEffects().getStrategy()!=null) {
             for(EffectStrategy effect : player.getEffects().getStrategy()){

@@ -9,5 +9,5 @@ import java.rmi.RemoteException;
  */
 public interface State {
     public void print();
-    public void handle(String request, AbstractClient client, String uuid) throws RemoteException;
+    public String handle(String request, AbstractClient client, String uuid) throws RemoteException;
 }

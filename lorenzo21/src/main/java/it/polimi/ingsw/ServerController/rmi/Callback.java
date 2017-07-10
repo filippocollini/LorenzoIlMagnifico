@@ -28,4 +28,11 @@ public interface Callback extends Remote{
     public void productionMove(String uuid, String member, List<Integer> choices) throws RemoteException;
     public void powerUpMove(String uuid, String member, int nServants) throws RemoteException;
     public void leaderMove(String uuid, String card) throws RemoteException;
+    public void discardLeaderCard(String uuid, String card, String favor) throws RemoteException;
+
+    public void showPlayerGoods(String uuid) throws RemoteException;
+
+    public void showOtherPlayers(String uuid) throws RemoteException;
+
+    public void showBoard(String uuid) throws RemoteException;
 }

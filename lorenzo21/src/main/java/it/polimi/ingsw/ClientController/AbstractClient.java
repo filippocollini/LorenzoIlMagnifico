@@ -39,7 +39,7 @@ public abstract class AbstractClient  {
 
     public abstract void connect();
 
-    public abstract void handle(String request, State state) throws RemoteException;
+    public abstract String handle(String request, State state) throws RemoteException;
 
     public abstract void marketMove(String uuid) throws RemoteException;
 
@@ -70,4 +70,11 @@ public abstract class AbstractClient  {
     public abstract String getUuid();
 
 
+    public abstract void discardLeaderCard(String uuid) throws RemoteException;
+
+    public abstract void showPlayerGoods(String uuid) throws RemoteException;
+
+    public abstract void showOtherPlayers(String uuid) throws RemoteException;
+
+    public abstract void showBoard(String uuid) throws RemoteException;
 }

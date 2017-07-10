@@ -20,8 +20,9 @@ public class ChooseFavorState implements State {
     }
 
     @Override
-    public void handle(String request, AbstractClient client, String uuid) throws RemoteException {
+    public String handle(String request, AbstractClient client, String uuid) throws RemoteException {
         Event event = rules.eventMap.get(request);
         event.eventHappened(client, uuid);
+        return "ok";
     }
 }
