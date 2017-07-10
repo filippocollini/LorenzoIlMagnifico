@@ -73,7 +73,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
                 comm.send((M) user, null);
                 msg = (String) comm.receive();
             }
-            System.out.println("login t'apposto");
+            System.out.println("login done");
         } catch (SocketException e) {
             LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
@@ -88,13 +88,13 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
             String answer = (String) comm.receive();
             System.out.println(answer);
             if (answer.equalsIgnoreCase(Server.EVENT_FAILED)){
-                System.out.println("evento andato male");
+                System.out.println("Event failed");
                 return "ko";
             }else if (answer.equalsIgnoreCase(Server.EVENT_DONE)) {
-                System.out.println("evento riuscito");
+                System.out.println("Event done");
                 return "ok";
             }else {
-                System.out.println("serve interazione col client");
+                System.out.println("Need client interation");
 
             }
 

@@ -21,7 +21,6 @@ public class FrancescoSforza extends LeaderCard {
         ghostmember.setValue(1);
         Game.addFMonHarvest();
         //attiva gli effetti permanenti delle carte sulla pb del raccolto
-        //TODO power up
     return player;
     }*/
 }

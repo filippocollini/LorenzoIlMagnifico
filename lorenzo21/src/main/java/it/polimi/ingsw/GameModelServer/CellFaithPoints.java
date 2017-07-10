@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GameModelServer;
 
-import it.polimi.ingsw.ClientView.CommandLineUI;
-
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;

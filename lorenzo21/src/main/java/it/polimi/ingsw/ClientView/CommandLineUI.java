@@ -93,7 +93,7 @@ public class CommandLineUI extends AbstactUI {
     }
 
     public void notifyActionMade(){
-        System.out.println("Ora puoi solo vedere, ma non toccare!");
+        System.out.println("Now you cannot make any family member move");
         state = new NonActionState();
     }
 

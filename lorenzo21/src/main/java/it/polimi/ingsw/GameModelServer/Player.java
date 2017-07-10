@@ -65,7 +65,7 @@ public class Player extends BoardObserver implements Serializable{
             else
             i++;
         }
-        return null; //TODO familiare già utilizzato
+        return null;
     }
 
     public void setBonustile(BonusTile bonustile) {

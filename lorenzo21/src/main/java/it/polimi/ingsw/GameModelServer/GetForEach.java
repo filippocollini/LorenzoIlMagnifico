@@ -82,7 +82,7 @@ public class GetForEach extends EffectStrategy implements  Cloneable {
                 }
             }
         }else
-            System.out.println("non puoi fare l'azione"); //TODO
+            System.out.println("non puoi fare l'azione");
         return player;
     }
 

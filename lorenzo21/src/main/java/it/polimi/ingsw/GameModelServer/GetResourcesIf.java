@@ -69,7 +69,7 @@ public class GetResourcesIf extends EffectStrategy implements Cloneable{
             */
             player = Game.getimmediateBonus(player,this.rewards,false);
         }else
-            System.out.println("non prendi risorse perchè ha valore troppo basso"); //TODO
+            System.out.println("non prendi risorse perchè ha valore troppo basso");
         return player;
     }
 

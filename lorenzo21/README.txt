@@ -32,6 +32,9 @@ of a board.
 
 Communication between client and server is made by interaction with Event and String responses.
 
+We want to let the reader know that we didn't implement the draft, the last Excommunication tile and
+the activation of the leader card every turn.
+
 Effects explanation Development Cards:
 1: immediate effect or 2: permanent effect
 number of the card

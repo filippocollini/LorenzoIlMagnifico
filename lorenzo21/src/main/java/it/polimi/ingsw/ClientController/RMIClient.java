@@ -53,11 +53,7 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
 
             Registry reg = LocateRegistry.getRegistry(host, port);
 
-            System.out.println("registry fatto");
-
             server = (Callback) reg.lookup(Callback.NAME);
-
-            System.out.println("lookup fatto");
 
             UnicastRemoteObject.exportObject(this,0);
 
@@ -261,11 +257,11 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
 
     public String askMember() {
         String choice;
-        System.out.println("Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
+        System.out.println("Which FM do you want to use? White - Black - Orange - Neutral");
         Scanner scan = new Scanner(System.in);
         choice = scan.nextLine();
         while(!(choice.equals("White") || choice.equals("Black") || choice.equals("Orange") || choice.equals("Neutral"))) {
-            System.out.println("Error on input : Which FM do you want to use? White - Black - Orange - Neutral"); //TODO
+            System.out.println("Error on input : Which FM do you want to use? White - Black - Orange - Neutral");
             Scanner scans = new Scanner(System.in);
             choice = scans.nextLine();
         }

@@ -1096,7 +1096,7 @@ public class Game implements Serializable {
         return SUCCESS;
     }
 
-    public String addFMonPalace(Player player, String member, String favor){ //TODO rivedere per sicurezza
+    public String addFMonPalace(Player player, String member, String favor){
 
         if(player.getMember(member).getValue()>=1) {
 
@@ -1326,7 +1326,7 @@ public class Game implements Serializable {
 
                 //effetti permanenti
                 for(int id : player.board.getTower(tower).getFloors().get(i).getCard().getPermanenteffect())
-                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)!=null){//TODO
+                    if (player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)!=null){
                         System.out.println(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
                         player.getEffects().getStrategy()
                                 .add(player.board
@@ -1370,7 +1370,6 @@ public class Game implements Serializable {
                                 player.getEffects().getStrategy()
                                         .add(player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id));
                             }
-                            //TODO controllare se l'effetto è un getfreeAction(o un getfreeandDiscount) e farsi passare dal client
                             // il piano che vuole occupare (SISTEMA ANCHE I METODI APPLY DELLE DUE CLASSI)
                             try {
                                 method = player.board.getTower(tower).getFloors().get(i).getCard().activateEffect(id)
@@ -1444,7 +1443,7 @@ public class Game implements Serializable {
                floor = scansdice.nextInt();
            }
 
-           for (CellTower cell : towerchosen.getFloors()) { //TODO e se il giocatore avesse Ludovico Ariosto?
+           for (CellTower cell : towerchosen.getFloors()) {
                if (cell.getDice() == floor && cell.isfMPresent()) {
                    System.out.println("There is another FM in this floor");
                } else
@@ -1464,11 +1463,11 @@ public class Game implements Serializable {
             return player;
         }else{
             if(card.getChoice()){
-                    System.out.println("Do you want to pay with resources or MP? R - MP"); //TODO
+                    System.out.println("Do you want to pay with resources or MP? R - MP");
                     Scanner scan = new Scanner(System.in);
                     String choice = scan.nextLine();
                     while(!(choice.equalsIgnoreCase("R") || choice.equalsIgnoreCase("MP"))){
-                        System.out.println("Error on input : Do you want to pay with resources or MP? R - MP"); //TODO
+                        System.out.println("Error on input : Do you want to pay with resources or MP? R - MP");
                         Scanner scans = new Scanner(System.in);
                         choice = scans.nextLine();
                     }
@@ -1668,7 +1667,7 @@ public class Game implements Serializable {
                         if (token[i].getType().equals("Victory")) {
                             newvalue = token[i].getPosition() + single.getquantity();
                             if(newvalue<0) {
-                                System.out.println("non hai punti da spendere"); //TODO
+                                System.out.println("non hai punti da spendere");
                                 return player;
                             }
                             token[i].setPosition(newvalue);
@@ -1680,7 +1679,7 @@ public class Game implements Serializable {
                         if(token[i].getType().equals("Faith")){
                             newvalue=token[i].getPosition()+single.getquantity();
                             if(newvalue<0) {
-                                System.out.println("non hai punti da spendere"); //TODO
+                                System.out.println("non hai punti da spendere");
                                 return player;
                             }
                             token[i].setPosition(newvalue);
@@ -1693,7 +1692,7 @@ public class Game implements Serializable {
                         if(token[i].getType().equals("Military")){
                             newvalue=token[i].getPosition()+single.getquantity();
                             if(newvalue<0) {
-                                System.out.println("non hai punti da spendere"); //TODO
+                                System.out.println("non hai punti da spendere");
                                 return player;
                             }
                             token[i].setPosition(newvalue);
@@ -1706,7 +1705,7 @@ public class Game implements Serializable {
                         if (res.gettipo().equals(single.gettipo())) {
                             newvalue = res.getquantity() + single.getquantity();
                             if(newvalue<0) {
-                                System.out.println("non hai punti da spendere"); //TODO
+                                System.out.println("non hai punti da spendere");
                                 return player;
                             }
                             player.getPB().getresources().get(j).setQuantity(newvalue);
@@ -1762,7 +1761,6 @@ public class Game implements Serializable {
         int i;
 
         for(i=0;i<n;i++) {
-            //TODO richiedere al client che tipo di risorsa vuole
             System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
             Scanner scan = new Scanner(System.in);
             choice = scan.nextLine();
@@ -1776,7 +1774,6 @@ public class Game implements Serializable {
             if (i != 0) {
                 for (Risorsa previouschoice : rewards) {
                     while ((choice.equals("WoodStone") && previouschoice.gettipo().equals("Woods")) || choice.equals(previouschoice.gettipo())) {
-                        //TODO fai un'altra scelta da mandare al client
                         System.out.println("You've already chosen this type of favor, type another type");
                         Scanner sc = new Scanner(System.in);
                         choice = sc.nextLine();

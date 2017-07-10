@@ -73,7 +73,7 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
                         if(oldvalue-single.getquantity()>=0) {
                             control.getPB().getsingleresource(resource.gettipo()).setQuantity(oldvalue - single.getquantity());
                         }else{
-                            System.out.println("no more resources to spend"); //TODO
+                            System.out.println("no more resources to spend");
                             return player;
                         }
                     }
@@ -89,7 +89,7 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
                                 if (oldvalue - single.getquantity() >= 0) {
                                     control.board.getTokens(control.getColor())[i].setPosition(oldvalue - single.getquantity());
                                 } else {
-                                    System.out.println("no more points to spend"); //TODO
+                                    System.out.println("no more points to spend");
                                     return player;
                                 }
                             }
@@ -101,7 +101,7 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
 
             player = control;
         }else
-            System.out.println("non puoi");//TODO
+            System.out.println("non puoi");
         return player;
     }
 
@@ -130,7 +130,7 @@ public class GetResourcesSelling extends EffectStrategy implements Cloneable{
             }
 
         }else
-            System.out.println("non puoi");//TODO
+            System.out.println("non puoi");
         return gained;
     }
 }

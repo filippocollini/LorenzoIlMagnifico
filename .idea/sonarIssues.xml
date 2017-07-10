@@ -238,7 +238,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/FrancescoSforza.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/Game.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/GetForEach.java">
           <value>
             <set />
           </value>
@@ -259,6 +269,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/GetResourcesIf.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/GetResourcesSelling.java">
           <value>
             <set />
           </value>
