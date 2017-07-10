@@ -182,4 +182,55 @@ public class GameTest extends TestCase {
         }
     }
 
+    @Test
+    public void testaddFMonTowerAction(){
+        Stanza stanza = new Stanza();
+
+        HashMap<String,AbstractPlayer> map = new HashMap<>();
+        try {
+            Game game = new Game(map,stanza);
+            Board board;
+            board = Board.getInstance(2);
+            boolean free = true;
+            String tower = "characters";
+            boolean threecoins = true;
+            Player player = new Player("paolo","blue",board);
+            assertEquals ("should be success","success"
+                    ,game.addFMonTowerAction(player,player.getMember("White"),3,tower,free,threecoins));
+        } catch (FileMalformedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testgetimmediateBonus(){
+        Stanza stanza = new Stanza();
+
+        HashMap<String,AbstractPlayer> map = new HashMap<>();
+        try {
+            Game game = new Game(map,stanza);
+            Board board;
+            board = Board.getInstance(2);
+            Player player = new Player("luca", "red",board);
+            List<Risorsa> gain = new ArrayList<>();
+            Risorsa coin = new Risorsa();
+            coin.setTipo("Coins");
+            coin.setQuantity(3);
+            Risorsa stone = new Risorsa();
+            stone.setTipo("Stones");
+            stone.setQuantity(2);
+            gain.add(coin);
+            gain.add(stone);
+            boolean negative = false;
+            player.getPB().getsingleresource("Coins")
+                    .setQuantity(player.getPB().getsingleresource("Coins").getquantity()+3);
+            player.getPB().getsingleresource("Stones")
+                    .setQuantity(player.getPB().getsingleresource("Stones").getquantity()+2);
+            assertEquals("should be equals",player,getimmediateBonus(player,gain,negative));
+
+        } catch (FileMalformedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

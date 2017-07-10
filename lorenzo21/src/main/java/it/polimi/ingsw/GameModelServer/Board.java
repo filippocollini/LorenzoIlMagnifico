@@ -84,8 +84,7 @@ public class Board{
             token[2] = new Token(color);
             token[2].setType("FaithPoints");
             token[2].setPosition(0);
-            /*token[3] = new Token(color);
-            token[3].setType("Order");*/
+
             tokens.add(i, token);
 
 
@@ -580,6 +579,7 @@ public class Board{
             }
         }
         showboard.append("\n");
+
 
         //PRODUCTION
         if(!production.isEmpty()) {

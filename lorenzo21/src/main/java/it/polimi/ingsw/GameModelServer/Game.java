@@ -2057,13 +2057,35 @@ public class Game implements Serializable {
         for(Player p : players){
             for(Token token : p.getToken()){
                 if(token.getType().equalsIgnoreCase("FaithPoints")){
-                    if(token.getPosition()<(2+turn)){ //TI BECCHI LA SCOMUNICA
+                    if(token.getPosition()<(2+turn)){
                         players[i].getEffects().getStrategy()
                                 .add(board.getExcommTiles().get(turn-1)
                                         .activateEffect(board.getExcommTiles().get(turn-1).getId()));
+                    }else{
+                        for(CellFaithPoints cell : players[i].board.getFaithPoints()){
+                            if(cell.getQuantity() == token.getPosition()){
+                                int k = 0;
+                                for(Token tok : players[i].getToken()){
+                                    if(tok.getType().equalsIgnoreCase("VictoryPoints")){
+                                        players[i].getToken()[k].
+                                                setPosition(players[i].getToken()[k].getPosition()+cell.getQuantity());
+                                        for(LeaderCard card : players[i].getcarteLeader()){
+                                            if(card.getClass().getSimpleName()
+                                                    .equalsIgnoreCase("SistoIV") && card.isActive()){
+                                                players[i].getToken()[k].
+                                                        setPosition(players[i].getToken()[k].getPosition()+5);
+                                            }
+                                        }
+                                    }else if(tok.getType().equalsIgnoreCase("FaithPoints")){
+                                        players[i].getToken()[k].setPosition(0);
+                                    }
+
+                                    k++;
+                                }
+                            }
+                        }
                     }
-                }else{
-                    //TODO si deve fare la scelta se vuoi la scomunica o meno
+
                 }
             }
             i++;
@@ -2289,14 +2311,14 @@ public class Game implements Serializable {
 
                 }else
                 if(card.getClass().getSimpleName().equalsIgnoreCase("LorenzodeMedici")){
-                    //TODO ask quale carta leader copiare
+
                 }else
                 if(card.getClass().getSimpleName().equalsIgnoreCase("FrancescoSforza") ||
                         card.getClass().getSimpleName().equalsIgnoreCase("LeonardodaVinci")){
-                    //TODO power up member
+
                 }else
                 if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoIIIGonzaga")){
-                    //TODO ask favor
+
                     return "favor";
                 }else {
                     Method method;
@@ -2318,6 +2340,22 @@ public class Game implements Serializable {
         }
     }*/
 
+    public StringBuilder showOrder(){
+        StringBuilder showorder = new StringBuilder();
+        int i = 0;
+        showorder.append("Order turn\n");
+        for(Player p : order){
+            showorder.append(i+1);
+            showorder.append(" ");
+            showorder.append(p.getUsername());
+            showorder.append("\n");
+            i++;
+        }
+
+
+        return showorder;
+    }
+
     public StringBuilder showotherPlayers(){
         StringBuilder showothers = new StringBuilder();
 
@@ -2336,6 +2374,7 @@ public class Game implements Serializable {
 
         return showothers;
     }
+
     public StringBuilder showPossibleActions(){
         StringBuilder showactions = new StringBuilder();
 
@@ -2348,6 +2387,7 @@ public class Game implements Serializable {
         showactions.append("showPlayergoods\n");
         showactions.append("showboard\n");
         showactions.append("showotherPlayers\n");
+        showactions.append("showOrder\n");
         showactions.append("fm power up\n");
 
 
@@ -2385,11 +2425,7 @@ public class Game implements Serializable {
     }
 
     public void draftbonustiles(){
-        int i;
 
-        for(i = players.length-1; i==0;i--){
-
-        }
     }
 
 }
