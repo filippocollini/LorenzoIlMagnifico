@@ -2145,7 +2145,21 @@ public class Game implements Serializable {
                     k++;
                 }
 
-                players[i].board.setTokens(tokens); //SETTO I TOKENS DELLA BOARD CHE FANNO PARTIRE L'OBSERVER
+                                        //GAIN VP FROM RESOURCES
+                 int res = 0;
+                 int l;
+                 for(l =0;i< players[i].getPB().getresources().size();l++){
+                        res = res + players[i].getPB().getresources().get(l).getquantity();
+                 }
+                k=0;
+                 for(Token token : tokens){
+                    if(token.getType().equalsIgnoreCase("VictoryPoints")){
+                        tokens[k].setPosition(token.getPosition()+(res/5));
+                    }
+                     k++;
+                 }
+
+                players[i].board.setTokens(tokens);
 
                 //GAIN VP FROM VENTURES
             if(p.getEffects().getStrategy().size()!=0) {
@@ -2169,7 +2183,7 @@ public class Game implements Serializable {
 
     }
 
-    public boolean controlrequiresLeadercard(Player player, LeaderCard card){ //CONTROLLO SE PUO' ATTIVARLA
+    public boolean controlrequiresLeadercard(Player player, LeaderCard card){
         int sizerequireslist = card.getRequires().size();
 
         for(Risorsa require : card.getRequires()){
