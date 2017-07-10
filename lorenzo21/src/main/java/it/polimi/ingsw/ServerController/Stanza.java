@@ -301,7 +301,11 @@ public class Stanza implements Serializable {
                             Thread.currentThread().interrupt();
                         }
                     }
-                    game.resetBoard();
+                    try {
+                        game.resetBoard();
+                    } catch (FileMalformedException e) {
+                        LOG.log(Level.SEVERE, "Cannot reach the server", e);
+                    }
                 }
                 game.vaticanReport(i+1);
             }

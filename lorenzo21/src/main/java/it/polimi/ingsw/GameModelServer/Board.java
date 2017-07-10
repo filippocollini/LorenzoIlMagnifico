@@ -9,12 +9,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class Board{
 
+    private static final Logger LOG = Logger.getLogger(Board.class.getName());
 
 
     private List<CellFaithPoints> faithPoints;
@@ -122,7 +125,7 @@ public class Board{
 
 
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.log(Level.CONFIG, "Cannot parse the file", e);
             }
 
 
@@ -194,8 +197,7 @@ public class Board{
 
                 }
             } catch (IOException e) {
-                e.printStackTrace();//TODO
-            }
+                LOG.log(Level.CONFIG, "Cannot parse the file", e);            }
 
             return market;
         }else{
@@ -223,8 +225,7 @@ public class Board{
 
                 }
             } catch (IOException e) {
-                e.printStackTrace();//TODO
-            }
+                LOG.log(Level.CONFIG, "Cannot parse the file", e);            }
 
             return smallmarket;
         }
@@ -254,8 +255,7 @@ public class Board{
                 floors.add(i, (CellTower) singlecell.clone());//dal basso verso l'alto
             }
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);        }
         tower.setFloors(floors);
 
         return tower;
@@ -284,8 +284,7 @@ public class Board{
                 floors.add(i, (CellTower) singlecell.clone());
             }
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);        }
         tower.setFloors(floors);
         return tower;
     }
@@ -313,8 +312,7 @@ public class Board{
                 floors.add(i, (CellTower) singlecell.clone());
             }
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);        }
         tower.setFloors(floors);
         return tower;
     }
@@ -342,8 +340,7 @@ public class Board{
                 floors.add(i, (CellTower) singlecell.clone());
             }
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);        }
         tower.setFloors(floors);
         return tower;
     }
@@ -391,8 +388,7 @@ public class Board{
 
             }
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.CONFIG, "Cannot parse the file", e);        }
 
 
     return faithTrack;

@@ -72,8 +72,7 @@ public class CellPB implements Cloneable{
         try{
             return super.clone();
         }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.SEVERE, "Error with clone", e);        }
     return null;
     }
 }

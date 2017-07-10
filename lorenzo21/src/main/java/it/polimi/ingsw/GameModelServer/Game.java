@@ -217,7 +217,7 @@ public class Game implements Serializable {
 
     public void setLeaderCard(){}
 
-    public void resetBoard(){
+    public void resetBoard() throws FileMalformedException {
       for(CellAction cell : board.getCouncilpalace()){  //SVUOTA PALAZZO
           board.getCouncilpalace().remove(cell);
       }
@@ -242,7 +242,8 @@ public class Game implements Serializable {
                               helper = (FamilyMember) method.invoke(card,member);
                               players[i].getMember("Neutral").setValue(helper.getValue());
                           } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                              e.printStackTrace();
+                              LOG.log(Level.CONFIG, "Cannot parse the file", e);
+                              throw new FileMalformedException("Error in parsing");
                           }
                       }
                   }

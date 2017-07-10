@@ -173,7 +173,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/CellAction.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/CellFaithPoints.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/CellPB.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/CellTower.java">
           <value>
             <set />
           </value>
@@ -213,6 +228,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/ExcommunicationSkipAction.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/ExcommunicationTiles.java">
           <value>
             <set />
@@ -243,7 +263,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/PersonalBoard.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/Player.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/GameModelServer/Risorsa.java">
           <value>
             <set />
           </value>

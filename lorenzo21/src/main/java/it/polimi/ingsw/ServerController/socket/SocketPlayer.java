@@ -13,12 +13,17 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by filippocollini on 14/06/17.
  */
 
 public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
+
+    private static final Logger LOG = Logger.getLogger(SocketPlayer.class.getName());
+
 
     Socket socket;
     ObjectInputStream in;
@@ -33,7 +38,7 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
         }catch (IOException ex) {
-
+            LOG.log(Level.SEVERE, "Cannot reach the server", ex);
         }
     }
 
@@ -101,7 +106,7 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
         try{
             return ((M) in.readObject());
         }catch(NoSuchElementException | ClassNotFoundException | IOException e){
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
         return null;
     }

@@ -7,12 +7,16 @@ import java.io.Serializable;
 import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by filippocollini on 14/06/17.
  */
 
 public class SocketSubscriberHandler<M extends Serializable,T extends Serializable> extends Thread implements PlayerInterface<M> {
+
+    private static final Logger LOG = Logger.getLogger(SocketSubscriberHandler.class.getName());
 
     private ConcurrentLinkedQueue<M> buffer = new ConcurrentLinkedQueue<M>();
 
@@ -57,7 +61,7 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
             try {
                 username = (String) comm.receive();
             } catch (SocketException e) {
-                e.printStackTrace();
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
             }
             correct=broker.joinPlayer(comm, username);
             if(correct==false)
@@ -70,7 +74,7 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
         try {
             request = (String) comm.receive();
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
         String result = "...";
         try {
@@ -80,7 +84,8 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
             if (!result.equalsIgnoreCase(Server.EVENT_DONE) && !result.equalsIgnoreCase(Server.EVENT_FAILED));
             System.out.println(comm.receive());
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
+
         }finally {
             comm.close();
         }

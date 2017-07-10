@@ -9,11 +9,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class PersonalBoard {
+
+    private static final Logger LOG = Logger.getLogger(PersonalBoard.class.getName());
+
 
     private List<CellPB> territories;
     private List<CellPB> buildings;
@@ -64,8 +69,7 @@ public class PersonalBoard {
             }
 
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.SEVERE, "Cannot parse the file", e);        }
 
         return listcell;
     }
@@ -92,8 +96,7 @@ public class PersonalBoard {
 
             }
         }catch(IOException e){
-            e.printStackTrace(); //TODO
-        }
+            LOG.log(Level.SEVERE, "Cannot parse the file", e);        }
 
     return listcell;
     }
@@ -117,8 +120,6 @@ public class PersonalBoard {
             i++;
 
              territories.get(i).setCard(card);
-        //TODO non so se ci saranno errori per nullpointerexception
-        // se si punta una cella vuota
     }
 
     public void addBCard(DevelopementCard card){
@@ -132,7 +133,6 @@ public class PersonalBoard {
             System.out.println("non puoi avere altre carte");
 
 
-        //TODO per le buildingcard non serve il try catch quando si addano carte
     }
 
     public void addVCard(DevelopementCard card){
@@ -145,7 +145,6 @@ public class PersonalBoard {
         }else
             System.out.println("non puoi avere altre carte");
 
-        //TODO per le venturecard non serve il try catch quando si addano carte
     }
 
     public void addCCard(DevelopementCard card){
@@ -156,9 +155,7 @@ public class PersonalBoard {
                 i++;
 
          characters.get(i).setCard(card);
-        //TODO quando si addano carte (dal main) fare un try catch
 
-        //TODO nullpointerException se si punta una cella vuota
     }
 
 

@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.rmi.RemoteException;
 import java.util.*;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.rmi.RMIServer;
 import it.polimi.ingsw.ServerController.socket.SocketServer;
@@ -14,6 +15,8 @@ import it.polimi.ingsw.ServerController.socket.SocketServer;
  * proxy to SocketServer and RMIServer
  */
 public class Server<M extends Serializable,T extends Serializable> implements ConnectionInterface<M,T> {
+
+    private static final Logger LOG = Logger.getLogger(Server.class.getName());
 
     private boolean doneSub = false;
     private ServerSocket socketSubscriber = null;
@@ -153,7 +156,8 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
                 try {
                     sub.dispatchMessage(msg); //mando l'aggiornamento del Game a tutti i giocatori
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    LOG.log(Level.SEVERE, "Cannot reach the server", e);
+
                 }
             }
         }
@@ -167,7 +171,8 @@ public class Server<M extends Serializable,T extends Serializable> implements Co
             try {
                 joinLastRoom(player, username);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
+
             }
         }
         return true;

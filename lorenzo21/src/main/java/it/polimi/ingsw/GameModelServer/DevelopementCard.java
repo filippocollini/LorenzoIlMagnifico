@@ -729,7 +729,7 @@ public class DevelopementCard extends Card implements Cloneable{
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace(); //TODO return to server
+            LOG.log(Level.SEVERE, "Error with clone", e);
             return null;
         }
     }

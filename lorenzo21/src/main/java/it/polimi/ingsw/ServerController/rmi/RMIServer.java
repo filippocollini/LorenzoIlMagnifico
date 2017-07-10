@@ -2,7 +2,6 @@ package it.polimi.ingsw.ServerController.rmi;
 
 import it.polimi.ingsw.ClientController.RMIClientInterface;
 import it.polimi.ingsw.ServerController.*;
-
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -10,11 +9,16 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that represents the RmiServer to handle connection with RMI
  */
 public class RMIServer extends AbstractServer implements Callback{
+
+    private static final Logger LOG = Logger.getLogger(RMIServer.class.getName());
+
 
     public RMIServer(ConnectionInterface connectionHandler) {
         super(connectionHandler);
@@ -36,7 +40,7 @@ public class RMIServer extends AbstractServer implements Callback{
             reg.rebind(Callback.NAME, brokerInt);
 
         } catch (RemoteException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
     }
 

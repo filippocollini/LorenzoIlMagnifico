@@ -5,7 +5,6 @@ import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.GameModelServer.Risorsa;
 import it.polimi.ingsw.ServerController.states.State;
 import it.polimi.ingsw.ServerController.rmi.Callback;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -14,11 +13,16 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  This class represents the client when the type of connection that has been chosed is RMI
  */
 public class RMIClient extends AbstractClient implements RMIClientInterface {
+
+    private static final Logger LOG = Logger.getLogger(RMIClient.class.getName());
+
 
     private String username;
     private Callback server;
@@ -78,7 +82,8 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
             this.server = server;
 
         } catch (RemoteException | NotBoundException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
+
         }
 
     }
