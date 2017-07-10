@@ -1,7 +1,12 @@
 package it.polimi.ingsw.ServerController;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.Exceptions.NetworkException;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.Timer;
@@ -40,7 +45,27 @@ public class PlayerTurn {
     private void startTimer(){
         System.out.println("You have 20 seconds to make an action");
         timer = new Timer();
-        timer.schedule(new DisconnectPlayer(), 20*1000L);
+        timer.schedule(new DisconnectPlayer(), timerActionParsing()*1000L);
+    }
+
+    public int timerActionParsing(){
+        JsonObject jtimer;
+        int timer = 0;
+
+
+        try {
+            File file = new File("lorenzo21/src/main/resources/timeraction.json");
+            FileReader read = new FileReader(file.getAbsolutePath());
+
+            jtimer = Json.parse(read).asObject();
+            timer = jtimer.getInt("timer",30);
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return timer;
     }
 
     private class DisconnectPlayer extends TimerTask{

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.ServerController;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.Exceptions.FileMalformedException;
 import it.polimi.ingsw.Exceptions.NetworkException;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.GameModelServer.Player;
 
-import java.io.Serializable;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.logging.Level;
@@ -85,7 +87,7 @@ public class Stanza implements Serializable {
         usernames.put(player, username);
         if(players.size()>1 && !timerStarted) {
             timer = new Timer();
-            timer.schedule(new GameHandler(), 10*1000L);
+            timer.schedule(new GameHandler(), timerStartparsing()*1000L);
             timerStarted=true;
             System.out.println("parte il countdown");
         }else
@@ -99,9 +101,25 @@ public class Stanza implements Serializable {
                 timer.purge();
                 System.out.println("riparte il countdown");
                 timer = new Timer();
-                timer.schedule(new GameHandler(), 10*1000L);
+                timer.schedule(new GameHandler(), timerStartparsing()*1000L);
                 timerStarted=true;
             }
+    }
+    public int timerStartparsing(){
+        JsonObject jtimer;
+        int timer = 0;
+
+        try {
+            File file = new File("lorenzo21/src/main/resources/timer.json");
+            FileReader read = new FileReader(file.getAbsolutePath());
+            jtimer = Json.parse(read).asObject();
+            timer = jtimer.getInt("timer",20);
+            return timer;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return timer;
     }
 
     /**
