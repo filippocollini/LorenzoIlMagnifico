@@ -34,16 +34,23 @@ public class Stanza implements Serializable {
      */
     private transient Timer timer;
 
+    /**
+     * Constant that represent the maximum number of players in a match
+     */
     public static final int MAXPLAYERS = 4;
 
     /**
-     *
+     * HashMap that maps usernames and abstractPlayers
      */
     public HashMap<String, AbstractPlayer> players = null;
 
-    public HashMap<AbstractPlayer, String> usernames = null;
     /**
-     *
+     * HashMap that maps abstractPlayers and usernames
+     */
+    public HashMap<AbstractPlayer, String> usernames = null;
+
+    /**
+     * This represents the match played by players of this room
      */
     private Game game;
 
@@ -240,8 +247,8 @@ public class Stanza implements Serializable {
                     else
                         playersInOrder = game.reOrder(playersInOrder);
                     System.out.println("Turno: "+(j+1));
-                    AbstractPlayer p = players.get(playersInOrder.get(0).getUsername());
                     for(int k = 0; k<4; k++){
+                        AbstractPlayer p = players.get(playersInOrder.get(k).getUsername());
                         try {
                             if (false==p.disconnected)
                                 startPlayerTurn(p);

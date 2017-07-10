@@ -137,9 +137,19 @@ public class CommandLineUI extends AbstactUI {
     }
 
     public void notifyNotEnoughResources(){
+        Scanner scanner = new Scanner(System.in);
+        String request;
+        String control = "";
         System.out.println("You have not enough resources!");
         state = new GameState();
         System.out.println("Make another action");
+        request = scanner.nextLine();
+        while(control.equalsIgnoreCase("ko"))
+            try {
+                control = client.handle(request, state);
+            } catch (RemoteException e) {
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
+            }
     }
 
     public void askForServants(){
@@ -149,9 +159,19 @@ public class CommandLineUI extends AbstactUI {
     }
 
     public void notifyError() {
+        Scanner scanner = new Scanner(System.in);
+        String request;
+        String control ="";
         System.out.println("There was an error, try again");
         state = new GameState();
         System.out.println("Insert your action");
+        request = scanner.nextLine();
+        while(control.equalsIgnoreCase("ko"))
+            try {
+                control = client.handle(request, state);
+            } catch (RemoteException e) {
+                LOG.log(Level.SEVERE, "Cannot reach the server", e);
+            }
     }
 
     public void notifyProductionChoice(String choice, String uuid) {
