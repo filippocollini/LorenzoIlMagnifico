@@ -103,7 +103,7 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
     }
 
     @Override
-    public void notify2(long val1, long val2) throws RemoteException, Exception {
+    public void notify2(long val1, long val2) throws RemoteException {
 
     }
 
