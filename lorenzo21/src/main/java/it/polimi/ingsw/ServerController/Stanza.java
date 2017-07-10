@@ -251,7 +251,6 @@ public class Stanza implements Serializable {
         public void run() {
             System.out.println("start");
             configuration();
-            System.out.println("creato tutto");
             try {
                 dispatchGameToPlayers();
             } catch (NetworkException e) {
@@ -284,7 +283,7 @@ public class Stanza implements Serializable {
                             Thread.currentThread().interrupt();
                         }
                     }
-
+                    game.resetBoard();
                 }
             }
 

@@ -7,9 +7,10 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Created by filippocollini on 23/06/17.
+ * Interface that permits the communication between client and server
  */
 public interface Callback extends Remote{
+
     public static final String NAME = "Callback";
     public static final String FAILURE = "failure";
     public static final String SUCCESS = "success";

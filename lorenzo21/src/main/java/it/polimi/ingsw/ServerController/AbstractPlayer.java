@@ -39,9 +39,7 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
     public abstract void notifyFreeTowerAction(String color) throws RemoteException;
 
     public abstract void notifyProductioChoice(String choice, String uuid) throws RemoteException;
-    /**
-     * 
-     */
+
     public void setRoom(Stanza room) {
         this.room=room;
     }
@@ -52,7 +50,6 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
 
     public abstract M receive() throws SocketException;
     public abstract void send(M message, State state);
-
 
     public abstract void print(StringBuilder s) throws RemoteException;
 }

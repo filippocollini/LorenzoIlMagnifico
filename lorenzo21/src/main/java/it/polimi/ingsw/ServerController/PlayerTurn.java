@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by filippocollini on 04/07/17.
+ * This class handles the timing of the turn
  */
 public class PlayerTurn {
 
@@ -38,9 +38,9 @@ public class PlayerTurn {
     }
 
     private void startTimer(){
-        System.out.println("se in 10 secondi non farai niente verrai disconnesso");
+        System.out.println("You have 20 seconds to make an action");
         timer = new Timer();
-        timer.schedule(new DisconnectPlayer(), 10*1000L);
+        timer.schedule(new DisconnectPlayer(), 20*1000L);
     }
 
     private class DisconnectPlayer extends TimerTask{
@@ -53,7 +53,7 @@ public class PlayerTurn {
     }
 
     public void playerMadeAMove(){
-        System.out.println("riparte il countdown del turno");
+        System.out.println("Countdown restarted");
         timer.cancel();
         timer.purge();
         startTimer();

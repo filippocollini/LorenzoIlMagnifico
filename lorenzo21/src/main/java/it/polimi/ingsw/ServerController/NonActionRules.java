@@ -27,8 +27,4 @@ public class NonActionRules {
 
     }
 
-    public void notifyQualcosa(){
-        System.out.println("");
-
-    }
 }
