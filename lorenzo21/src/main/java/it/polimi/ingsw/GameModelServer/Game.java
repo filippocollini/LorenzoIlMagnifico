@@ -282,87 +282,66 @@ public class Game implements Serializable {
 
         Collections.shuffle(turn);
 
-        /*int k = 0;
-        for(Player player : players) {
-            Token[] tokens = board.getTokens(player.getColor());
-            System.out.println(board.getTokens(player.getColor())[0]);
-            for(Player p : turn) {
-                if(p.getUsername().equalsIgnoreCase(player.getUsername())) {
-                    int i = 0;
-                    for (Token token : board.getTokens(player.getColor())) {
-                        System.out.println(tokens[i]);
-                        if (board.getTokens(player.getColor())[i]
-                                .getType()
-                                .equalsIgnoreCase("Order")) {
-                            tokens[i].setPosition(k + 1);
-                        }
-                        i++;
-                    }
-                }
-                k++;
-            }
-            board.setTokens(tokens);
-        }*/
 
         return turn;
     }
 
     public void setBonustiles(List<Player> players){}
 
-    public List<Player> reOrder(List<Player> old){
+    public static List<Player> reOrder(List<Player> old,Board board){
         List<Player> neworder = new ArrayList<>();
 
+
         boolean present = false;
-        for(CellAction cell : board.getCouncilpalace()){
+        int i = 0;
+        if(board
+                .getCouncilpalace().size()==0){
+            return old;
+        }
+        for(CellAction cell
+                : board.getCouncilpalace()){
+
             for(Player mem : neworder){
-                if(cell.getMember().getColorplayer().equalsIgnoreCase(mem.getColor()))
-                    present = true;
+                if(mem!=null) {
+                    if (board.getCouncilpalace()
+                            .get(i)
+                            .getMember()
+                            .getColorplayer()
+                            .equalsIgnoreCase(mem
+                                    .getColor()))
+                        present = true;
+                }
+
             }
             if(!present) {
-                neworder.add(getPlayer(cell.getMember().getColorplayer()));
+                for(Player p : players){
+                    if(p.getColor().equalsIgnoreCase(cell.getMember().getColorplayer()))
+                        neworder.add(p);
+                }
             }
+
+            i++;
         }
 
 
-       /* for(Player play : players){ //mi metto in una lista l'ordine vecchio
-            for(Token toke : play.getToken()){
-                if(toke.getType().equalsIgnoreCase("Order")){
-                    oldorder.add(toke.getPosition()-1,getPlayer(play.getColor()));
-                }
-            }
-        }*/
         if(neworder.size() == 0){
             return old;
         }
 
        for(Player older : old) { //setto il nuovo ordine con tutti i giocatori
            boolean pre = false;
+
            for (Player pla : neworder) {
-                if(pla.getColor().equalsIgnoreCase(older.getColor())){
-                    pre = true;
-                }
+               if(pla!=null) {
+                   if (pla.getColor().equalsIgnoreCase(older.getColor())) {
+                       pre = true;
+                   }
+               }
            }
            if(!pre){
                neworder.add(older);
            }
        }
-
-        /*int size = 0;
-        int i = 0;   //setto i valori di ogni token
-        for(Player p : players){
-            Token[] tokens = board.getTokens(p.getColor());
-            for(Token token : tokens){
-                if(token.getType().equalsIgnoreCase("Order")){
-                    for(Player mem : neworder){
-                        if(mem.getColor().equalsIgnoreCase(p.getColor())){
-                            tokens[i].setPosition(size+1);
-                        }
-                        size++;
-                    }
-                }
-            }
-            board.setTokens(tokens);
-        }*/
         return neworder;
 
     }
@@ -1101,8 +1080,16 @@ public class Game implements Serializable {
             CellAction space;
 
             space = board.createCellPalace();
+            int n = 0;
+            for (Player p : players) {
+                if (p.getUsername().equalsIgnoreCase(player.getUsername())) {
+                    space.setFamilyMemberinCell(players[n].getMember(member));
+                }
+                n++;
+            }
 
-            space.setFamilyMemberinCell(player.getMember(member));
+
+            board.getCouncilpalace().add(space);
 
             for (Risorsa resource : space.getBonus()) {
                 if (resource.gettipo().equals("PalaceFavor") && resource.getquantity() != 0) {
@@ -1113,7 +1100,7 @@ public class Game implements Serializable {
                     player = getimmediateBonus(player, space.getBonus(), false);
                 }
 
-                board.getCouncilpalace().add(space);
+
 
                 int k = 0;
                 for (Player p : players) {
@@ -1585,10 +1572,11 @@ public class Game implements Serializable {
            return true;
         }
         costsize = newcard.getCost1().size();
-        while (costsize>0 && newcard.getCost1().get(i).getquantity() != 0 &&
-                !(newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPnecessary") ||
+        while (costsize>0 && newcard.getCost1().get(i).getquantity() != 0){
+            if(!(newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPnecessary") ||
                         (newcard.getCost1().get(i).gettipo().equalsIgnoreCase("MPtospend")))) {
-            size++;
+                size++;
+            }
             i++;
             costsize--;
         }
@@ -1821,7 +1809,7 @@ public class Game implements Serializable {
         return players;
     }
 
-    public Player getPlayer(String colorplayer){
+    public static Player getPlayer(String colorplayer){
         int i = 0;
         Player rightplayer = null;
         for(Player p : players){

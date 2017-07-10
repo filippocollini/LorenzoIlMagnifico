@@ -26,7 +26,7 @@ public class Board{
     private List<ExcommunicationTiles> excommtiles;
     private List<CellAction> councilpalace;
     private List<Dices> dices;
-    private static Board instance;
+    private static Board instance = null;
     private Tower territoriesTower;
     private Tower buildingsTower;
     private Tower charactersTower;

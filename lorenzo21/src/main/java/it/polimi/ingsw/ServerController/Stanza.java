@@ -266,7 +266,7 @@ public class Stanza implements Serializable {
                     if (i==0 && j==0)
                         playersInOrder = game.setOrderFirstTurn();
                     else
-                        playersInOrder = game.reOrder(playersInOrder);
+                        playersInOrder = game.reOrder(playersInOrder,game.getBoard());
                     System.out.println("Turno: "+(j+1));
                     for(int k = 0; k<4; k++){
                         AbstractPlayer p = players.get(playersInOrder.get(k).getUsername());
