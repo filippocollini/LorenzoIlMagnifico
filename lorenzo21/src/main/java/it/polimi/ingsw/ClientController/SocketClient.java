@@ -2,7 +2,7 @@ package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ServerController.Message;
 import it.polimi.ingsw.ServerController.Server;
-import it.polimi.ingsw.ServerController.State;
+import it.polimi.ingsw.ServerController.states.State;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
 
 import java.io.IOException;
@@ -12,13 +12,13 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 /**
- * 
+ *  This class represents the client when the type of connection that has been chosed is RMI
+ *  We only implemented the connection of the client
  */
 public class SocketClient<M extends Serializable> extends AbstractClient  {
 
     private boolean done = false;
     private SocketPlayer<M> comm;
-    private ClientRules clientRules;
 
 
     public void connect() {
@@ -55,7 +55,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
 
         System.out.println("SocketClient started");
         comm = sc;
-        clientRules = new ClientRules();
+
         //this.connect();
     }
 
@@ -188,23 +188,6 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
     @Override
     public void showBoard(String uuid) throws RemoteException {
 
-    }
-
-    @Override
-    public String handleClientRequest(String request) {
-        /*String answer = clientRules.responseHandler(request);
-
-        if(!answer.equalsIgnoreCase(ClientRules.ERROR))
-            comm.send((M) answer, );
-        */
-        String result = null;
-        /*try {
-            result = (String) comm.receive();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }*/
-
-        return result;
     }
 
 

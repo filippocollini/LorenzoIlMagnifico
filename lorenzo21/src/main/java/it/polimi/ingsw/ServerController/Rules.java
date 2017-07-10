@@ -1,8 +1,8 @@
 package it.polimi.ingsw.ServerController;
 
 
-import it.polimi.ingsw.ClientController.AbstractClient;
 import it.polimi.ingsw.GameModelServer.Game;
+import it.polimi.ingsw.ServerController.Events.*;
 
 import java.util.HashMap;
 
@@ -12,8 +12,6 @@ import java.util.HashMap;
 public class Rules implements RulesInterface{
 
     public final HashMap <String, Event> eventMap;
-
-    private TurnHandler turn;
 
     /**
      * Default constructor

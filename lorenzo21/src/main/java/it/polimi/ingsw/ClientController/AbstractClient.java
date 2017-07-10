@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ClientController;
 
 import it.polimi.ingsw.ServerController.AbstractPlayer;
-import it.polimi.ingsw.ServerController.State;
+import it.polimi.ingsw.ServerController.states.State;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -18,24 +18,6 @@ public abstract class AbstractClient  {
     public AbstractClient() {
 
     }
-
-    public abstract String handleClientRequest(String request);
-
-    /**
-     *
-     */
-    private RMIClient rmiClient;
-
-    /**
-     *
-     */
-    private SocketClient socketClient;
-
-    /**
-     *
-     */
-    private AbstractPlayer player;
-
 
     public abstract void connect();
 
@@ -68,7 +50,6 @@ public abstract class AbstractClient  {
     public abstract void powerUp(String uuid, int nServants) throws RemoteException;
 
     public abstract String getUuid();
-
 
     public abstract void discardLeaderCard(String uuid) throws RemoteException;
 

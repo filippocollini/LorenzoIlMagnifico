@@ -3,14 +3,15 @@ package it.polimi.ingsw.ServerController.rmi;
 import it.polimi.ingsw.ClientController.RMIClientInterface;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
-import it.polimi.ingsw.ServerController.State;
+import it.polimi.ingsw.ServerController.states.State;
 
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * 
+ *  This class permits the communication between the server and the equivalent of the client
+ *  transported on the server
  */
 public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implements Remote {
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by filippocollini on 21/06/17.
+ * Class that represents the RmiServer to handle connection with RMI
  */
 public class RMIServer extends AbstractServer implements Callback{
 

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.ClientController.AbstractClient;
-import it.polimi.ingsw.ClientController.IClient;
 
 import java.util.ArrayList;
 

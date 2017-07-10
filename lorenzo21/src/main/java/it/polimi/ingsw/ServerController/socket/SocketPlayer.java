@@ -3,7 +3,7 @@ package it.polimi.ingsw.ServerController.socket;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.AbstractPlayer;
 import it.polimi.ingsw.ServerController.Rules;
-import it.polimi.ingsw.ServerController.State;
+import it.polimi.ingsw.ServerController.states.State;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

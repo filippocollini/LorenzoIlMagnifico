@@ -1,12 +1,13 @@
 package it.polimi.ingsw.ServerController;
 
 import it.polimi.ingsw.GameModelServer.Game;
+import it.polimi.ingsw.ServerController.states.State;
 
 import java.net.SocketException;
 import java.rmi.RemoteException;
 
 /**
- * 
+ *  Class that handle the abstraction between SocketPlayer and RmiPlayer
  */
 public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServer.Player*/ {
 

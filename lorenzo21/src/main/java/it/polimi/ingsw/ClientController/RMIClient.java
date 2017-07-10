@@ -3,7 +3,7 @@ package it.polimi.ingsw.ClientController;
 import it.polimi.ingsw.ClientView.CommandLineUI;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.GameModelServer.Risorsa;
-import it.polimi.ingsw.ServerController.State;
+import it.polimi.ingsw.ServerController.states.State;
 import it.polimi.ingsw.ServerController.rmi.Callback;
 
 import java.io.Serializable;
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * 
+ *  This class represents the client when the type of connection that has been chosed is RMI
  */
-public class RMIClient<M extends Serializable, T extends Serializable> extends AbstractClient implements RMIClientInterface {
+public class RMIClient extends AbstractClient implements RMIClientInterface {
 
     private String username;
     private Callback server; //TODO NullPointerException
@@ -403,11 +403,6 @@ public class RMIClient<M extends Serializable, T extends Serializable> extends A
         server.showBoard(uuid);
     }
 
-
-    @Override
-    public String handleClientRequest(String request) {
-        return null;
-    }
 
     @Override
     public void connect() {

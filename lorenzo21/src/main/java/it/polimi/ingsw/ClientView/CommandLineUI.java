@@ -7,6 +7,10 @@ import it.polimi.ingsw.Exceptions.ClientException;
 import it.polimi.ingsw.GameModelServer.Game;
 import it.polimi.ingsw.ServerController.*;
 import it.polimi.ingsw.ServerController.socket.SocketPlayer;
+import it.polimi.ingsw.ServerController.states.ChooseFavorState;
+import it.polimi.ingsw.ServerController.states.GameState;
+import it.polimi.ingsw.ServerController.states.NonActionState;
+import it.polimi.ingsw.ServerController.states.State;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -81,11 +85,11 @@ public class CommandLineUI extends AbstactUI {
 
     public void gameStarted(Game game){
         this.game = game;
-        System.out.println("Game started, auannad!");
+        System.out.println("Game started");
     }
 
     public void esempio(){
-        System.out.println("iniziamo, auannad!");
+        System.out.println("Let's start!");
     }
 
     public void notifyTurnStarted(){

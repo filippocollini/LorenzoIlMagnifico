@@ -55,20 +55,31 @@ public class Stanza implements Serializable {
     private Game game;
 
     /**
-     *
+     * This boolean is used to handle the timer when a new player join the game
      */
     private boolean timerStarted;
 
+    /**
+     * This boolean is used to handle the timer when the number of player has reached MAXPLAYERS
+     */
     public boolean matchStarted;
 
+    /**
+     * This handles the turn and is use to check that a player can make an action only if it's his turn
+     */
     private transient PlayerTurn turn;
 
     private boolean endTurn=false;
 
+    /**
+     * This is the list that represents the order of the players for the current turn and it will be updated
+     * checking the tokens on the palace
+     */
     private List<Player> playersInOrder;
 
-
-
+    /**
+     * This method join the player to the game
+     */
     public void joinPlayer(AbstractPlayer player, String username) {
         players.put(username, player);
         usernames.put(player, username);
@@ -93,33 +104,16 @@ public class Stanza implements Serializable {
             }
     }
 
-    private void timerHandler(){
-        timer = new Timer();
-        timerStarted=true;
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int i = 20;
-            public void run() {
-                System.out.print(i-- +" ... ");
-                if (i< 0){
-                    timer.cancel();
-                    timer.purge();
-                    matchStarted=true;
-                    //chiama gameConfiguration
-                    System.out.println("INIZIA LA PARTITA!");
-                    /*for(AbstractPlayer c: players.values()){
-                        c.send("inizia la partita");
-                    }*/
-                }
-
-            }
-        }, 0, 1000);
-
-    }
-
+    /**
+     * This method returns the number of the players in the room
+     */
     public int nPlayers(){
         return players.size();
     }
 
+    /**
+     * This method permits to put the family member (real or ghost member) into the palace
+     */
     public void palaceEvent(AbstractPlayer player, String member, String favor) {
         String control="";
         if (turn!=null && turn.getPlayer()==player){
@@ -132,6 +126,10 @@ public class Stanza implements Serializable {
             notifyError();
     }
 
+    /**
+     * This method permits to put the family member (real or ghost member) in the harvest space to make an
+     * harvest action
+     */
     public void harvestEvent(AbstractPlayer player, String member) {
         String control="";
         if (turn!=null && turn.getPlayer()==player){
@@ -150,6 +148,10 @@ public class Stanza implements Serializable {
             notifyFMTooLow(Integer.parseInt(control), "fm on harvest");
     }
 
+    /**
+     * This method permits to put the family member (real or ghost member) in the production space to make a
+     * production action
+     */
     public void productionEvent(AbstractPlayer player, String member, List<Integer> choices) {
         String control="";
         if (turn!=null && turn.getPlayer()==player){
@@ -169,6 +171,9 @@ public class Stanza implements Serializable {
         }
     }
 
+    /**
+     * This method permits to power up the value of the family member spending an amount of servants
+     */
     public void powerUpEvent(AbstractPlayer player, String member, int nServants) {
         String control = "";
         if (turn!=null && turn.getPlayer()==player){
@@ -178,6 +183,9 @@ public class Stanza implements Serializable {
             notifyError();
     }
 
+    /**
+     * This method permits to play a leader card and activate its effect
+     */
     public void leaderMove(AbstractPlayer player, String card) {
         String control = "";
         if (turn!=null && turn.getPlayer()==player){
@@ -188,6 +196,9 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * This method permits to discart a leader card to receive a palace favor
+     */
     public void discardLeaderCard(AbstractPlayer player, String card, String favor) {
         String control = "";
         if (turn!=null && turn.getPlayer()==player){
@@ -197,6 +208,9 @@ public class Stanza implements Serializable {
             notifyError();
     }
 
+    /**
+     * This method permits to see the player's resources and points
+     */
     public void showPlayerGoods(AbstractPlayer player) {
         StringBuilder control= null;
         if (turn != null && turn.getPlayer() == player) {
@@ -205,6 +219,9 @@ public class Stanza implements Serializable {
             notifyPrint(control);
     }
 
+    /**
+     * This method permits to see the others player's resources and points
+     */
     public void showOtherPlayers(AbstractPlayer player) {
         StringBuilder control= null;
         if (turn != null && turn.getPlayer() == player) {
@@ -213,6 +230,9 @@ public class Stanza implements Serializable {
         notifyPrint(control);
     }
 
+    /**
+     * This method permits to see the board
+     */
     public void showBoard(AbstractPlayer player) {
         StringBuilder control= null;
         if (turn != null && turn.getPlayer() == player) {
@@ -222,6 +242,9 @@ public class Stanza implements Serializable {
     }
 
 
+    /**
+     * This class permits to handle the turns
+     */
     private class GameHandler extends TimerTask{
 
         @Override
@@ -229,14 +252,12 @@ public class Stanza implements Serializable {
             System.out.println("start");
             configuration();
             System.out.println("creato tutto");
-            //dispatchGameToPlayers();
             try {
-                dispatchProva();
+                dispatchGameToPlayers();
             } catch (NetworkException e) {
                 LOG.log(Level.SEVERE, "Cannot reach the client", e);
             }
-            //timer.schedule(new TurnHandler(), 10*1000L);
-            //turnHandler.run();
+
             for(int i=0;i<3;i++){
                 System.out.println("Era: "+(i+1));
                 for(int j=0;j<2;j++){
@@ -266,70 +287,29 @@ public class Stanza implements Serializable {
 
                 }
             }
-            /*for(AbstractPlayer p = (AbstractPlayer) stack.pop(); stack.size()==1;p= (AbstractPlayer) stack.pop()){
-                System.out.println("turno iniziatooooooooooo");
-                startPlayerTurn(p);
-                try {
-                    synchronized (Stanza.this){
-                        Stanza.this.wait();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("ci arrivo?");
-            }*/
-
-            //TODO turni e ere
-
-            /*int i = 0;
-            while(i<2){
-                System.out.println("turno iniziatooooooooooo");
-                AbstractPlayer p = (AbstractPlayer) stack.pop();
-                startPlayerTurn(p);
-                try {
-                    synchronized (Stanza.this){
-                        Stanza.this.wait();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                i++;
-            }*/
 
         }
 
 
     }
 
+    /**
+     * This method sets the board at the beginning of the game
+     */
     private void setBoard(){
         game.getBoard().setDices(game.rollDices(game.getBoard().getDices()));
     }
 
+    /**
+     * This method let the player start the turn
+     */
     private void startPlayerTurn(AbstractPlayer p) throws NetworkException {
         this.turn = new PlayerTurn(p, this);
     }
 
-    /*private class TurnHandler extends TimerTask{
-
-        @Override
-        public void run() {
-            for(AbstractPlayer p : players.values()){
-                try {
-                    dispatchToPlayer(p);
-                    Thread.sleep(10000);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }*/
-
-    private void dispatchToPlayer(AbstractPlayer player) throws RemoteException {
-        player.dispatchEsempio();
-    }
-
+    /**
+     * This method configures all the settings from the file
+     */
     private void configuration(){
         try {
             this.game=new Game(players, this);
@@ -339,20 +319,13 @@ public class Stanza implements Serializable {
         }
     }
 
-    private void dispatchGameToPlayers(){
+    /**
+     * This method dispatch the game to the players
+     */
+    private void dispatchGameToPlayers() throws NetworkException {
         for (AbstractPlayer p : players.values()){
             try {
                 p.dispatchGameSettings(game);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void dispatchProva() throws NetworkException {
-        for (AbstractPlayer p : players.values()){
-            try {
-                p.dispatchEsempio();
             } catch (RemoteException e) {
                 LOG.log(Level.SEVERE, "Cannot reach the client", e);
                 throw new NetworkException("Cannot reach the client");
@@ -360,11 +333,16 @@ public class Stanza implements Serializable {
         }
     }
 
+    /**
+     * This method disconnect a player for inactivity
+     */
     public void playerDisconnected(AbstractPlayer player){
         player.disconnected=true;
-        //TODO player disconnesso ritorna
     }
 
+    /**
+     * This method permits to put the family member in the market space to choose the resource he wants to get
+     */
     public void marketEvent(AbstractPlayer abstractPlayer, String member, String cell){
         String control="";
         if (turn!=null && turn.getPlayer()==abstractPlayer){
@@ -373,7 +351,7 @@ public class Stanza implements Serializable {
         if (control.equals(Game.SUCCESS)){
             if(Game.PALACE!=0){
                 for (; Game.PALACE>0;Game.PALACE--)
-                    notifyChooseFavor("fm on harvest");
+                    notifyChooseFavor("fm on market");
             }
             notifyPlayerMadeAMove();
             notifyActionMade();
@@ -382,6 +360,10 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * This method permits to put the family member (real or ghost member) in one of the tower's spaces
+     * to take a card, get the eventual bonus and activate the card's effect
+     */
     public void towerEvent(AbstractPlayer abstractPlayer, String member, String tower, int floor, boolean free){
         String control="";
         if (turn!=null && turn.getPlayer()==abstractPlayer){
@@ -390,7 +372,7 @@ public class Stanza implements Serializable {
         if (control.equals(Game.SUCCESS)){
             if(Game.PALACE!=0){
                 for (; Game.PALACE>0;Game.PALACE--)
-                    notifyChooseFavor("fm on harvest");
+                    notifyChooseFavor("fm on tower");
             }
             notifyPlayerMadeAMove();
             notifyActionMade();
@@ -414,6 +396,9 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * This method notifies that the player can make another tower action
+     */
     private void notifyAnotherTowerAction(String color) {
         try {
             turn.getPlayer().notifyFreeTowerAction(color);
@@ -422,6 +407,9 @@ public class Stanza implements Serializable {
         }
     }
 
+    /**
+     * This method will notify the client to print what it pass to him following his request
+     */
     private void notifyPrint(StringBuilder s) {
         try {
             turn.getPlayer().print(s);
@@ -430,15 +418,9 @@ public class Stanza implements Serializable {
         }
     }
 
-    public void choiceEvent(AbstractPlayer abstractPlayer, String choice){
-        String control;
-        if (turn!=null && turn.getPlayer()==abstractPlayer){
-            control="";
-        }
-            
-
-    }
-
+    /**
+     * This method will notify the client that his turn is ended
+     */
     public void endEvent(AbstractPlayer abstractPlayer){
         if (turn!=null && turn.getPlayer()==abstractPlayer)
             System.out.println(abstractPlayer.toString()+" ha finito il turno");
@@ -448,10 +430,16 @@ public class Stanza implements Serializable {
         }
     }
 
+    /**
+     * This method will notify the turn that the player has made a move and it should not be disconnected
+     */
     public void notifyPlayerMadeAMove(){
         turn.playerMadeAMove();
     }
 
+    /**
+     * This method will notify the client that the family member that he choose has not enough power
+     */
     public void notifyFMTooLow(int nServants, String event){
         try {
             turn.getPlayer().notifyFMTooLow(nServants, event);
@@ -461,6 +449,9 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * This method will notify the client to choose a palace favor
+     */
     public void notifyChooseFavor(String event){
         try {
             turn.getPlayer().notifyChooseFavor(event);
@@ -470,6 +461,9 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * This method will notify the client to make a choice for a building card for a production
+     */
     public void notifyProductionChoice(AbstractPlayer player, String choice){
         try {
             turn.getPlayer().notifyProductioChoice(choice, usernames.get(player));
@@ -479,6 +473,9 @@ public class Stanza implements Serializable {
 
     }
 
+    /**
+     * This method will notify the client that he has not enough resources to make that action
+     */
     public void notifyNotEnoughResources(){
         try {
             turn.getPlayer().notifyNotEnoughResources();
@@ -488,12 +485,10 @@ public class Stanza implements Serializable {
 
     }
 
-    public void askForServants(){
-
-    }
-
-
-
+    /**
+     * This method will notify the client that he has made a move and he will not be able to perform another
+     * game move
+     */
     public void notifyActionMade(){
         try {
             turn.getPlayer().notifyActionMade();
@@ -505,6 +500,9 @@ public class Stanza implements Serializable {
         //forse da mettere insieme a notifyPlayerMadeAMove
     }
 
+    /**
+     * This method will notify the client that he has ended his turn
+     */
     public void notifyEndTurn(){
         turn.endTurn();
         try {
@@ -514,6 +512,9 @@ public class Stanza implements Serializable {
         }
     }
 
+    /**
+     * This method will notify the client that an error occurs and he should try another action
+     */
     public void notifyError(){
         try {
             turn.getPlayer().notifyError();

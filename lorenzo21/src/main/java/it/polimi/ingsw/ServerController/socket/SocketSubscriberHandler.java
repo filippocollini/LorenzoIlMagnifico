@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ServerController.socket;
 
 import it.polimi.ingsw.ServerController.*;
+import it.polimi.ingsw.ServerController.states.GameState;
 
 import java.io.Serializable;
 import java.net.SocketException;

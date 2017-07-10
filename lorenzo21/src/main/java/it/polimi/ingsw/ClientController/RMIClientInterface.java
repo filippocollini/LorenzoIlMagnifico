@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by filippocollini on 23/06/17.
+ *  Interface that permits the client to interface with the server
  */
 public interface RMIClientInterface<M> extends Remote {
     public static final String NAME = "CallbackClientIntf";

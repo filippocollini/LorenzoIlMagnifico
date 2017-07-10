@@ -623,6 +623,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/socket/EventInputStream.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/socket/SocketPlayer.java">
           <value>
             <set />
@@ -644,6 +649,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/socket/SocketSubscriberHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/states/ChooseFavorState.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/states/GeneralMoveState.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/lorenzo21/src/main/java/it/polimi/ingsw/ServerController/states/NonActionState.java">
           <value>
             <set />
           </value>
