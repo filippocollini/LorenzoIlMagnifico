@@ -288,7 +288,7 @@ public class Game implements Serializable {
 
     public void setBonustiles(List<Player> players){}
 
-    public static List<Player> reOrder(List<Player> old,Board board){
+    public  List<Player> reOrder(List<Player> old,Board board){
         List<Player> neworder = new ArrayList<>();
 
 
@@ -1191,8 +1191,7 @@ public class Game implements Serializable {
 
 
        towerchosen = player.board.getTower(tower);
-       if(member.equals("Neutral")) {
-       } else{
+       if(!member.equals("Neutral")) {
            for (CellTower cell : towerchosen.getFloors()) {
                if (cell.getFmOnIt()!=null){
                    if (cell.getFmOnIt().getColorplayer().equals(player.getColor()) && !(cell.getFmOnIt().getColor().equals("Neutral"))) {
