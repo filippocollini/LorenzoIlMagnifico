@@ -22,7 +22,7 @@ public class BartolomeoColleoni extends LeaderCard {
         int i = 0;
         Token[] tokens = player.board.getTokens(player.getColor());
         for(Token token : tokens) {
-            if (token.getType().equalsIgnoreCase("VictoryPoints")) {
+            if ("VictoryPoints".equalsIgnoreCase(token.getType())) {
                 tokens[i].setPosition(token.getPosition() + 4);
             }
             i++;

@@ -52,4 +52,6 @@ public abstract class AbstractPlayer<M> /*extends it.polimi.ingsw.GameModelServe
     public abstract void send(M message, State state);
 
     public abstract void print(StringBuilder s) throws RemoteException;
+
+    public abstract void dispatchEndGame() throws RemoteException;
 }

@@ -2,16 +2,21 @@ package it.polimi.ingsw.GameModelServer;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class BonusTile implements Serializable {
 
+    private static final Logger LOG = Logger.getLogger(BonusTile.class.getName());
+
+
     private String type1;
     private String type2;
-    private List<Risorsa> bonus1;
-    private List<Risorsa> bonus2;
+    private transient List<Risorsa> bonus1;
+    private transient List<Risorsa> bonus2;
     boolean chosen;
 
 
@@ -64,9 +69,9 @@ public class BonusTile implements Serializable {
         try{
             return super.clone();
         }catch(CloneNotSupportedException e){
-            e.printStackTrace(); //TODO return to server
-            return null;
+            LOG.log(Level.SEVERE, "Error with clone", e);
         }
+        return null;
     }
 
     public StringBuilder showBonusTile(){

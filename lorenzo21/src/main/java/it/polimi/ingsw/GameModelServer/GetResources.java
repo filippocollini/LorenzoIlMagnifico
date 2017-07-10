@@ -3,11 +3,15 @@ package it.polimi.ingsw.GameModelServer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class GetResources extends EffectStrategy implements Cloneable {
+
+    private static final Logger LOG = Logger.getLogger(GetResources.class.getName());
 
     private int id;
     private List<Risorsa> extendedresources;
@@ -69,7 +73,7 @@ public class GetResources extends EffectStrategy implements Cloneable {
                     method3 = leadcard.getClass().getMethod("doublebonusfromcard", List.class);
                     santaresources = (List<Risorsa>) method3.invoke(leadcard,this.extendedresources);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+                    LOG.log(Level.SEVERE, "Cannot parse the file", e);
                 }
             }
         }

@@ -52,9 +52,7 @@ public class GetFreeAction extends EffectStrategy implements Cloneable{
         FamilyMember ghostmember = new FamilyMember("ghost","ghost");
         ghostmember.setValue(dicepower);
         DicePower = dicepower;
-        String tower = null;
-        int floor;
-        boolean free = false;
+
         if(typecard.equalsIgnoreCase("harvest")){
             harvestOrProduction = 1;
             return player;

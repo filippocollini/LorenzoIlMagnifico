@@ -1,11 +1,15 @@
 package it.polimi.ingsw.GameModelServer;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public abstract class EffectStrategy implements Cloneable{
+
+    private static final Logger LOG = Logger.getLogger(EffectStrategy.class.getName());
 
     protected int id;
 
@@ -42,7 +46,7 @@ public abstract class EffectStrategy implements Cloneable{
     public Object clone()  {
         try{ return super.clone();
         }catch(CloneNotSupportedException e){
-            e.printStackTrace();//TODO
+            LOG.log(Level.SEVERE, "Error with clone", e);
         }
         return null;
     }

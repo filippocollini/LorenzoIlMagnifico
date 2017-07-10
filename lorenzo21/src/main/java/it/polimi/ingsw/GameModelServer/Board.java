@@ -546,7 +546,7 @@ public class Board{
         showboard.append("\n");
 
         //PALACE
-        if(councilpalace.size()!=0) {
+        if(!councilpalace.isEmpty()) {
             for (CellAction cell : councilpalace) {
                 showboard.append("Bonus : ");
                 for(Risorsa bonus : cell.getBonus()) {
@@ -582,7 +582,7 @@ public class Board{
         showboard.append("\n");
 
         //PRODUCTION
-        if(production.size()!=0) {
+        if(!production.isEmpty()) {
             for(CellAction cell : production){
                 showboard.append("Malus on dice : ");
                 showboard.append(cell.getDice());
@@ -598,7 +598,7 @@ public class Board{
         showboard.append("\n");
 
         //HARVEST
-        if(harvest.size()!=0) {
+        if(!harvest.isEmpty()) {
             for(CellAction cell : harvest){
                 showboard.append("Malus on dice : ");
                 showboard.append(cell.getDice());

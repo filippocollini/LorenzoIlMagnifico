@@ -120,6 +120,11 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
 
     }
 
+    @Override
+    public void dispatchEndGame() throws RemoteException {
+
+    }
+
     public void close(){
         try {
             socket.close();

@@ -31,9 +31,9 @@ public class NonActionState implements State {
         Event event = rules.eventMap.get(request);
         if(event!=null){
             System.out.println("trovato l'evento");
-            if(event.isLegal(client, uuid))//anche qua passo il client?
+            if(event.isLegal(client, uuid)){
                 event.eventHappened(client, uuid);
-            return "ok";
+            return "ok";}
         } else
             System.out.println("evento non trovato");
             return "ko";

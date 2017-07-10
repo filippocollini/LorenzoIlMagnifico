@@ -6,20 +6,25 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class Player extends BoardObserver implements Serializable{
 
-    private String username;
-    private List<FamilyMember> members;
-    private String color;
-    private PersonalBoard personalBoard;
-    private Effect effects;
-    private List<LeaderCard> leadcards;
+    private static final Logger LOG = Logger.getLogger(Player.class.getName());
 
-    private Token[] token;
+
+    private String username;
+    private transient List<FamilyMember> members;
+    private String color;
+    private transient PersonalBoard personalBoard;
+    private transient Effect effects;
+    private transient List<LeaderCard> leadcards;
+
+    private transient Token[] token;
     private BonusTile bonustile;
 
 
@@ -177,7 +182,7 @@ public class Player extends BoardObserver implements Serializable{
                                 FamilyMember helper = (FamilyMember) method.invoke(excomm,this.members.get(i),"dices");
                                 this.members.get(i).setValue(helper.getValue());
                             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                LOG.log(Level.SEVERE, "Cannot parse the file", e);
                             }
 
                         }

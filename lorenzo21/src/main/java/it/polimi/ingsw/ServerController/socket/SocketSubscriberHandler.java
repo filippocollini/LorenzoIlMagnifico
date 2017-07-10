@@ -20,7 +20,7 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
 
     ConnectionInterface<M, T> broker;
 
-    SocketPlayer<Serializable> comm; //TODO astrarlo per permettere anche la connessione RMI
+    SocketPlayer<Serializable> comm;
 
     public SocketSubscriberHandler(ConnectionInterface<M,T> b, SocketPlayer<Serializable> sc) {
         comm = sc;
@@ -45,9 +45,8 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
         System.out.println("login fatto");
         comm.send(Message.LOGINOK, null);
 
-        //TODO sincronizzare questo in base al turno e aggiungere il login come azione nelle rules
         String result;
-        result = receiveRequest();
+        receiveRequest();
 
     }
 
@@ -77,7 +76,7 @@ public class SocketSubscriberHandler<M extends Serializable,T extends Serializab
         try {
             System.out.println("richiesta ricevuta");
             result=broker.handleRequest(request);
-            comm.send(result, new GameState());//TODO da rivedere
+            comm.send(result, new GameState());
             if (!result.equalsIgnoreCase(Server.EVENT_DONE) && !result.equalsIgnoreCase(Server.EVENT_FAILED));
             System.out.println(comm.receive());
         } catch (SocketException e) {

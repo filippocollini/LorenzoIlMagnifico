@@ -33,6 +33,7 @@ public class CommandLineUI extends AbstactUI {
     private AbstractClient client;
     private State state;
     private List<Integer> choices;
+    private static boolean ended = false;
 
     /**
      * Default constructor
@@ -42,8 +43,6 @@ public class CommandLineUI extends AbstactUI {
     }
 
     public void start() throws ClientException {
-
-        Server server = new Server();
 
         String connection;
 
@@ -71,13 +70,8 @@ public class CommandLineUI extends AbstactUI {
             }
         }
 
-        client.connect();
 
-        if (client != null) {
-            this.client = client;
-        }else
-            throw new ClientException("Client is not connected");
-
+        this.client = client;
 
         new RequestHandler().run();
 
@@ -112,10 +106,10 @@ public class CommandLineUI extends AbstactUI {
         System.out.println("Your family member is too low! Do you want to choose another one? (Y - yes, S - spend servants, any other key - make another action");
         Scanner scanner = new Scanner(System.in);
         String response = scanner.nextLine();
-        if(response.equalsIgnoreCase("Y")){
+        if("Y".equalsIgnoreCase(response)){
             state = new GameState();
             System.out.println("Make another action");
-        }else if (response.equalsIgnoreCase("S"))
+        }else if ("S".equalsIgnoreCase(response))
             try {
                 System.out.println("Adding the equivalent power of "+nServants+ " servants");
                 client.powerUp(getUuid(), nServants);
@@ -148,7 +142,7 @@ public class CommandLineUI extends AbstactUI {
         state = new GameState();
         System.out.println("Make another action");
         request = scanner.nextLine();
-        while(control.equalsIgnoreCase("ko"))
+        while("ko".equalsIgnoreCase(control))
             try {
                 control = client.handle(request, state);
             } catch (RemoteException e) {
@@ -170,7 +164,7 @@ public class CommandLineUI extends AbstactUI {
         state = new GameState();
         System.out.println("Insert your action");
         request = scanner.nextLine();
-        while(control.equalsIgnoreCase("ko"))
+        while("ko".equalsIgnoreCase(control))
             try {
                 control = client.handle(request, state);
             } catch (RemoteException e) {
@@ -193,11 +187,11 @@ public class CommandLineUI extends AbstactUI {
 
     public void notifyFreeTowerAction(String color) {
         try{
-            if(color.equalsIgnoreCase("color"))
+            if("color".equalsIgnoreCase(color))
                 client.towerFreeMove(getUuid(), "color");
-            else if (color.equalsIgnoreCase("territory"))
+            else if ("territory".equalsIgnoreCase(color))
                 client.towerFreeMove(getUuid(), "territory");
-            else if (color.equalsIgnoreCase("ventures"))
+            else if ("ventures".equalsIgnoreCase(color))
                 client.towerFreeMove(getUuid(), "ventures");
         }catch (RemoteException e) {
             LOG.log(Level.SEVERE, "Cannot reach the server", e);
@@ -208,6 +202,10 @@ public class CommandLineUI extends AbstactUI {
         System.out.println(s);
     }
 
+    public void notifyEndGame() {
+        ended = true;
+    }
+
 
     private class RequestHandler implements Runnable{
 
@@ -216,11 +214,11 @@ public class CommandLineUI extends AbstactUI {
             Scanner scanner = new Scanner(System.in);
             String request;
             String control = "ko";
-            while(true){
+            while(!ended){
                 request = scanner.nextLine();
                 if(state!=null) {
                     try {
-                        while(control.equalsIgnoreCase("ko"))
+                        while("ko".equalsIgnoreCase(control))
                             control = client.handle(request, state);
                     } catch (RemoteException e) {
                         LOG.log(Level.SEVERE, "Cannot reach the server", e);

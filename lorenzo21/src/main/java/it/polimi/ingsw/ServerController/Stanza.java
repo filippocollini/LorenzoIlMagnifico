@@ -89,17 +89,17 @@ public class Stanza implements Serializable {
             timer = new Timer();
             timer.schedule(new GameHandler(), timerStartparsing()*1000L);
             timerStarted=true;
-            System.out.println("parte il countdown");
+            System.out.println("Countdown started");
         }else
             if(players.size()==MAXPLAYERS){
                 timer.cancel();
                 timer.purge();
                 timer.schedule(new GameHandler(), 0L);
-                System.out.println("numero massimo di giocatori raggiunto, INIZIA LA PARTITA!");
+                System.out.println("Maximum number of players reached, the match begins!");
             }else if(players.size()>1 && timerStarted){
                 timer.cancel();
                 timer.purge();
-                System.out.println("riparte il countdown");
+                System.out.println("Countdown restarted");
                 timer = new Timer();
                 timer.schedule(new GameHandler(), timerStartparsing()*1000L);
                 timerStarted=true;
@@ -160,7 +160,7 @@ public class Stanza implements Serializable {
             }
             notifyPlayerMadeAMove();
             notifyActionMade();
-        }else if(control.equals(Game.FMPRESENT)){//TODO LUDOVICOARIOSTO
+        }else if(control.equals(Game.FMPRESENT)){
             notifyError();
         }else
             notifyFMTooLow(Integer.parseInt(control), "fm on harvest");
@@ -303,11 +303,29 @@ public class Stanza implements Serializable {
                     }
                     game.resetBoard();
                 }
+                game.vaticanReport(i+1);
+            }
+            game.endGameCounting();
+            try {
+                notifyEndGame();
+            } catch (NetworkException e) {
+                LOG.log(Level.SEVERE, "Cannot reach the client", e);
             }
 
         }
 
 
+    }
+
+    private void notifyEndGame() throws NetworkException {
+        for (AbstractPlayer p : players.values()){
+            try {
+                p.dispatchEndGame();
+            } catch (RemoteException e) {
+                LOG.log(Level.SEVERE, "Cannot reach the client", e);
+                throw new NetworkException("Cannot reach the client");
+            }
+        }
     }
 
     /**
@@ -440,7 +458,7 @@ public class Stanza implements Serializable {
      */
     public void endEvent(AbstractPlayer abstractPlayer){
         if (turn!=null && turn.getPlayer()==abstractPlayer)
-            System.out.println(abstractPlayer.toString()+" ha finito il turno");
+            System.out.println(abstractPlayer.toString()+" has ended his turn");
         notifyEndTurn();
         synchronized (Stanza.this){
             Stanza.this.notify();

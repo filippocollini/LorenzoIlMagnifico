@@ -6,7 +6,6 @@ import it.polimi.ingsw.GameModelServer.Risorsa;
 import it.polimi.ingsw.ServerController.states.State;
 import it.polimi.ingsw.ServerController.rmi.Callback;
 
-import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,10 +21,10 @@ import java.util.Scanner;
 public class RMIClient extends AbstractClient implements RMIClientInterface {
 
     private String username;
-    private Callback server; //TODO NullPointerException
+    private Callback server;
     private String host;
     private int port;
-    CommandLineUI cli;
+    private CommandLineUI cli;
     private String uuid;
     private List<Risorsa> rewards;
     private boolean secondChoice = false;
@@ -173,6 +172,11 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
         cli.print(s);
     }
 
+    @Override
+    public void dispatchGameEnded() throws RemoteException {
+        cli.notifyEndGame();
+    }
+
 
     public String handle(String request, State state) throws RemoteException {
         System.out.println("gestisco");
@@ -207,7 +211,7 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
 
     public void towerFreeMove(String uuid, String color) throws RemoteException {
         String tower;
-        if (color.equalsIgnoreCase("color"))
+        if ("color".equalsIgnoreCase(color))
             tower = askTower();
         else{
             tower = color;
@@ -308,15 +312,13 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
         return choice;
     }
 
-    public String choosePalaceFavor() { //questa list<risorsa> è la lista parsata dei possibili bonus palazzo
+    public String choosePalaceFavor() {
         List<Risorsa> rewards = new ArrayList<>();
-        Risorsa res = new Risorsa();
-        String choice="";
-        int i;
+        String choice;
         System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
         Scanner scan = new Scanner(System.in);
         choice = scan.nextLine();
-        while(!(choice.equals("Coins") || choice.equals("WoodStone") || choice.equals("Servants") || choice.equals("MilitaryPoints") || choice.equals("FaithPoints"))){
+        while(!("Coins".equals(choice) || "WoodStone".equals(choice) || "Servants".equals(choice) || "MilitaryPoints".equals(choice) || "FaithPoints".equals(choice))){
             System.out.println("Error in input!");
             System.out.println("Choose your palace favor(type the name):\n" + "2 Coins\n" + "1+1 WoodStone\n" + "2 Servants\n" + "2 MilitaryPoints\n" + "1 FaithPoints\n");
             Scanner scanner = new Scanner(System.in);
@@ -335,7 +337,7 @@ public class RMIClient extends AbstractClient implements RMIClientInterface {
         for (Risorsa previouschoice : this.rewards) {
             Scanner scan = new Scanner(System.in);
             choice = scan.nextLine();
-            while ((choice.equals("WoodStone") && previouschoice.gettipo().equals("Woods")) || choice.equals(previouschoice.gettipo())) {
+            while (("WoodStone".equals(choice) && "Woods".equals(previouschoice.gettipo())) || choice.equals(previouschoice.gettipo())) {
                 System.out.println("You've already chosen this type of favor, type another type");
                 Scanner sc = new Scanner(System.in);
                 choice = sc.nextLine();

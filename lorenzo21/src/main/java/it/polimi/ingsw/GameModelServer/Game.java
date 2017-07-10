@@ -39,10 +39,8 @@ public class Game implements Serializable {
     public static final String FMPRESENT="fm already present";
     public static final String NOTENOUGHRESOURCES="not enough resources";
     public static int PALACE;
-
     private List<BonusTile> bonustilesnormal;
     private transient List<BonusTile> bonustileleader;
-
     private transient List<TerritoryDeck> greendeck;
     private transient List<BuildingDeck> yellowdeck;
     private transient List<CharacterDeck> bluedeck;
@@ -233,10 +231,10 @@ public class Game implements Serializable {
       for(Player p : players){ //SETTA A FALSE I FAMILIARI USATI E A 0 QUELLO NEUTRO
           for(FamilyMember member : p.getMembers()){
               players[i].getMembers().get(k).setFmUsed(false);
-              if(member.getColor().equalsIgnoreCase("Neutral")){
+              if("Neutral".equalsIgnoreCase(member.getColor())){
                   players[i].getMember("Neutral").setValue(0);
                   for(LeaderCard card : p.getcarteLeader()){
-                      if(card.getClass().getSimpleName().equalsIgnoreCase("SigismondoMalatesta")){
+                      if("SigismondoMalatesta".equalsIgnoreCase(card.getClass().getSimpleName())){
                           FamilyMember helper;
                           Method method;
                           try {
@@ -420,7 +418,11 @@ public class Game implements Serializable {
 
                 jcard = jarraycard.get(i).asObject();
                 //NAME
-                singlecard.setname(jcard.get("nome").asString());
+                try{
+                    singlecard.setname(jcard.get("nome").asString());
+                }catch(NullPointerException e){
+                    LOG.log(Level.SEVERE, "Error with the file", e);
+                }
 
                 //NUMBER
                 singlecard.setNumber(jcard.get("number").asInt());
@@ -582,7 +584,13 @@ public class Game implements Serializable {
 
                 jcard = jarraycard.get(i).asObject();
                 //NAME
-                singlecard.setname(jcard.get("nome").asString());
+                try{
+                    singlecard.setname(jcard.get("nome").asString());
+                }catch (NullPointerException e){
+                    LOG.log(Level.SEVERE, "Cannot parse the file", e);
+                }
+
+
 
                 //NUMBER
                 singlecard.setNumber(jcard.get("number").asInt());
@@ -667,7 +675,12 @@ public class Game implements Serializable {
 
                 jcard = jarraycard.get(i).asObject();
                 //NAME
-                singlecard.setname(jcard.get("nome").asString());
+                try{
+                    singlecard.setname(jcard.get("nome").asString());
+                }catch(NullPointerException e){
+                    LOG.log(Level.SEVERE, "Cannot parse the file", e);
+                }
+
 
                 //NUMBER
                 singlecard.setNumber(jcard.get("number").asInt());
@@ -743,18 +756,22 @@ public class Game implements Serializable {
         int i;
 
         for(i=0; i<21;i++) {
-            if(i<7) {
-                tile.setId(11+i);
-                tile.setPeriod(1);
-                tilesList.add(i, (ExcommunicationTiles) tile.clone());
-            }else if(i<14){
-                tile.setId(14+i);
-                tile.setPeriod(2);
-                tilesList.add(i, (ExcommunicationTiles) tile.clone());
-            }else {
-                tile.setId(17 + i);
-                tile.setPeriod(3);
-                tilesList.add(i,(ExcommunicationTiles) tile.clone());
+            try {
+                if(i<7) {
+                    tile.setId(11 + i);
+                    tile.setPeriod(1);
+                    tilesList.add(i, (ExcommunicationTiles) tile.clone());
+                }else if (i < 14) {
+                    tile.setId(14 + i);
+                    tile.setPeriod(2);
+                    tilesList.add(i, (ExcommunicationTiles) tile.clone());
+                } else {
+                    tile.setId(17 + i);
+                    tile.setPeriod(3);
+                    tilesList.add(i, (ExcommunicationTiles) tile.clone());
+                }
+            }catch(NullPointerException e){
+                LOG.log(Level.SEVERE, "Cannot parse the file", e);
             }
         }
 
@@ -842,7 +859,7 @@ public class Game implements Serializable {
         boolean freedom = false;
 
         for(LeaderCard card : player.getcarteLeader()){
-            if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoAriosto") && card.isActive()){
+            if("LudovicoAriosto".equalsIgnoreCase(card.getClass().getSimpleName()) && card.isActive()){
                 freedom = true;
             }
         }
@@ -925,7 +942,7 @@ public class Game implements Serializable {
         List<Risorsa> gained = new ArrayList<>();
 
         for(CellAction cell : board.getProduction()){ //controllo se ha già altri fm qui
-            if(cell.getcolorMember().equals(player.getColor()) && !cell.getMember().getColor().equalsIgnoreCase("Neutral")){
+            if(cell.getcolorMember().equals(player.getColor()) && !"Neutral".equalsIgnoreCase(cell.getMember().getColor())){
                 System.out.println("You've another FM here!");
                 return SAMETOWER;
             }
@@ -939,14 +956,14 @@ public class Game implements Serializable {
         boolean freedom = false;
 
         for(LeaderCard card : player.getcarteLeader()){
-            if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoAriosto") && card.isActive()){
+            if("LudovicoAriosto".equalsIgnoreCase(card.getClass().getSimpleName()) && card.isActive()){
                 freedom = true;
             }
         }
 
         if(!freedom) {
             if (board.getProduction().size() == 1 && players.length < 3) {
-                player.getMember(member).setValue(oldvalue); //c'è bisogno di rimettere il valore vecchio? player non viene ritornato
+                player.getMember(member).setValue(oldvalue);
                 return FAIL;
             } else if (board.getProduction().size() >= 1) {
                 space.setDice(-3);
@@ -1092,11 +1109,11 @@ public class Game implements Serializable {
             board.getCouncilpalace().add(space);
 
             for (Risorsa resource : space.getBonus()) {
-                if (resource.gettipo().equals("PalaceFavor") && resource.getquantity() != 0) {
+                if ("PalaceFavor".equalsIgnoreCase(resource.gettipo()) && resource.getquantity() != 0) {
                     List<Risorsa> listfavor = choosePalaceFavor(player, favor);
                     player = getimmediateBonus(player, listfavor, false);
                 }
-                if(!member.equalsIgnoreCase("ghost")) {
+                if(!"ghost".equalsIgnoreCase(member)) {
                     player = getimmediateBonus(player, space.getBonus(), false);
                 }
 
@@ -1122,7 +1139,7 @@ public class Game implements Serializable {
 
         if (player.getEffects().getStrategy()!=null) {
             for (EffectStrategy effect : player.getEffects().getStrategy()) {
-                if (effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationCoverMarket")) {
+                if ("ExcommunicationCoverMarket".equalsIgnoreCase(effect.getClass().getSimpleName())) {
                     System.out.println("YOU'VE BEEN EXCOMMUNICATED! Go away from Magnifico's Market");
                     return EXCOMM;
                 }
@@ -1133,7 +1150,7 @@ public class Game implements Serializable {
                 if (cell.getType().equalsIgnoreCase(request)){
                     if(cell.isfMOn()){
                         for(LeaderCard card : player.getcarteLeader()){
-                            if(card.getClass().getSimpleName().equalsIgnoreCase("LudovicoAriosto") && card.isActive()) {
+                            if("LudovicoAriosto".equalsIgnoreCase(card.getClass().getSimpleName()) && card.isActive()) {
                                 player = getimmediateBonus(player, cell.getBonus(), false);
                             }else
                                 return FAIL;
@@ -1156,7 +1173,7 @@ public class Game implements Serializable {
             }
             return SUCCESS;
         }else
-                System.out.println("non puoi fare l'azione"); //TODO
+                System.out.println("Action cannot be made");
 
         return FAIL;
     }
@@ -1164,9 +1181,9 @@ public class Game implements Serializable {
     public static FamilyMember controlboost(Player player, FamilyMember member, String type){
         if (player.getEffects().getStrategy()!=null) {
             for(EffectStrategy effect : player.getEffects().getStrategy()){
-                if(effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostandDiscount")
-                        || effect.getClass().getSimpleName().equalsIgnoreCase("GetBoostDice")
-                        || effect.getClass().getSimpleName().equalsIgnoreCase("ExcommunicationReduction")) {
+                if("GetBoostandDiscount".equalsIgnoreCase(effect.getClass().getSimpleName())
+                        || "GetBoostDice".equalsIgnoreCase(effect.getClass().getSimpleName())
+                        || "ExcommunicationReduction".equalsIgnoreCase(effect.getClass().getSimpleName())) {
                     Method method;
                     try {
                         method = effect.getClass().getMethod("apply",  FamilyMember.class,String.class);
@@ -1195,7 +1212,7 @@ public class Game implements Serializable {
            for (CellTower cell : towerchosen.getFloors()) {
                if (cell.getFmOnIt()!=null){
                    if (cell.getFmOnIt().getColorplayer().equals(player.getColor()) && !(cell.getFmOnIt().getColor().equals("Neutral"))) {
-                       System.out.println("You've a FM here yet! choose another action"); //TODO al client 'do another action'
+                       System.out.println("You've a FM here yet! choose another action");
                        return SAMETOWER;
                    }
                }
@@ -1220,17 +1237,22 @@ public class Game implements Serializable {
 
         if (!controlpurchase(player,towerchosen.getFloors().get(dice).getCard(),false,threecoins)) {
             player.getMember(member).setValue(oldvalue);
-            System.out.println("you cannot buy the card! PORACCIO!!!"); //TODO
+            System.out.println("you cannot buy the card!");
             return NOTENOUGHRESOURCES;
         }
 
         //poi vedo se il suo fm basta o si deve potenziare
-        if (isFMok(player.getMember(member),dice,player,oldvalue)!=null){
-            player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
-        }else{
-            int result = 1-player.getMember(member).getValue();
-            return String.valueOf(result);
+        try{
+            if (isFMok(player.getMember(member),dice,player,oldvalue)!=null){
+                player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
+            }else{
+                int result = 1-player.getMember(member).getValue();
+                return String.valueOf(result);
+            }
+        }catch(NullPointerException e){
+            LOG.log(Level.SEVERE, "Cannot parse the file", e);
         }
+
 
 
         boolean cellfree = false;
@@ -1274,7 +1296,7 @@ public class Game implements Serializable {
                 //poi la compra
                 player = buyCard(player,card);
 
-                if(player.getEffects().getStrategy().size()!=0){
+                if(!player.getEffects().getStrategy().isEmpty()){
                     for(EffectStrategy effect : player.getEffects().getStrategy()){
                         if(effect.getClass().getSimpleName().equalsIgnoreCase("RemoveBonusTower")){
                             bonus = false;
@@ -2062,7 +2084,7 @@ public class Game implements Serializable {
                             method = excomm.getClass().getMethod("apply", Player.class);
                             players[i] = (Player) method.invoke(excomm, p);
                         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
+                            LOG.log(Level.SEVERE, "Cannot parse the file", e);
                         }
                     }
                 }
@@ -2107,7 +2129,7 @@ public class Game implements Serializable {
                             method = effect.getClass().getMethod("apply", Player.class);
                             players[i] = (Player) method.invoke(effect, players[i]);
                         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
+                            LOG.log(Level.SEVERE, "Cannot parse the file", e);
                         }
                     }
                 }

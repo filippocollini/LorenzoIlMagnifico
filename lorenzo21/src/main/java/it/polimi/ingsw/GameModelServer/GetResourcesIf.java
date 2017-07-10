@@ -1,11 +1,16 @@
 package it.polimi.ingsw.GameModelServer;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Simone on 15/06/2017.
  */
 public class GetResourcesIf extends EffectStrategy implements Cloneable{
+
+    private static final Logger LOG = Logger.getLogger(GetResourcesIf.class.getName());
+
     private int id;
     private int dicepower;
     private List<Risorsa> rewards;
@@ -40,8 +45,6 @@ public class GetResourcesIf extends EffectStrategy implements Cloneable{
 
 
     public Player apply(Player player, String color) {
-        int i = 0;
-        int j = 0;
         int oldvalue;
         if(player.getMember(color).getValue()>= this.dicepower){
             /*for(Risorsa ress : player.getPB().getresources()) {
@@ -72,7 +75,12 @@ public class GetResourcesIf extends EffectStrategy implements Cloneable{
 
     @Override
     public Object clone() {
+        try{
             return super.clone();
+        }catch(NullPointerException e){
+            LOG.log(Level.SEVERE, "Error with clone", e);
+        }
+        return null;
     }
 }
 

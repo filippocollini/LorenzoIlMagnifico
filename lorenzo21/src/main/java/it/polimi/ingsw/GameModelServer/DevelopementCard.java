@@ -701,7 +701,7 @@ public class DevelopementCard extends Card implements Cloneable{
         return listendeffect;
     }
 
-    public EffectStrategy removingparsing(){
+    public EffectStrategy removingparsing() throws FileMalformedException {
         JsonObject jremove;
         EffectStrategy removing = new RemoveBonusTower();
 
@@ -715,7 +715,7 @@ public class DevelopementCard extends Card implements Cloneable{
             removing.setId(jremove.get("id").asInt());
 
         }catch(IOException e){
-            e.printStackTrace();
+            throw new FileMalformedException();
         }
 
         return removing;
@@ -725,14 +725,14 @@ public class DevelopementCard extends Card implements Cloneable{
 
 
     @Override
-    public Object clone(){
-        try{
+    public Object clone() {
+        try {
             return super.clone();
-        }catch(CloneNotSupportedException e){
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace(); //TODO return to server
             return null;
         }
-    }//TODO lo togliamo sto metodo?
+    }
 
 
 }

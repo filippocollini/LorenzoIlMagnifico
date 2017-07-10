@@ -99,4 +99,9 @@ public class RMIPlayer <M extends Serializable> extends AbstractPlayer<M> implem
     public void print(StringBuilder s) throws RemoteException {
         playerInt.print(s);
     }
+
+    @Override
+    public void dispatchEndGame() throws RemoteException {
+        playerInt.dispatchGameEnded();
+    }
 }
