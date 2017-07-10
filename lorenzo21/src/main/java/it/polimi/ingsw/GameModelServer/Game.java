@@ -498,7 +498,12 @@ public class Game implements Serializable {
 
                 jcard = jarraycard.get(i).asObject();
                 //NAME
-                singlecard.setname(jcard.get("nome").asString());
+                try{
+                    singlecard.setname(jcard.get("nome").asString());
+                }catch(NullPointerException e){
+                    LOG.log(Level.SEVERE, "Error with the file", e);
+                }
+
 
                 //NUMBER
                 singlecard.setNumber(jcard.get("number").asInt());
@@ -1243,16 +1248,18 @@ public class Game implements Serializable {
         }
 
         //poi vedo se il suo fm basta o si deve potenziare
-        try{
-            if (isFMok(player.getMember(member),dice,player,oldvalue)!=null){
+
+        if (isFMok(player.getMember(member),dice,player,oldvalue)!=null){
+            try{
                 player.getMember(member).setValue(isFMok(player.getMember(member),dice,player,oldvalue).getValue());
-            }else{
-                int result = 1-player.getMember(member).getValue();
-                return String.valueOf(result);
+            }catch(NullPointerException e){
+                LOG.log(Level.SEVERE, "Cannot parse the file", e);
             }
-        }catch(NullPointerException e){
-            LOG.log(Level.SEVERE, "Cannot parse the file", e);
+        }else{
+            int result = 1-player.getMember(member).getValue();
+            return String.valueOf(result);
         }
+
 
 
 
@@ -1506,7 +1513,7 @@ public class Game implements Serializable {
                     method = leadcard.getClass().getMethod("coinsdiscount", List.class);
                     card.setCost1((List<Risorsa>) method.invoke(leadcard,card.getCost1()));
                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
+                    LOG.log(Level.SEVERE, "Method not found", e);
                 }
             }
         }
@@ -2249,7 +2256,7 @@ public class Game implements Serializable {
                                             helper = (FamilyMember) method.invoke(lead, member);
                                             players[i].getMember(member.getColor()).setValue(helper.getValue());
                                         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                            e.printStackTrace();
+                                            LOG.log(Level.SEVERE, "Cannot reach the client", e);
                                         }
 
 

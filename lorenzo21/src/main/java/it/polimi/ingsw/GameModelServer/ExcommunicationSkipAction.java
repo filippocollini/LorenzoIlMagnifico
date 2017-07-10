@@ -26,4 +26,6 @@ public class ExcommunicationSkipAction extends EffectStrategy implements Cloneab
     public int getId() {
         return id;
     }
+
+
 }

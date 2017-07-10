@@ -61,7 +61,7 @@ public class PlayerTurn {
             timer = jtimer.getInt("timer",30);
 
         } catch (java.io.IOException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }
 
 

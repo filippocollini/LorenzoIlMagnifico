@@ -140,7 +140,7 @@ public class Player extends BoardObserver implements Serializable{
                 int k = 0;
                 this.token[l] = board.getTokens(this.color)[k];
 
-                k++;
+
             }
             l++;
         }

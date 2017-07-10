@@ -33,9 +33,12 @@ public class NonActionState implements State {
             System.out.println("trovato l'evento");
             if(event.isLegal(client, uuid)){
                 event.eventHappened(client, uuid);
-            return "ok";}
-        } else
+                return "ok";
+            }
+        } else {
             System.out.println("evento non trovato");
             return "ko";
+        }
+        return null;
     }
 }

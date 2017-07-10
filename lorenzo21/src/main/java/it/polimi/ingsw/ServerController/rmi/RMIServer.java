@@ -46,8 +46,6 @@ public class RMIServer extends AbstractServer implements Callback{
 
     @Override
     public String joinPlayer(String username, RMIClientInterface client) throws RemoteException{
-        if(!(client instanceof RMIClientInterface))
-            return Callback.FAILURE;
         RMIPlayer rmiPlayer = new RMIPlayer(client);
         String uuid = UUID.randomUUID().toString();
         map.put(uuid, rmiPlayer);

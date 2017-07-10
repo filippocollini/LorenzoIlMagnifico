@@ -12,7 +12,7 @@ public interface RMIClientInterface<M> extends Remote {
     public static final String NAME = "CallbackClientIntf";
 
     public void notifyPlayerLogged(int logged) throws RemoteException;
-    public void notify2(long val1, long val2) throws RemoteException, Exception;
+    public void notify2(long val1, long val2) throws RemoteException;
     public void dispatchMessage(M msg) throws RemoteException;
     public void notifyGameStarted(Game game) throws RemoteException;
     public void notifyProva() throws RemoteException;

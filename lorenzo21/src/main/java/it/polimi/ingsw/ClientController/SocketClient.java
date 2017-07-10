@@ -10,12 +10,16 @@ import java.io.Serializable;
 import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  This class represents the client when the type of connection that has been chosed is RMI
  *  We only implemented the connection of the client
  */
 public class SocketClient<M extends Serializable> extends AbstractClient  {
+
+    private static final Logger LOG = Logger.getLogger(SocketClient.class.getName());
 
     private boolean done = false;
     private SocketPlayer<M> comm;
@@ -71,7 +75,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
             }
             System.out.println("login t'apposto");
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
 
 
@@ -95,7 +99,7 @@ public class SocketClient<M extends Serializable> extends AbstractClient  {
             }
 
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
         return null;
     }

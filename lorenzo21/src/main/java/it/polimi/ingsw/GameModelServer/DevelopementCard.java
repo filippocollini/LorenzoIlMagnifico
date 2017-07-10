@@ -715,7 +715,10 @@ public class DevelopementCard extends Card implements Cloneable{
             removing.setId(jremove.get("id").asInt());
 
         }catch(IOException e){
+
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
             throw new FileMalformedException();
+
         }
 
         return removing;

@@ -116,7 +116,7 @@ public class SocketPlayer<M extends Serializable> extends AbstractPlayer<M> {
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
-
+            LOG.log(Level.SEVERE, "Cannot reach the server", e);
         }
     }
 

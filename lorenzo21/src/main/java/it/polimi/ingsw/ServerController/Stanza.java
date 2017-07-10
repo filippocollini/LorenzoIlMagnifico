@@ -116,7 +116,7 @@ public class Stanza implements Serializable {
             timer = jtimer.getInt("timer",20);
             return timer;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, "Cannot reach the client", e);
         }
 
         return timer;
